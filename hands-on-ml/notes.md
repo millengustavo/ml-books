@@ -400,5 +400,140 @@ If the data keeps evolving, you will need to update your datasets and retrain yo
 - Keep backups of every version of the datasets too
 
 ## CH3. Classification
+> Some learning algorithms are sensitive to the order of the training instances, and they perform poorly if they get many similar instances in a row. **Shuffling** the dataset ensures that this won't happen
+
+#### Stochastic Gradient Descent (SGD) classifier
+*SGDClassifier* on sklearn. Has the advantage of being capable of handling very large datasets efficiently. Deals with training instances independently, one at a time (suited for online learning)
+
+### Performance Measures
+#### Measuring Accuracy using Cross-Validation
+The snippet below does roughly the same thing as *cross_val_score()* from sklearn, but with stratified sampling
+```python
+from sklearn.model_selection import StratifiedKFold
+from sklearn.base import clone
+
+skfolds = StratifiedKFold(n_splits=3, random_state=42)
+
+for train_index, test_index in skfolds.split(X_train, y_train_5):
+    clone_clf = clone(sgd_clf)
+    X_train_folds = X_train[train_index]
+    y_train_folds = y_train_5[train_index]
+    X_test_fold = X_train[test_index]
+    y_test_fold = y_train_5[test_index]
+
+    clone_clf.fit(X_train_folds, y_train_folds)
+    y_pred = clone_clf.predict(X_test_fold)
+    n_correct = sum(y_pred == y_test_fold)
+    print(n_correct / len(y_pred))  # prints 0.9502, 0.96565, and 0.96495”
+```
+> High accuracy can be deceiving if you are dealing with *skewed datasets* (i.e., when some classes are much more frequent than others)
+
+#### Confusion Matrix
+Count the number of times instances of class A are classified as class B
+
+```python
+from sklearn.metrics import confusion_matrix
+confusion_matrix(y_train_5, y_train_pred)
+```
+
+Each row represents an *actual class*, while each column represents a *predicted class*
+
+#### Precision
+Accuracy of the positive predictions
+
+> precision = TP/(TP + FP)
+
+TP is the number of true positives, and FP is the number of false positives
+
+#### Recall or Sensitivity, or True Positive Rate (TPR)
+Ratio of positive instances that are correctly detected by the classifier
+
+> recall = TP/(TP + FN)
+
+FN is the number of false negatives
+
+```python
+from sklearn.metrics import precision_score, recall_score
+precision_score(y_train_5, y_train_pred)
+recall_score(y_train_5, y_train_pred)
+```
+
+#### F1 Score
+Harmonic mean of the precision and recall. The harmonic mean gives much more weight to low values, so the classifier will only get a high F1 score if both recall and precision are high
+
+> F1 = 2*(precision*recall)/(precision+recall)
+
+```python
+from sklearn.metrics import f1_score
+f1_score(y_train_5, y_train_pred)
+```
+
+The F1 score favors classifiers that have similar precision and recall
+
+#### Precision/Recall trade-off
+> *Precision/recall trade-off*: increasing precision reduces recall, and vice versa. e.g., videos safe for kids: prefer reject many good videos (low recall), but keeps only safe ones (high precision)
+
+Scikit-Learn gives you access to the decision scores that it uses to make predicitions, *.decision_function()* method, which returns a score for each instance and then use any threshold you want to make predictions based on those scores
+
+For RandomForestClassifier for example, the method to use is *.predict_proba()*, which returns an array conatining a row per instance and a column per class, each containing the probability that the given instance belongs to the given class.
+
+```python
+y_scores = cross_val_predict(sgd_clf, X_train, y_train_5, cv=3, method="decision_function")
+
+from sklearn.metrics import precision_recall_curve
+precisions, recalls, thresholds = precision_recall_curve(y_train_5, y_scores)
+```
+
+You can plot precision_recall_vs_threshold and choose a good threshold for your project, or plot precision directly against recall (generally you select a precision/recall just before the drop in the plot)
+
+```python
+# define threshold
+threshold_90_precision = thresholds[np.argmax(precisions >= 0.90)]
+# make predictions
+y_train_pred_90 = (y_scores >= threshold_90_precision)
+# check results
+>>> precision_score(y_train_5, y_train_pred_90)
+0.9000380083618396
+>>> recall_score(y_train_5, y_train_pred_90)
+0.4368197749492714
+```
+
+#### The ROC Curve
+*Receiver operating characteristic* (ROC) curve. Plots the *true positive rate* (recall) against the *false positive rate* (FPR). The FPR is the ratio of negative instances that are incorrectly classified as positive. It is equal to 1 - *true negative rate* (TNR, or *specificity*) which is the ratio of negative instances that are correctly classified as negative
+
+ROC curve plots sensitivity (recall) versus 1 - specificity (*.roc_curve()*)
+
+> The higher the recall (TPR), the more false positives (FPR) the classifier produces. The purely random classifier is the diagonal line in the plot, a good classifier stays as far away from that line as possible (toward the top-left corner)
+
+#### Area under the curve (AUC)
+A perfect classifier will have a ROC AUC equal to 1, whereas a purely random classifier will have a ROC AUC equal to 0.5 (*.roc_auc_score()*)
+
+> You should prefer the PR curve whenever the positive class is rare or when you care more about the false positives than the false negatives. Otherwise, use the ROC curve. 
+
+#### Binary classifiers
+1. Choose the appropriate metrics
+2. Evaluate your classifiers using cross-validation
+3. Select the precision/recall trade-off that fits your needs
+4. Use ROC curves and ROC AUC scores to compare various models
+
+### Multiclass Classification
+Some algorithms are not capable of handling multiple classes natively (e.g., Logistic Regression, SVM). For 10 classes you would train 10 binary classifiers and select the class whose classifier outputs the highest score. This is the *one-versus-the-rest* (OvR) strategy (also called *one-versus-all*)
+
+*One-versus-one* (OvO) strategy: trains a binary classifier for every pair of digits. (N*(N-1))/2)classifiers! Good strategy for SVM that scales poorly with the size of the training set
+
+> Scikit-Learn detects when you try to use a binary classification algorithm for a multiclass classification task, and it automatically runs OvR or OvO, depending on the algorithm
+
+#### Error Analysis
+Analyzing the confusion matrix often gives you insights into ways to improve your classifier.
+
+### Multilabel Classification
+Outputs multiple binary tags e.g., face recognition with Alice, Bob and Charlie; only Alice and Charlie in a picture -> output [1, 0, 1]
+
+> Evaluate a multilabel classifier: One approach is to measure the F1 score for each individual label, then simply compute the average score
+
+### Multioutput Classification (multioutput-multiclass classification)
+Generalization of multilabel classification where each label can be multiclass (i.e., it can have more than two possible values)
+
+## CH4. Training Models
 
 # Part II, Neural Networks and Deep Learning
