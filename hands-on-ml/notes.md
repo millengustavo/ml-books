@@ -1,6 +1,8 @@
 # Hands-on Machine Learning with Scikit-Learn, Keras and TensorFlow
 Author: Aurélien Geron
 
+<img src="https://images-na.ssl-images-amazon.com/images/I/51aqYc1QyrL._SX379_BO1,204,203,200_.jpg" title="book" width="150" />
+
 # Part I, The Fundamentals of Machine Learning
 
 ## CH1. The Machine Learning Landscape
