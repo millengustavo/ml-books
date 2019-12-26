@@ -536,4 +536,74 @@ Generalization of multilabel classification where each label can be multiclass (
 
 ## CH4. Training Models
 
+### Linear Regression
+A linear model makes a prediction by simply computing a weighted sum of the input features, plus a constant called the bias term (also called the intercept term)
+
+A *closed-form solution*, a mathematical equation that gives the result directly
+
+### Gradient Descent
+Generic optimization algorithm capable of finding optimal solutions to a wide range of problems. The general idea of Gradient Descent is to tweak parameters iteratively in order to minimize a cost function.
+
+It measures the local gradient of the error function with regard to the parameter vector θ, and it goes in the direction of descending gradient. Once the gradient is zero, you have reached a minimum!
+
+The size of the steps, is determined by the **learning rate** hyperparameter. If the learning rate is too small, then the algorithm will have to go through many iterations to converge, which will take a long time. If the learning rate is too high, you might jump across the valley and end up on the other side, possibly even higher up than you were before. This might make the algorithm diverge, with larger and larger values, failing to find a good solution
+
+> The MSE cost function for a Linear Regression is a *convex function*: if you pick any two points on the curve, the line segment joining them never crosses the curve. This implies that there are no local minima, just one global minimum. It is also a continuous function with a slope that never changes abruptly. Consequence: Gradient Descent is guaranteed to approach arbitrarily close the global minimum (if you wait long enough and if the learning rate is not too high).
+
+> When using Gradient Descent, you should ensure that all features have a similar scale, or else it will take much longer to converge.
+
+#### Batch vs Stochastic Gradient Descent
+The main problem with Batch Gradient Descent is that it uses the whole training set to compute the gradients at every step -> very slow when training set is large 
+
+Stochastic Gradient Descent picks a random instance in the training set at every step and computes the gradients based only on that single instance -> algorithm much faster because it has very little data to manipulate at every iteration. Possible to train on huge training sets, since only one instance in memory at each iteration
+
+> Randomness is good to escape from local optima, but bad because it means that the algorithm can never settle at the minimum -> solution to this dilemma is to gradually reduce the learning rate
+
+### Learning Curves
+Learning curves typical of a model that’s underfitting: Both curves have reached a plateau; they are close and fairly high.
+
+> If your model is underfitting the training data, adding more training examples will not help. You need to use a more complex model or come up with better features
+
+If there is a gap between the curves. This means that the model performs significantly better on the training data than on the validation data, which is the hallmark of an overfitting model. If you used a much larger training set, however, the two curves would continue to get closer -> feed more training data until the validation error reaches the training error
+
+### Bias/Variance Trade-off
+- **Bias**: Error due to wrong assumptions. A high-bias model is most likely to underfit the training data
+- **Variance**: Error due to model's excessive sensitivity to small variations in the training data. Model with many degrees of freedom is likely to have high variance and thus overfit the training data
+- **Irreducible error**: due to the noiseness of the data itself. The only way to reduce this part of the error is to clean up the data
+
+> Increasing a model’s complexity will typically increase its variance and reduce its bias. Conversely, reducing a model’s complexity increases its bias and reduces its variance. This is why it is called a trade-off.
+
+### Ridge Regression (Tikhonov regularization) - L2
+Keep the models weights as small as possible. It is important to scale the data before performing Ridge Regression, as it is sensitive to the scale of the input features. This is true of most regularized models.
+
+Note that the regularization term should only be added to the cost function during training. Once the model is trained, you want to use the unregularized performance measure to evaluate the model’s performance.
+
+> It is quite common for the cost function used during training to be different from the performance measure used for testing. Apart from regularization, another reason they might be different is that a good training cost function should have optimization-friendly derivatives, while the performance measure used for testing should be as close as possible to the final objective.
+
+### Lasso Regression - L1
+*Least Absolute Shrinkage and Selection Operator Regression*. Tends to eliminate the weights of the least important features
+
+### Elastic Net
+Regularization term is a simple mix of both Ridge and Lasso's regularization terms
+
+> **When should you use plain Linear Regression (i.e., without any regularization), Ridge, Lasso, or Elastic Net?**
+> It is almost always preferable to have at least a little bit of regularization, so generally you should avoid plain Linear Regression. Ridge is a good default, but if you suspect that only a few features are useful, you should prefer Lasso or Elastic Net because they tend to reduce the useless features’ weights down to zero. In general, Elastic Net is preferred over Lasso because Lasso may behave erratically when the number of features is greater than the number of training instances or when several features are strongly correlated
+
+### Early Stopping
+Another way to regularize iterative learning algorithms. Stop training as soon as the validation error reaches a minimum. "Beautiful free lunch", Geoffrey Hinton
+
+### Logistic Regression (Logit Regression)
+Estimate the **probability** that an instance belongs to a particular class. Greater than 50% -> positive class, else negative class (binary classifier)
+
+Logistic Regression cost function = log loss
+
+> logit(p) = ln(p/(1-p)) -> also called log-odds
+
+### Softmax Regression (Multinomial Logistic Regression)
+Computes a score for each class, then estimates the probability of each class by applying the *softmax function* (*normalized exponential*) to the scores
+
+> Cross entropy -> frequently used to measure how well a set of estimated class probabilities matches the target classes (when k=2 -> equivalent to log loss)
+
+## CH5. Support Vector Machines
+
 # Part II, Neural Networks and Deep Learning
