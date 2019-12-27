@@ -608,4 +608,146 @@ Computes a score for each class, then estimates the probability of each class by
 
 ## CH5. Support Vector Machines
 
+Soon...
+
+## CH6. Decision Trees
+
+```python
+from sklearn.tree import export_graphviz 
+
+ export_graphviz ( 
+         tree_clf , 
+         out_file = image_path ( "iris_tree.dot" ), 
+         feature_names = iris . feature_names [ 2 :], 
+         class_names = iris . target_names , 
+         rounded = True , 
+         filled = True 
+     )
+```
+
+One of the many qualities of Decision Trees is that they require very little data preparation. In fact, they don’t require feature scaling or centering at all.
+
+Scikit-Learn uses the  CART algorithm, which produces only  binary trees : nonleaf nodes always have two children (i.e., questions only have yes/no answers). However, other algorithms such as ID3 can produce Decision Trees with nodes that have more than two  children.
+
+### White/Black box models
+
+Decision Trees are intuitive, and their decisions are easy to interpret. Such models are often  called  white box models. In contrast, as we will see, Random Forests or neural networks are generally considered  black box models
+
+> The CART algorithm is a  **greedy algorithm**: it greedily searches for an optimum split at the top level, then repeats the process at each subsequent level. It does not check whether or not the split will lead to the lowest possible impurity several levels down. A greedy algorithm often produces a solution that’s reasonably good but not guaranteed to be optimal.
+
+Making predictions requires traversing the Decision Tree from the root to a leaf. Decision Trees generally are approximately balanced, so traversing the Decision Tree requires going through roughly  O (log 2 ( m )) nodes. 3  Since each node only requires checking the value of one feature, the overall prediction complexity is  O (log 2 ( m )), independent of the number of features. So **predictions are very fast, even when dealing with large training sets**.
+
+Gini impurity tends to isolate the most frequent class in its own branch of the tree, while entropy tends to produce slightly more balanced trees
+
+**Nonparametric model**, not because it does not have any parameters but because the number of parameters is not determined prior to training, so the model structure is free to stick closely to the data. In contrast, a  parametric model, such as a linear model, has a predetermined number of parameters, so its degree of freedom is limited, reducing the risk of overfitting (but increasing the risk of underfitting).
+
+> Increasing  min_*  hyperparameters or reducing  max_*  hyperparameters will regularize the model.
+
+### Pruning
+
+Standard statistical tests, such as the  χ 2   test  (chi-squared test), are used  to estimate the probability that the improvement is purely the result of chance (which is called the  null hypothesis ). If this probability, called the  p-value , is higher than a given threshold (typically 5%, controlled by a hyperparameter), then the node is considered unnecessary and its children are deleted
+
+Decision Trees love orthogonal decision boundaries (all splits are perpendicular to an axis), which  makes them sensitive to training set rotation.
+
+One way to limit this problem is to use Principal Component Analysis, which often results in a better orientation of the training data.
+
+### Problems
+
+The main issue with Decision Trees is that they are very sensitive to small variations in the training data.
+
+Random Forests can limit this instability by averaging predictions over many trees
+
+
+## CH7. Ensemble Learning and Random Forests 
+
+*Wisdom of the crowd*: aggregated answer is better than an expert’s answer.
+
+> A  group of predictors is called an  ensemble ; thus, this technique is called  Ensemble Learning , and an Ensemble Learning algorithm  is called an  Ensemble method
+
+### Hard voting
+
+Train a group of Decision Tree classifiers, each on a different random subset of the training set. To make predictions, you obtain the predictions of all the individual trees, then predict the class that gets the **most votes**
+
+Very simple way to create an even better classifier is to aggregate the predictions of each classifier and predict the class that gets the most votes. This  **majority-vote classifier is called a  hard voting  classifier**
+
+> Even if each classifier is a  weak learner  (meaning it does only slightly better than random guessing), the ensemble can still be a  strong learner  (achieving high accuracy), provided there are a sufficient number of weak learners and they are sufficiently diverse.
+
+### Independent classifiers
+
+Ensemble methods  work best when the predictors are as independent from one another as possible. One way to get diverse classifiers is to train them using very different algorithms. This increases the chance that they will make very different types of errors, improving the ensemble’s accuracy.
+
+```python
+from sklearn.ensemble import VotingClassifier 
+```
+
+### Soft voting
+
+If  all classifiers are able to estimate class probabilities (i.e., they all have a  predict_proba()  method), then you can tell Scikit-Learn to predict the class with the highest class probability, averaged over all the individual classifiers. This is called  **soft voting**. It often achieves higher performance than hard voting because it gives more weight to highly confident votes. All you need to do is replace  voting="hard"  with  voting="soft"  and ensure that all classifiers can estimate class probabilities
+
+Generally, the net result is that the ensemble has a similar bias but a lower variance than a single predictor trained on the original training set.
+
+### Bagging and Pasting
+
+Scikit-Learn  offers a simple API for both bagging and pasting with the  BaggingClassifier  class (or  BaggingRegressor  for regression).
+
+### Bootstrapping
+
+Bootstrapping introduces a bit more diversity in the subsets that each predictor is trained on, so bagging ends up with a slightly higher bias than pasting; but the extra diversity also means that the predictors end up being less correlated, so the ensemble’s variance is reduced. Overall, bagging often results in better models, which explains why it is generally preferred
+
+### Out-of-bag evaluation
+
+In Scikit-Learn, you can set  oob_score=True  when creating a  BaggingClassifier  to request an automatic oob evaluation after training
+
+### Random Patches and Random Subspaces
+
+Sampling both training instances and features is called the **Random Patches** method. Keeping all training instances (by setting bootstrap=False and max_samples=1.0) but sampling features (by setting bootstrap_features to True and/or max_features to a value smaller than 1.0) is called the **Random Subspaces** method. Sampling features results in even more predictor diversity, trading a bit more bias for a lower variance.
+
+> Instead of building a  BaggingClassifier  and passing it a  DecisionTreeClassifier , you can instead use the  RandomForestClassifier  class, which is more convenient and optimized for Decision Trees
+
+Forest of such extremely random trees is called an  *Extremely Randomized Trees*  ensemble  (*Extra-Trees*). This technique trades more bias for a lower variance. Much faster to train.
+
+> It is hard to tell in advance whether a  RandomForestClassifier  will perform better or worse than an  ExtraTreesClassifier . Generally, the only way to know is to try both and compare them using cross-validation (tuning the hyperparameters using grid search).
+
+Looking at how much the tree nodes that use that feature reduce impurity on average (across all trees in the forest)
+
+### Boosting
+
+**Boosting**  (originally called  hypothesis boosting ) refers  to any Ensemble method that can combine several weak learners into a strong learner. The general idea of most boosting methods is to train predictors sequentially, each trying to correct its predecessor
+
+
+### AdaBoost
+
+One  way for a new predictor to correct its predecessor is to pay a bit more attention to the training instances that the predecessor underfitted. This results in new predictors focusing more and more on the hard cases. This is the technique used by  **AdaBoost** .
+
+> This sequential learning technique has some similarities with Gradient Descent, except that instead of tweaking a single predictor’s parameters to minimize a cost function, AdaBoost adds predictors to the ensemble, gradually making it better.
+
+There is one important drawback to this sequential learning technique: it cannot be parallelized (or only partially), since each predictor can only be trained after the previous predictor has been trained and evaluated. As a result, it *does not scale as well as bagging or pasting*.
+
+### Gradient Boosting
+
+Gradient Boosting works by sequentially adding predictors to an ensemble, each one correcting its predecessor. However, instead of tweaking the instance weights at every iteration like AdaBoost does, this method tries to fit the new predictor  to the  residual errors  made by the previous predictor.
+
+The  learning_rate  hyperparameter scales the contribution of each tree. If you set it to a low value, such as  0.1 , you will need more trees in the ensemble to fit the training set, but the predictions will usually generalize better. This  is a regularization technique called  shrinkage .
+
+If  subsample=0.25 , then each tree is trained on 25% of the training instances, selected randomly. As you can probably guess by now, this technique trades a higher bias for a lower variance. It also speeds up training considerably. This  is called  Stochastic Gradient Boosting .
+
+### XGBoost
+
+Extreme Gradient Boosting. This package was initially developed by Tianqi Chen as part of the Distributed (Deep) Machine Learning Community (DMLC), and it aims to be extremely fast, scalable, and portable. In fact, XGBoost is often an important component of the winning entries in ML competitions.
+
+### Stacking
+
+Stacking  (short for  stacked generalization ). 18  It is based on a simple idea: instead of using trivial functions (such as hard voting) to aggregate the predictions of all predictors in an ensemble, why don’t we train a model to perform this aggregation?
+
+The final predictor  (called a  blender , or a  meta learner )
+
+> To train the blender, a common approach is to use a hold-out set
+
+It is actually possible to train several different blenders this way (e.g., one using Linear Regression, another using Random Forest Regression), to get a whole layer of blenders. The trick is to split the training set into three subsets: the first one is used to train the first layer, the second one is used to create the training set used to train the second layer (using predictions made by the predictors of the first layer), and the third one is used to create the training set to train the third layer (using predictions made by the predictors of the second layer). Once this is done, we can make a prediction for a new instance by going through each layer sequentially
+
+### Brew
+
+Scikit-Learn does not support stacking directly, but it is not too hard to roll out your own implementation (see the following exercises). Alternatively, you can use an open source implementation such as  brew .
+
+
 # Part II, Neural Networks and Deep Learning
