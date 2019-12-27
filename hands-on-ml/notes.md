@@ -749,5 +749,58 @@ It is actually possible to train several different blenders this way (e.g., one 
 
 Scikit-Learn does not support stacking directly, but it is not too hard to roll out your own implementation (see the following exercises). Alternatively, you can use an open source implementation such as  brew .
 
+## CH8. Dimensionality Reduction
+
+> In some cases, reducing the dimensionality of the training data may filter out some noise and unnecessary details and thus result in higher performance, but in general it won't; it will just speed up training
+
+It is also extremely useful for **data visualization**
+
+### The Curse of Dimensionality
+High-dimensional datasets are at risk of being very sparse: most training instances are likely to be far away from each other. This also means that a new instance will likely be far away from any training instance, making predictions much less reliable than in lower dimensions, since they will be based on much larger extrapolations -> **the more dimensions the training set has, the greater the risk of overfitting it**
+
+> The number of training instances required to reach a given density grows exponentially with the number of dimensions
+
+### Projection
+Project every training instance perpendicularly onto this subspace
+
+### Manifold
+Many dimensionality reduction algorithms work by modeling the manifold on which the training instances lie; this is called Manifold Learning. It relies on the manifold assumption, also called the manifold hypothesis, which holds that most real-world high-dimensional datasets lie close to a much lower-dimensional manifold. This assumption is very often empirically observed
+
+### PCA
+Identifies the hyperplane that lies closest to the data, and then it projects the data onto it
+
+### Principal Components
+> For each principal component, PCA finds a zero-centered unit vector pointing in the direction of the PC. Since two opposing unit vectors lie on the same axis, the direction of the unit vectors returned by PCA is not stable: if you perturb the training set slightly and run PCA again, the unit vectors may point in the opposite direction as the original vectors 
+
+PCA assumes that the dataset is centered around the origin (Scikit-Learn take care of this)
+
+### Explained Variance Ratio
+Instead of arbitrarily choosing the number of dimensions to reduce down to, it is simpler to choose the number of dimensions that add up to a sufficiently large portion of the variance (e.g., 95%). Unless, of course, you are reducing dimensionality for data visualization—in that case you will want to reduce the dimensionality down to 2 or 3
+
+It is possible to compress and decompress a dataset (with loss). The mean squared distance between the original data and the reconstructed data is called the **reconstruction error**
+
+## Kernel PCA
+> **Kernel trick** -> math technique that implicity maps instances into a very high-dimensional space (*feature space*). A linear decision boundary in the high-dimensional feature space corresponds to a complex nonlinear decision boundary in the original space
+
+## Locally Linear Embedding (LLE)
+Powerful *nonlinear dimensionality reduction* (NLDR) technique. Does not rely on projections, like the previous algorithms do.
+
+> LLE works by first measuring how each training instance linearly relates to its closest neighbors, and then looking for a low-dimensional representation of the training set where these local relationships are best preserved
+
+Scale poorly to very large datasets
+
+## Other Dimensionality Reductions Techniques
+- Random Projections: project the data to lower-dimensional space using a random linear projection
+- Multidimensional Scaling (MDS): try to preserve the distances between the instances
+- Isomap: creates a graph by connecting each instance to its nearest neighbors (try to preserve the geodesic distances between the instances)
+- t-Distributed Stochastic Neighbor Embedding (t-SNE): try to keep similar instances close and dissimilar instances apart. Mostly used for visualization -> clusters of instances in high-dimensional space
+- Linear Discriminant Analysis (LDA): classification algorithm -> learns the most discriminative axes between the classes -> can be used to define a hyperplane to project the data
+
+
+
+
+
+
+
 
 # Part II, Neural Networks and Deep Learning
