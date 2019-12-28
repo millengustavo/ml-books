@@ -796,11 +796,72 @@ Scale poorly to very large datasets
 - t-Distributed Stochastic Neighbor Embedding (t-SNE): try to keep similar instances close and dissimilar instances apart. Mostly used for visualization -> clusters of instances in high-dimensional space
 - Linear Discriminant Analysis (LDA): classification algorithm -> learns the most discriminative axes between the classes -> can be used to define a hyperplane to project the data
 
+## CH9. Unsupervised Learning Techniques
+> "If intelligence was a cake, unsupervised learning would be the cake, supervised learning would be the icing on the cake, and reinforcement learning would be the cherry on the cake" - Yann LeCun
 
+### Clustering
+Identifying similar instances and assigning them to *clusters*, or groups of similar instances
 
+- **Customer Segmentation**: i.e., *recommender systems* to suggest X that other users in the same cluster enjoyed
+- **Data Analysis**
+- **Dimensionality Reduction**: Once a dataset has been clustered, it is usually possible to measure how well an instance fits into a cluster (*affinity*). Each instance’s feature vector x can then be replaced with the vector of its cluster affinities.
+- **Anomaly Detection / Outlier Detection**: Any instance that has a low affinity to all the clusters is likely to be an anomaly. Useful in detecting defects in manufacturing, or for *fraud detection*
+- **Semi-supervised Learning**: If you only have a few labels, you could perform clustering and propagate the labels to all the instances in the same cluster. This technique can greatly increase the number of labels available for a subsequent supervised learning algorithm, and thus improve its performance
+- **Search Engines**
+- **Segment an image**: By clustering pixels according to their color, then replacing each pixel's color with the mean color of its cluster, it is possible to considerably reduce the number of different colors in the image -> used in many object detection and tracking systems -> makes it easier to detect the contour of each object
 
+**Algorithms**:
+- Instances centered around a particular point -> *centroid*
+- Continuous regions of densely packed instances
+- Hierarchical, clusters of clusters
 
+### K-Means
+Sometimes referred to as *LLoyd-Forgy*
 
+> *Voronoi tessellation/diagram/decomposition/partition*: is a partition of a plane into regions close to each of a given set of objects
 
+**Hard clustering**: assigning each instance to a single cluster. **Soft clustering**: give each instance a score per cluster (can be the distance between the instance and the centroid, or the affinity score such as the Guassian Radial Basis Function)
+
+1. Place the centroids randomly (pick *k* instances at random and use their locations as centroids)
+2. Label the instances
+3. Update the centroids
+4. Label the instances
+5. Update the centroids
+6. Repeat until the centroids stop moving
+
+> The algorithm is guaranteed to converge in a finite a number of steps (usually quite small). K-Means is generally one of the fastest clustering algorithms
+
+#### K-Means++
+Introduced a **smarter initialization step** that tends to select centroids that are distant from one another -> makes the algorithm much less likely to converge to a suboptimal solution
+
+#### Accelerated K-Means and mini-batch K-Means
+Accelerated -> exploits the triangle inequality
+
+Mini-batches -> speeds up the algorithm by a factor of 3 or 4 -> makes it possible to cluster huge datasets that do not fit in memory (*MiniBatchKMeans* in Scikit-Learn)
+
+> If the dataset does not fit in memory, the simplest option is to use the *memmap* class. Alternatively, you can pass one mini-batch at a time to the *partial_fit()* method, but this will require much more work, since you will need to perform multiple initializations and select the best one yourself.
+
+#### Finding the optimal number of clusters
+Plotting the inertia as a function of the number of clusters k, the curve often contains an inflexion point called the **“elbow”**
+
+A more precise approach (but also more computationally expensive) is to use the silhouette score, which is the mean **silhouette coefficient** over all the instances. An instance’s silhouette coefficient is equal to (b – a) / max(a, b), where a is the mean distance to the other instances in the same cluster (i.e., the mean intra-cluster distance) and b is the mean nearest-cluster distance (i.e., the mean distance to the instances of the next closest cluster, defined as the one that minimizes b, excluding the instance’s own cluster). The silhouette coefficient can vary between –1 and +1. A coefficient close to +1 means that the instance is well inside its own cluster and far from other clusters, while a coefficient close to 0 means that it is close to a cluster boundary, and finally a coefficient close to –1 means that the instance may have been assigned to the wrong cluster.
+
+> **Silhouette diagram**: more informative visualization -> plot every instance's silhouette coefficient, sorted by the cluster they are assigned to and by the value of the coefficient
+
+#### Limits of K-Means
+- Necessary to run several times to avoid suboptimal solutions
+- You need to specify the number of clusters
+- Does not behave well when the clusters have varying sizes, different densities or nonspherical shapes
+
+> It is important to scale the input features before you run K-Means, or the clusters may be very stretched and K-Means will perform poorly. Scaling the features does not guarantee that all the clusters will be nice and spherical, but it generally improves things
+
+> **NOTE**: remember to check the book again, there are some useful practical examples on clustering for preprocessing, semi-supervised learning (*label propagation*)
+
+##### Active learning (*uncertainty sampling*)
+1. The model is trained on the labeled instances gathered so far, and this model is used to make predictions on all the unlabeled instances.
+2. The instances for which the model is most uncertain (i.e., when its estimated probability is lowest) are given to the expert to be labeled.
+3. You iterate this process until the performance improvement stops being worth the labeling effort.
+
+### DBSCAN
 
 # Part II, Neural Networks and Deep Learning
