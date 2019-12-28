@@ -73,6 +73,32 @@ Using a random forest, we can measure the feature importance as the averaged imp
 
 **SelectFromModel**  object that selects features based on a user-specified threshold after model fitting, which is useful if we want to use the  RandomForestClassifier  as a feature selector and intermediate step in a scikit-learn  Pipeline  object,
 
+## Ch5. Compressing Data via Dimensionality Reduction
+
+### Feature Extraction
+Feature extraction can be understood as an approach to data compression with the goal of maintaining most of the relevant information.
+
+> Feature  extraction is not only used to improve storage space or the computational efficiency of the learning  algorithm, but can also improve the predictive performance by reducing the  curse of dimensionality —especially if we are working with non-regularized models.
+
+### PCA
+
+PCA aims to find the directions of maximum variance in high-dimensional data and projects the data onto a new subspace with equal or fewer dimensions than the original one
+
+Even if the  input features are correlated, the resulting principal components will be mutually orthogonal (uncorrelated). 
+
+> PCA directions are highly sensitive to data scaling, and we need to standardize the features  prior  to PCA if the features were measured on different scales and we want to assign equal importance to all features
+
+### LDA
+
+The general concept behind LDA is very similar to PCA, but whereas PCA attempts to find the orthogonal component axes of maximum variance in a dataset, the goal in LDA is to find the feature subspace that optimizes class separability
+
+### Kernel PCA
+
+If we are dealing with nonlinear problems, which we may encounter rather  frequently in real-world  applications, linear transformation techniques for dimensionality reduction, such as PCA and LDA, may not be the best choice.
+
+> Using the kernel trick, we can compute the similarity between two high-dimension feature vectors in the original feature space
+
+
 ## Ch6. Learning Best Practices for Model Evaluation and Hyperparameter Tuning
 
 
