@@ -864,4 +864,40 @@ A more precise approach (but also more computationally expensive) is to use the 
 
 ### DBSCAN
 
+Defines clusters as continuous regions of high density. Works well if all the clusters are dense enough and if they are well separated by low-density regions
+
+It is robust to outliers, and it has just two hyperparameters (*eps* and *min_samples*)
+
+### Other Clustering Algorithms
+- **Agglomerative clustering**
+- **BIRCH**: Balanced Iterative Reducing and Clustering using Hierarchies -> designed specifically for very large datasets
+- **Mean-Shift**: computational complexity is O(m^2), not suited for large datasets
+- **Affinity propagation**: same problem as mean-shift
+- **Spectral clustering**: does not scale very well to large numbers of instances and it does not behave well when the clusters have very different sizes
+
+### Gaussian Mixtures
+A *Gaussian mixture model* (GMM) is a probabilistic model that assumes that the instances were generated from a mixture of several Gaussian distributions whose parameters are unknown. 
+
+GMM is a *generative model* -> you can sample new instances from it
+
+#### Anomaly Detection using Gaussian Mixtures
+Using a GMM for anomaly detection is quite simple: any instance located in a low-density region can be considered an anomaly. You must define what density threshold you want to use.
+
+A closely related task is *novelty detection*: it differs from anomaly detection in that the algorithm is assumed to be trained on a "clean" dataset, uncontaminated by outliers, whereas anomaly detection oes not make this assumption. Outlier detection is often used to clean up a dataset.
+
+#### Selecting the Number of Clusters
+Find the model that minimizes a theoretical information criterion -> *Bayesian information criterion* (BIC) or the *Akaike information criterion* (AIC)
+
+#### Bayesian Gaussian Mixture Models
+Rather than manually searching for the optimal number of clusters, you can use the BayesianGaussianMixture class, which is capable of giving weights equal (or close) to zero to unnecessary clusters. Set the number of clusters n_components to a value that you have good reason to believe is greater than the optimal number of clusters (this assumes some minimal knowledge about the problem at hand), and the algorithm will eliminate the unnecessary clusters automatically.
+
+> GMM work great on clusters with ellipsoidal shapes, but if you try to fit a dataset with different shapes, you may have bad surprises
+
+### Other Algorithms for Anomaly and Novelty Detection
+- **PCA** (*inverse_transform()* method): If you compare the reconstruction error of a normal instance with the reconstruction error of an anomaly, the latter will usually be much larger. This is a simple and often quite efficient anomaly detection approach
+- **Fast-MCD** (minimum covariance determinant): Implemented by the EllipticEnvelope class, this algorithm is useful for outlier detection, in particular to clean up a dataset
+- **Isolation Forest**: efficient in high-dimensional datasets. Anomalies are usually far from other instances, so on average they tend to get isolated in fewer steps than normal instances
+- **Local Outlier Factor (LOF)**: compares the density of instances around a given instance to the density around its neighbors
+- **One-class SVM**: better suited for novelty detection. Works great, especially with high-dimensional datasets, but like all SVMs it does not scale to large datasets
+
 # Part II, Neural Networks and Deep Learning
