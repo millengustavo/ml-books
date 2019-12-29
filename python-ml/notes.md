@@ -101,6 +101,92 @@ If we are dealing with nonlinear problems, which we may encounter rather  freque
 
 ## Ch6. Learning Best Practices for Model Evaluation and Hyperparameter Tuning
 
+> We have to reuse the parameters that were obtained during the fitting of the training data to scale and compress any new data, such as the examples in the separate test dataset
 
+### Combining transformers and estimators in a pipeline
 
+There is no limit to the number of intermediate steps in a pipeline; however, the last pipeline element has to be an estimator.
 
+If we reuse the same test dataset over and over again  during model selection, it will become part of our training data and thus the model will be more likely to overfit. **Despite this issue, many people still use the test dataset for model selection, which is not a good machine learning practice**
+
+### Using k-fold cross-validation to assess model performance
+
+A better way of using the holdout method for model selection is to separate the data into three parts: a training dataset, a validation dataset, and a test dataset. The training dataset is used to fit the different models, and the performance on the validation dataset is then used for the model selection. The advantage of having a test dataset that the model hasn't seen before during the training and model selection steps is that we can obtain a less biased estimate of its ability to generalize to new data.
+
+A disadvantage of the holdout method is that the performance estimate may be very sensitive to how we partition the training dataset into the training and validation subsets; the estimate will vary for different examples of the data
+
+### K-fold cross-validation
+
+In k-fold cross-validation, we randomly split the training dataset into  k  folds without replacement, where  k  – 1 folds  are used for the model training, and one fold is used for performance evaluation. This procedure is repeated  k  times so that we obtain  k  models and performance estimates.
+
+We use k-fold cross-validation for model tuning, that is, finding the optimal hyperparameter values that yield a satisfying generalization performance, which is estimated from evaluating the model performance on the test folds.
+
+> Once we have found satisfactory hyperparameter values, we can retrain the model on the complete training dataset and obtain a final performance estimate using the independent test  dataset. The rationale behind fitting a model to the whole training dataset after k-fold cross-validation is that providing more training examples to a learning algorithm usually results in a more accurate and robust model.
+
+Since k-fold cross-validation is a resampling technique without replacement, the advantage of this approach is that each example will be used for training and validation (as part of a test fold) exactly once, which yields a lower-variance estimate of the model performance than the holdout method.
+
+### Choosing K
+
+A good standard value for  k  in k-fold cross-validation is 10, as empirical evidence shows. For instance, experiments by Ron Kohavi on various real-world datasets suggest that 10-fold cross-validation  offers the best tradeoff between bias and variance ( A Study of Cross-Validation and Bootstrap for Accuracy Estimation and Model Selection ,  Kohavi, Ron ,  International Joint Conference on Artificial Intelligence (IJCAI) , 14 (12): 1137-43,  1995 ).
+
+**Small training sets** -> increase the number of folds. If we increase the value of  k , more training data will be used in each iteration, which results in a lower pessimistic bias toward estimating the generalization performance by averaging the individual model estimates.
+
+**Large datasets** -> smaller value for  k , for example,  k  = 5, and still obtain an accurate estimate of the average performance of the model while reducing the computational cost of refitting and evaluating the model on the different folds
+
+### Stratified cross-validation
+
+A slight improvement over the standard k-fold cross-validation approach is stratified k-fold cross-validation, which can yield better bias and variance estimates, especially in cases of unequal class proportions
+
+By plotting the model training and validation accuracies as functions of the training dataset size, we can easily detect whether the model suffers from high variance or high bias, and whether the collection of more data could help to address this problem
+
+### Bias x Variance
+
+**High bias**: This model has both low  training and cross-validation accuracy, which indicates that it underfits the training data. Common ways to address this  issue are to increase the number of parameters of the model, for example, by collecting or constructing additional  features, or by decreasing the degree of regularization
+
+**High variance**: which is indicated by the large gap between the training and cross-validation accuracy. To address this problem of overfitting, we can collect more training data, reduce the complexity of the model, or increase the regularization parameter
+
+For unregularized models, it  can also help to decrease  the number of features via feature selection
+
+> While collecting more training data usually tends to decrease the chance of overfitting, it  may not always help, for example, if the training data is extremely noisy or the model is already very close to optimal.
+
+### Debugging algorithms with learning and validation curves
+
+Validation curves are a useful tool for improving the performance of a model by addressing  issues  such as overfitting or underfitting. Validation curves are related  to learning curves, but instead of plotting the training and test accuracies as functions of the sample size, we vary  the values of the model parameters
+
+### Fine-tuning machine learning models
+
+The grid search approach is quite simple: it's a brute-force exhaustive search paradigm where  we specify a list of values for different  hyperparameters, and the computer evaluates the model performance for each combination to obtain the optimal combination of values from this set
+
+Randomized search usually performs about as well as grid search but is  much more cost- and time-effective. In particular, if we only sample 60 parameter combinations via randomized search, we already have a 95 percent probability of obtaining solutions within 5 percent of the optimal performance ( Random search for hyper-parameter optimization .  Bergstra J ,  Bengio Y .  Journal of Machine Learning Research . pp. 281-305, 2012).
+
+### Algorithm selection with nested cross-validation
+
+If we want to select among different machine learning algorithms, though, another recommended approach is nested cross-validation. In a nice study on the bias in error estimation, Sudhir Varma and Richard Simon concluded that the true error of the estimate is almost unbiased relative to the test dataset when nested cross-validation is used ( Bias in Error Estimation When Using Cross-Validation for Model Selection ,  BMC Bioinformatics ,  S. Varma  and  R. Simon , 7(1): 91,  2006 ).
+
+In nested cross-validation, we have an outer k-fold cross-validation loop to split the data into training and test folds, and an inner loop is used to select the model using k-fold cross-validation on the training fold. After model selection, the test fold is then used to evaluate the model performance
+
+### Looking at different performance evaluation metrics
+
+A confusion matrix is simply a  square matrix that reports the counts of the  true positive  ( TP ),  true negative  ( TN ),  false positive  ( FP ), and  false negative  ( FN ) predictions  of a classifier
+
+The  true positive rate  ( TPR ) and  false positive rate  ( FPR ) are performance metrics that are especially  useful for  imbalanced  class problems
+
+Receiver operating characteristic  ( ROC ) graphs are useful tools to select models for classification based  on their performance with respect to the FPR and TPR, which are computed by shifting the decision threshold of the classifier. The diagonal of a ROC graph can be interpreted as  random guessing , and classification models that fall below the diagonal are considered as worse than random guessing. A perfect classifier would fall into the top-left corner of the graph with a TPR of 1 and an  FPR of 0. Based on the ROC curve, we can then compute the so-called  ROC area under the curve  ( ROC AUC ) to characterize the performance of a classification model.
+
+#### Scoring metrics for multiclass classification
+
+> Micro-averaging is useful if we want to weight each instance or prediction equally, whereas macro-averaging weights all classes equally to evaluate the overall performance of a  classifier with regard to the most frequent class labels. If we are using binary performance metrics to evaluate multiclass classification models in scikit-learn, a normalized or weighted variant of the macro-average is used by default
+
+### Dealing with class imbalance
+
+Class imbalance is a quite common problem when working with real-world data—examples from one class or multiple classes are over-represented in a dataset
+
+The algorithm implicitly learns a model that optimizes the predictions based on the most abundant class in the dataset, in order to minimize the cost or maximize the reward during training.
+
+One way to deal with imbalanced class proportions during model fitting is to assign a larger penalty to wrong predictions on the minority class.
+
+Other popular strategies for dealing with class imbalance include upsampling the minority class, downsampling the majority class, and the generation of synthetic training examples. Unfortunately, there's no universally best solution or technique that works best across different problem domains. Thus, in practice, it is recommended to try out different strategies on  a given problem, evaluate the results, and choose the technique that seems most appropriate
+
+### SMOTE
+
+Synthetic Minority Over-sampling Technique  ( SMOTE ), and you can learn more about this  technique in the original research article by Nitesh Chawla and others:  SMOTE: Synthetic Minority Over-sampling Technique ,  Journal of Artificial Intelligence Research , 16: 321-357,  2002 . It is also highly recommended to check out  imbalanced-learn , a Python library that is entirely focused on imbalanced datasets, including an  implementation of SMOTE
