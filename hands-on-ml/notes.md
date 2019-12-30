@@ -981,3 +981,51 @@ Output layer activation - Logistic - Logistic - Softmax
 Loss function - Cross entropy - Cross entropy - Cross entropy 
 
 ### Implementing MLPs with Keras
+
+Tensorflow 2 is arguably just as simple as PyTorch, as it has adopted Keras as its official high-level API and its developers have greatly simplified and cleaned up the rest of the API
+
+> Since we are going to train the neural network using Gradient Descent, we must scale the input features
+
+#### Creating a Sequential model
+
+You can pass a list of layers when creating the Sequential model:
+
+```python
+model = keras.models.Sequential([
+    keras.layers.Flatten(input_shape=[28, 28]),
+    keras.layers.Dense(300, activation="relu"),
+    keras.layers.Dense(100, activation="relu"),
+    keras.layers.Dense(10, activation="softmax")
+])
+```
+
+The model’s summary() method displays all the model’s layers, including each layer’s name (which is automatically generated unless you set it when creating the layer), its output shape (None means the batch size can be anything), and its number of parameters. The summary ends with the total number of parameters, including trainable and non-trainable parameters
+
+> Dense layers often have a lot of parameters. This gives the model quite a lot of flexibility to fit the training data, but it also means that the model runs the risk of overfitting, especially when you do not have a lot of training data
+
+#### Compiling the model
+
+After a model is created, you must call its compile() method to specify the loss function and the optimizer to use. Optionally, you can specify a list of extra metrics to compute during training and evaluation:
+
+```python
+model.compile(loss="sparse_categorical_crossentropy",
+              optimizer="sgd",
+              metrics=["accuracy"])
+```
+
+#### Training and evaluating the model
+
+Now the model is ready to be trained. For this we simply need to call its fit() method:
+
+```python
+>>> history = model.fit(X_train, y_train, epochs=30,
+...                     validation_data=(X_valid, y_valid))
+```
+
+If the training set was very skewed, with some classes being overrepresented and others underrepresented, it would be useful to set the **class_weight** argument when calling the fit() method, which would give a larger weight to underrepresented classes and a lower weight to overrepresented classes. These weights would be used by Keras when computing the loss
+
+> The fit() method returns a History object containing the training parameters (history.params), the list of epochs it went through (history.epoch), and most importantly a dictionary (history.history) containing the loss and extra metrics it measured at the end of each epoch on the training set and on the validation set (if any) -> use this dictionary to create a pandas DataFrame and call its plot() method to get the learning curves
+
+> When plotting the training curve, it should be shifted by half an epoch to the left
+
+If you are not satisfied with the performance of your model, you should go back and **tune the hyperparameters**. The first one to check is the learning rate. If that doesn’t help, try another optimizer (and always retune the learning rate after changing any hyperparameter). If the performance is still not great, then try tuning model hyperparameters such as the number of layers, the number of neurons per layer, and the types of activation functions to use for each hidden layer. You can also try tuning other hyperparameters, such as the batch size (it can be set in the fit() method using the batch_size argument, which defaults to 32).
