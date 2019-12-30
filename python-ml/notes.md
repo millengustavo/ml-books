@@ -190,3 +190,55 @@ Other popular strategies for dealing with class imbalance include upsampling the
 ### SMOTE
 
 Synthetic Minority Over-sampling Technique  ( SMOTE ), and you can learn more about this  technique in the original research article by Nitesh Chawla and others:  SMOTE: Synthetic Minority Over-sampling Technique ,  Journal of Artificial Intelligence Research , 16: 321-357,  2002 . It is also highly recommended to check out  imbalanced-learn , a Python library that is entirely focused on imbalanced datasets, including an  implementation of SMOTE
+
+## CH7. Combining different models for Ensemble Learning
+
+The  goal of  ensemble methods  is to combine different classifiers into a meta-classifier that has better  generalization performance than each individual classifier alone.
+
+### Voting
+
+Majority  voting simply means that we select the class label that has been predicted by the majority of classifiers, that is, received more than 50 percent of the votes.
+
+> To predict a  class label via simple majority or plurality voting, we can combine the predicted class labels of each individual classifier,  , and select the class label,  , that received the most votes
+
+### Stacking
+
+The  stacking algorithm can be understood as a two-level ensemble, where the first level consists of individual classifiers that feed their predictions to the second level, where another classifier (typically logistic regression) is fit to the level-one classifier predictions to make the final predictions. The stacking algorithm has been described in more detail by David H. Wolpert in  Stacked generalization ,  Neural Networks , 5(2):241–259,  1992 .
+
+### Bagging
+
+Instead of using the same training dataset to fit the individual classifiers in the ensemble, we draw bootstrap samples (random samples with replacement) from the initial training dataset, which is why bagging is also known as  bootstrap aggregating .
+
+**Random forests** are a special case of bagging where we also use random feature subsets when fitting the individual decision trees.
+
+> Bagging was first  proposed by Leo Breiman in a  technical report in 1994; he also showed that bagging can improve the accuracy of unstable models and decrease the degree of overfitting.
+
+Bagging algorithm can be an effective approach to reducing the variance of a model. However, bagging is ineffective in reducing model bias, that is, models that are too simple to capture the trend in the data well. This is why we want to perform bagging on an ensemble of classifiers with low bias, for example, unpruned decision trees.
+
+### Boosting
+
+In boosting, the  ensemble consists of very simple base classifiers, also often referred to as  weak learners , which often only have a slight  performance advantage over random guessing—a typical example of a weak learner is a decision tree stump. 
+
+> The key concept behind boosting is to focus on training examples that are hard to classify, that is, to let the weak learners subsequently learn from misclassified training examples to improve the performance of the ensemble.
+
+In contrast  to bagging, the initial formulation of the boosting algorithm uses random subsets of training examples drawn from the training dataset without replacement
+
+Boosting can lead to a decrease in bias as well as variance compared to bagging models
+
+Boosting algorithms such as AdaBoost are also known for their high variance, that is, the tendency to overfit the training data
+
+> It is worth noting that ensemble learning increases the computational complexity compared to individual classifiers. In practice, we need to think carefully about whether we want to pay the price of increased computational costs for an often relatively modest improvement in predictive performance. An often-cited  example of this tradeoff is the famous $1 million  Netflix Prize , which was won using ensemble techniques. The details about  the algorithm were published in  The BigChaos Solution to the Netflix Grand Prize  by  A. Toescher ,  M. Jahrer , and  R. M. Bell ,  Netflix Prize documentation ,  2009
+
+### Gradient Boosting
+
+Another popular variant of boosting is  gradient boosting . AdaBoost and gradient boosting share the  main overall concept: boosting weak learners (such as decision tree stumps) to strong learners. The two approaches, adaptive and gradient boosting, differ mainly with regard to how the weights are updated and how the (weak) classifiers are combined
+
+#### XGBoost
+
+XGBoost, which is essentially a computationally efficient implementation of the original gradient boost algorithm ( XGBoost: A scalable tree boosting system .  Tianqi Chen  and  Carlos Guestrin .  Proceeding of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining .  ACM 2016 , pp. 785-794)
+
+#### HistGradientBoosting
+
+Scikit-learn now also includes a substantially faster version of gradient boosting in version 0.21,  HistGradientBoostingClassifier , which is even faster than XGBoost
+
+> Ensemble methods combine different classification models to cancel out their individual weaknesses, which often results in stable and well-performing models that are very attractive for industrial applications as well as machine learning competitions.
