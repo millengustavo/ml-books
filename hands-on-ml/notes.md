@@ -901,3 +901,83 @@ Rather than manually searching for the optimal number of clusters, you can use t
 - **One-class SVM**: better suited for novelty detection. Works great, especially with high-dimensional datasets, but like all SVMs it does not scale to large datasets
 
 # Part II, Neural Networks and Deep Learning
+
+## CH10. Introduction to Artificial Neural Networks with Keras
+
+ANNs are the very core of Deep Learning -> versatile, powerful and scalable
+
+Renewed interest in ANNs:
+- Huge quantity of data -> ANNs frequently outperform other ML techniques (large and complex problems)
+- Increase in computing power -> GPU cards and cloud computing
+- Tweaks to the training algorithms
+- Reach fairly close to global optimum
+- Virtuous circle of funding and progress
+
+### Perceptron
+Simple ANN architecture. Based on *threshold logic unit* (TLU), or *linear threshold unit* (LTU).
+
+A Perceptron is simply composed of a single layer of TLUs, with each TLU connected to all the inputs. *Fully conected layer / dense layer*: when all the neurons in a layer are connected to every neuron in the previous layer.
+
+> **Hebb's rule / Hebbian learning**: "Cells that fire together, wire together", the connection weight between two neurons tends to increase when they fire simultaneously 
+
+The Perceptron learning algorithm strongly resembles Stochastic Gradient Descent. Contrary to Logistic Regression classifiers, Perceptrons do not output a class probability; rather, they make predictions based on a hard threshold
+
+### The Multilayer Perceptron and Backpropagation
+
+Perceptrons are incapable of solving some trivial problems (e.g., XOR) -> true of any linear classification model. This can be solved by stacking multiple Perceptrons -> *Multilayer Perceptron* (MLP)
+
+An MLP is composed of one (passthrough) *input layer*, one or more layers of TLUs, called *hidden layers*, and one final layer of TLUs called the *output layer*. The layers close to the input layer are usually called the *lower layers*, and the ones close to the outputs are usually called the *upper layers*. Every layer except the output layer includes a bias neuron and is fully connected to the next layer
+
+> *Feedforward neural network* (FNN): signal flows only in one direction (from the inputs to the outputs)
+
+When an ANN contains a deep stack of hidden layers -> *Deep neural network* (DNN)
+
+#### Backpropagation
+
+Training algorithm. It is Gradient Descent using and efficient technique for computing the gradients automatically: in just two passes through the network (one forward, one backward), the backpropagation algorithm is able to compute the gradient of the network's error with regard to every single model parameter. It can find out how each connection weight and each bias term should be tweaked in order to reduce the error. Once it has these gradients, it just performs a regular Gradient Descent step, and the whole process is repeated until the network converges to the solution.
+
+> Automatically computing gradients is called automatic differentiation, or *autodiff*. There are various autodiff techniques, with different pros and cons. The one used by backpropagation is called *reverse-mode autodiff*. It is fast and precise, and is well suited when the function to differentiate has many variables (e.g., connection weights) and few outputs (e.g., one loss).
+
+For each training instance, the backpropagation algorithm first makes a prediction (forward pass) and measures the error, then goes through each layer in reverse to measure the error contribution from each connection (reverse pass), and finally tweaks the connection weights to reduce the error (Gradient Descent step)
+
+> It is important to initialize all the hidden layers’ connection weights randomly, or else training will fail. For example, if you initialize all weights and biases to zero, then all neurons in a given layer will be perfectly identical, and thus backpropagation will affect them in exactly the same way, so they will remain identical
+
+#### Activation functions
+You need to have some nonlinearity between layers to solve very complex problems
+
+Examples:
+
+- Logistic (sigmoid) function
+- Hyperbolic tangent (tanh)
+- Rectified Linear Unit (ReLU) -> fast to compute, has become the default
+
+#### Regression MLP architecture
+**Hyperparameter - Typical value**
+
+input neurons - One per input feature (e.g., 28 x 28 = 784 for MNIST)
+
+hidden layers - Depends on the problem, but typically 1 to 5
+
+neurons per hidden layer - Depends on the problem, but typically 10 to 100
+
+output neurons - 1 per prediction dimension
+
+Hidden activation - ReLU (or SELU, see Chapter 11)
+
+Output activation - None, or ReLU/softplus (if positive outputs) or logistic/tanh (if bounded outputs)
+
+Loss function - MSE or MAE/Huber (if outliers)
+
+#### Classification MLP architecture
+
+**Hyperparameter - Binary classification - Multilabel binary classification - Multiclass classification**
+
+Input and hidden layers - Same as regression - Same as regression - Same as regression
+
+output neurons - 1 - 1 per label - 1 per class
+
+Output layer activation - Logistic - Logistic - Softmax
+
+Loss function - Cross entropy - Cross entropy - Cross entropy 
+
+### Implementing MLPs with Keras
