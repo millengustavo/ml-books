@@ -191,7 +191,7 @@ Other popular strategies for dealing with class imbalance include upsampling the
 
 Synthetic Minority Over-sampling Technique  ( SMOTE ), and you can learn more about this  technique in the original research article by Nitesh Chawla and others:  SMOTE: Synthetic Minority Over-sampling Technique ,  Journal of Artificial Intelligence Research , 16: 321-357,  2002 . It is also highly recommended to check out  imbalanced-learn , a Python library that is entirely focused on imbalanced datasets, including an  implementation of SMOTE
 
-## CH7. Combining different models for Ensemble Learning
+## Ch7. Combining different models for Ensemble Learning
 
 The  goal of  ensemble methods  is to combine different classifiers into a meta-classifier that has better  generalization performance than each individual classifier alone.
 
@@ -242,3 +242,79 @@ XGBoost, which is essentially a computationally efficient implementation of the 
 Scikit-learn now also includes a substantially faster version of gradient boosting in version 0.21,  HistGradientBoostingClassifier , which is even faster than XGBoost
 
 > Ensemble methods combine different classification models to cancel out their individual weaknesses, which often results in stable and well-performing models that are very attractive for industrial applications as well as machine learning competitions.
+
+## Ch8. Applying Machine Learning to Sentiment Analysis
+
+Sentiment analysis, sometimes  also  called  opinion mining , is a popular subdiscipline of the broader field of NLP; it is concerned with analyzing the polarity of documents. A popular task in sentiment analysis is the classification of documents based on the expressed opinions or emotions of the authors with regard to a particular topic.
+
+> To visualize the progress and estimated time until completion, use the  Python Progress Indicator  ( **PyPrind** ,  https://pypi.python.org/pypi/PyPrind/ )
+
+### Bag-of-words
+
+The idea behind bag-of-words is quite simple and can be summarized as follows: We create a vocabulary of unique tokens—for example, words—from the entire set of documents. We construct a feature vector from each document that contains the counts of how often each word occurs in the particular document.
+
+> To construct  a bag-of-words model based on the word  counts in the respective documents, we can use the  CountVectorizer  class implemented in scikit-learn
+
+Values in the feature vectors are also  called the  raw term frequencies :  tf ( t ,  d )—the number of times a term,  t , occurs in a document,  d . It should be noted that, in the bag-of-words model, the word or term order in a sentence or document does not matter. The order in which the term frequencies appear in the feature vector is derived from the vocabulary indices, which are usually assigned alphabetically.
+
+#### N-grams
+
+The sequence of items  in the bag-of-words model that we just created is also  called the  1-gram  or  unigram  model—each item or token in the vocabulary represents a single word. More generally, contiguous sequences of items in NLP—words, letters, or  symbols—are also called  n-grams
+
+#### TF-IDF
+
+Frequently occurring words typically don't contain useful or discriminatory information
+
+Term frequency-inverse document frequency  ( tf-idf ), which can be used to downweight  these frequently occurring words in the feature vectors. The tf-idf can be defined as the product of the term frequency and the inverse document frequency
+
+### Cleaning text
+
+The first important step—before we build our bag-of-words model—is to clean the text data by stripping it of all unwanted characters.
+
+One way to  tokenize  documents is to split them into individual words by splitting the cleaned documents at their whitespace characters
+
+#### Stemming
+
+In the context of tokenization, another  useful technique is  word stemming , which is the process of transforming a word into its root form. It allows us to map related words to the same stem
+
+The Porter stemming algorithm  is probably the oldest and simplest stemming algorithm. Other popular stemming algorithms include the  newer  Snowball stemmer  (Porter2 or English stemmer) and the  Lancaster stemmer  (Paice/Husk stemmer)
+
+#### Lemmatization
+
+While stemming can create non-real words, such as  'thu'  (from  'thus' ), as shown in the previous example, a technique called  lemmatization  aims to obtain  the canonical (grammatically correct) forms of individual words—the so-called  lemmas . 
+
+> Lemmatization  is computationally more difficult and expensive compared to stemming and, in practice, it has been observed that stemming and lemmatization have little impact on the performance of text classification
+
+### Stop-word removal 
+
+Stop-words  are simply those words that are extremely common in all sorts of texts and probably bear no (or only a little) useful information that can be used to distinguish between different classes of documents. Examples of stop-words are  is ,  and ,  has , and  like . Removing stop-words can be useful if we are working with raw or normalized term frequencies rather than tf-idfs, which are already downweighting frequently occurring words.
+
+TfidfVectorizer , which combines  CountVectorizer  with the  TfidfTransformer
+
+### Naive Bayes Classifier
+
+A still very popular classifier for text classification is the naïve Bayes classifier, which  gained popularity in applications of email spam filtering. Naïve Bayes classifiers are easy to implement, computationally efficient, and tend to perform particularly well on relatively small datasets
+
+### Out-of-core learning
+
+Out-of-core learning allows us to work with large datasets by fitting the classifier incrementally on smaller batches of a dataset.
+
+Unfortunately, we  can't use  CountVectorizer  for out-of-core learning since it requires holding the complete vocabulary in memory. Also,  TfidfVectorizer  needs to keep all the feature vectors of the training dataset in memory to calculate the inverse document frequencies. However, another useful vectorizer for text processing implemented in scikit-learn is  HashingVectorizer .  HashingVectorizer  is data-independent
+
+Out-of-core learning is very memory efficient
+
+### word2vec
+
+A more  modern alternative to the bag-of-words model is  word2vec , an algorithm that Google released in 2013 ( Efficient Estimation of Word Representations in Vector Space ,  T. Mikolov ,  K. Chen ,  G. Corrado , and  J. Dean , arXiv preprint arXiv:1301.3781,  2013 ). The word2vec algorithm is an unsupervised learning algorithm based on neural networks that attempts to automatically learn the relationship between words. The idea behind word2vec is to put words that have similar meanings into similar clusters, and via clever vector-spacing, the model can reproduce certain words using simple vector math, for example,  king  –  man  +  woman  =  queen .
+
+### Topic Modeling
+
+Topic modeling  describes  the broad task of assigning topics to unlabeled text documents. For example, a typical application would be the categorization of documents in a large text corpus of newspaper articles. In applications of topic modeling, we then aim to  assign category labels to those articles, for example, sports, finance, world news, politics, local news, and so forth
+
+###  Latent Dirichlet Allocation  ( LDA )
+
+LDA is a generative probabilistic model that tries to find groups of words that appear frequently together across different documents
+
+We must define the number of topics beforehand—the number of topics is a hyperparameter of LDA that has to be specified manually.
+
+> The scikit-learn library's implementation of LDA uses the  *expectation-maximization*  ( EM ) algorithm to  update its parameter estimates iteratively
