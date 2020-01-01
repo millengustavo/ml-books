@@ -1137,3 +1137,60 @@ To use directly withing Jupyter
 ```
 
 ### Fine-Tuning Neural Network Hyperparameters
+NN are flexible. Drawback: many hyperparameters to tweak
+
+You can wrap the Keras models in objects that mimic regular Scikit-Learn algorithms -> then use GridSearchCV or RandomizedSearchCV
+
+```python
+from scipy.stats import reciprocal
+from sklearn.model_selection import RandomizedSearchCV
+
+param_distribs = {
+    "n_hidden": [0, 1, 2, 3],
+    "n_neurons": np.arange(1, 100),
+    "learning_rate": reciprocal(3e-4, 3e-2),
+}
+
+rnd_search_cv = RandomizedSearchCV(keras_reg, param_distribs, n_iter=10, cv=3)
+rnd_search_cv.fit(X_train, y_train, epochs=100,
+                  validation_data=(X_valid, y_valid),
+                  callbacks=[keras.callbacks.EarlyStopping(patience=10)])
+```
+
+There are many techniques to explore a search space much more efficiently than randomly -> when a region of the space turns out to be good, it should be explored more:
+- **Hyperopt**: popular lib for optimizing over all sorts of complex search spaces
+- **Hyperas, kopt, or Talos**: libs for optimizing hyperparameters for Keras models
+- **Keras Tuner**: lib by Google for Keras models
+- **Skicit-Optimize (skopt)**
+- **Spearmint**: bayesian
+- **Hyperband**
+- **Sklearn-Deep**: evolutionary algorithms
+
+> Hyperparameter tuning is still an active area of research, and evolutionary algorithms are making a comeback
+
+#### Number of Hidden Layers
+For complex problems, deep networks have a much higher *parameter efficiency* than shallow ones -> they can model complex functions using exponentially fewer neurons than shallow nets, allowing them to reach much better performance with the same amount of training data. Ramp up the number of hidden layers until you start overfitting the training set
+
+> **Transfer Learning**: Instead of randomly initializing the weights and biases of the first few layers of the new neural network, you can initialize them to the values of the weights and biases of the lower layers of the first network. This way the network will not have to learn from scratch all the low-level structures that occur in most pictures; it will only have to learn the higher-level structures
+
+#### Number of Neurons per Hidden Layer
+The number of neurons in the input and output layers is determined by the type of input and output your task requires
+
+Hidden layers: it used to be common to size them to form a pyramid, with fewer neurons at each layer -> many low-level features can coalesce into far fewer high-level features -> this practice has been largely abandoned -> Using the same number of neurons in all hidden layers performs just as well in most cases or even better; plus, there is only one hyperparameter to tune, insted of one per layer
+
+Depending on the dataset, first hidden layer bigger can be good
+
+> Pick a model with more layers and neurons than you actually need, then use early stopping or other regularization techniques to prevent overfitting -> **"Stretch pants"**
+
+Increasing the number of layers >> increase the number of neurons per layer
+
+#### Learning Rate, Batch Size, and Other Hyperparameters
+Plot the loss as a function of the learning rate (using a log scale for the learning rate), you should see it dropping at first. But after a while, the learning rate will be too large, so the loss will shoot back up: the optimal learning rate will be a bit lower than the point at which the loss starts to climb (typically about 10 times lower than the turning point)
+
+Benefit of using large batch sizes -> GPUs can process them efficiently -> use the largest batch size that can fit in GPU RAM
+
+> Try to use a large batch size, using learning rate warmup. If training is unstable or bad performance -> try using a small batch size instead
+
+ReLU activation function is a good default
+
+> The optimal learning rate depends on the other hyperparameters—especially the batch size—so if you modify any hyperparameter, make sure to update the learning rate as well.
