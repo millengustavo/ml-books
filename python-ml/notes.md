@@ -318,3 +318,27 @@ LDA is a generative probabilistic model that tries to find groups of words that 
 We must define the number of topics beforehand—the number of topics is a hyperparameter of LDA that has to be specified manually.
 
 > The scikit-learn library's implementation of LDA uses the  *expectation-maximization*  ( EM ) algorithm to  update its parameter estimates iteratively
+
+## Ch9. Embedding a Machine Learning Model into a Web Application
+
+### Serializing fitted scikit-learn estimators
+- One option for model persistence: Python's in-built `pickle` module
+- `protocol=4` to choose the latest and most efficient pickle protocol
+- `joblib`: lib, more efficient way to serialize NumPy arrays
+
+> **Pickle can be a security risk**: not secured against malicious code. Pickle was designed to serialize arbitraty objects, the unpickling process will execute code that has been stored in a pickle file
+
+### SQLite
+SQLite database can be understood as a single, self-contained database file that allows us to directly access storage files
+
+> free DB browser for SQLite app (https://sqlitebrowser.org/dl/) -> nice GUI for working with SQLite databases
+
+### Flask
+Written in Python, provides a convenient interface for embedding existing Python code
+
+### Jinja2
+Web templates
+
+### PythonAnywhere
+Lets us run a single web application free of charge
+
