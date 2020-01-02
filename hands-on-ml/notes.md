@@ -1194,3 +1194,58 @@ Benefit of using large batch sizes -> GPUs can process them efficiently -> use t
 ReLU activation function is a good default
 
 > The optimal learning rate depends on the other hyperparameters—especially the batch size—so if you modify any hyperparameter, make sure to update the learning rate as well.
+
+## CH11. Training Deep Neural Networks
+
+### The Vanishing/Exploding Gradients Problems
+
+**Vanishing gradients problem**: gradients often geet smaller as the algorithm progresses down to the lower layers -> Gradient Descent update leaves the lower layers' connection weights virtually unchanged, and training never converges to a good solution
+
+**Exploding gradients problem**: gradients can grow bigger until layers get insanely large weight updates and the algorithm diverges
+
+More generally, DNNs suffer from unstable gradients, different layers may learn at widely different speeds
+
+#### Glorot and He Initialization
+Using Glorot initialization can speed up training considerably
+
+ReLU actv fn and its variants, sometimes called *He initialization*
+
+SELU actv fn should be used with LeCun initialization (with normal distribution)
+
+#### Nonsaturating Activation Functions
+- **Dying ReLUs**: during training some neurons stops outputting anything other than 0.
+- **leaky ReLU**: small slope ensures that leaky ReLUs never die -> always outperformed the strict ReLU actv fn
+- **randomized leaky ReLU (RReLU)**: perform well, seemed to act as regularizer
+- **parametric leaky ReLU (PReLU)**: strongly outperformed ReLU on large image datasets, overfit on smaller datasets
+- **exponential linear unit (ELU)**: outperformed ReLU, faster convergence rate, despite being slower to compute
+- **Scaled ELU (SELU)**: self-normalize the network (mean=0, std=1) -> solves vanishing/exploding gradients. Significantly outperforms other actv fn, but need to be configured correcly (some assumptions for self-normalization).
+
+> **In general**: SELU > ELU > leaky ReLU > ReLU > tanh > logistic
+
+#### Batch Normalization
+Also help solve vanishing/exploding gradients problems.
+
+Add an operation just before or after the actv fn of each hidden layer: zero-centers and normalizes each input, then scales and shifts the result using two new parameter vectors per layer: one for scaling, other for shifting -> many cases if the BN layer as the very first of the NN, you do not need to standardize your training set 
+
+BN also acts like a regularizer, reducing the need for other regularization techniques
+
+```python
+model = keras.models.Sequential([
+    keras.layers.Flatten(input_shape=[28, 28]),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dense(300, activation="elu", kernel_initializer="he_normal"),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dense(100, activation="elu", kernel_initializer="he_normal"),
+    keras.layers.BatchNormalization(),
+    keras.layers.Dense(10, activation="softmax")
+])
+```
+
+> BatchNormalization -> one of the most-used layers in DNNs, often omitted in the diagrams, it is assumed BN is added after every layer
+
+#### Gradient Clipping
+Mitigate the exploding gradients problem. Clip the gradients during backpropagation, never exceed some threshold.
+
+Most often used in RNNs (BN is trickier to use here)
+
+### Reusing Pretrained Layers
