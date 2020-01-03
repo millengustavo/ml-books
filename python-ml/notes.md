@@ -342,3 +342,54 @@ Web templates
 ### PythonAnywhere
 Lets us run a single web application free of charge
 
+## Ch10. Predicting Continuous Target Variables with Regression Analysis
+
+### Linear Regression
+**Regression Line**: best-fitting line
+
+**Offsets/Residuals**: vertical lines from the regression line to the training examples -> errors of our prediction
+
+### Visualizing the important characteristics of a dataset
+- **Scatterplot matrix**: pair-wise correlations between the different features -> *scatterplotmatrix* on MLxtend (https://github.com/rasbt/mlxtend)
+
+> Training a linear regression model does **not** require that the explanatory or target variables are normally distributed -> only requirement for certain statistics and hypothesis tests
+
+### Looking at relationships using a correlation matrix
+- **Correlation matrix**: square matrix that contains the *Pearson product-moment correlation coefficient* (*Pearson's r*) -> linear dependence between pairs of features
+- Correlation coefficients are in range -1 to 1. 1 -> perfect positive correlation, 0 -> no correlation and -1: perfect negative correlation
+
+> To fit a linear regression model, we are interested in those features that have a high correlation with our target variable
+
+### Estimating the coefficient of a regression model via scikit-learn
+The linear regression implementation in scikit-learn works better with unstandardized variables
+
+### Fitting a robust regression model using RANSAC
+- Linear regression models can be heavily impacted by the presence of outliers. In certain situations, a very small subset of our data can have a big effect on the estimated model coefficients
+
+- As an alternative to throwing out outliers, we will look at a robust method of regression using the **RANdom SAmple Consensus (RANSAC)** algorithm, which fits a regression model to a subset of the data, the so-called **inliers**
+
+### Evaluating the performance of linear regression models
+- Plot the residuals (the differences or vertical distances between the actual and predicted values) versus the predicted values to diagnose our regression model.
+- **Residual plots** are a commonly used graphical tool for diagnosing regression models. They can help to detect nonlinearity and outliers, and check whether the errors are randomly distributed
+
+> Good regression model: errors randomly distributed and the residuals randomly scattered around the centerline
+
+- **MSE**: useful for comparing differente regression models or for tuning their parameters via grid search and cross-validation
+
+- **Rˆ2**: coefficient of determination. Standardized version of the MSE -> better interpretability of the model's performance. Rˆ2 is the fraction of response variance that is captured by the model
+
+### Using regularized methods for regression
+- Regularization is one approach to tackling the problem of overfitting by adding additional information, and thereby shrinking the parameter values of the model to induce a penalty against complexity. 
+
+- The most popular approaches to regularized linear regression are the so-called **Ridge Regression, least absolute shrinkage and selection operator (LASSO), and elastic Net**
+
+> Saturation of a model occurs if the number of training examples is equal to the number of features, which is a form of overparameterization. As a consequence, a saturated model can always fit the training data perfectly but is merely a form of interpolation and thus is not expected to generalize well
+
+### Dealing with nonlinear relationships using random forests
+In the context of decision tree regression, the MSE is often referred to as **within-node variance**, which is why the splitting criterion is also better known as **variance reduction**
+
+> If the distribution of the residuals does not seem to be completely random around the zero center point -> the model was not able to capture all the exploratory information
+
+- The error of the predictions should not be related to any of the information contained in the explanatory variables; rather, it should reflect the randomness of the real-world distributions or patterns. If we find patterns in the prediction errors, for example, by inspecting the residual plot, it means that the residual plots contain predictive information
+
+- Improve the model by transforming variables, tuning the hyperparameters of the learning algorithm, choosing simpler or more complex models, removing outliers, or including additional variables
