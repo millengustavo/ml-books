@@ -1249,3 +1249,36 @@ Mitigate the exploding gradients problem. Clip the gradients during backpropagat
 Most often used in RNNs (BN is trickier to use here)
 
 ### Reusing Pretrained Layers
+**Transfer Learning**: Not a good idea to train a very large DNN from scratch: find an existing NN that accomplishes a similar task. Speed up training, require significantly less training data
+
+> Transfer learning will work best when the inputs have similar low-level features (resize inputs to the size expected by the original model). The output layer should be replaced according to the new task
+
+More similar tasks = more layers you want to reuse (starting with the lower layers)
+
+#### Transfer Learning with Keras
+
+Cloning a model with their weights
+```python
+model_A_clone = keras.models.clone_model(model_A)
+model_A_clone.set_weights(model_A.get_weights())
+```
+
+Freezing layers up until the last
+```python
+for layer in model_B_on_A.layers[:-1]:
+    layer.trainable = False
+# You must always compile the model after freezing/unfreezing layers
+model_B_on_A.compile(loss="binary_crossentropy", optimizer="sgd",
+                     metrics=["accuracy"])
+```
+
+> Transfer Learning does not work very well with small dense networks. Works best with deep CNN -> tend to learn feature detectors that are much more general
+
+#### Unsupervised Pretraining
+Often cheap to gather unlabeled training examples, but expensive to label them. You can try to use the unlabeled data to train an unsupervised model, such as an autoencoder or a generative adversarial network (GAN). Then reuse the lower layers of the autoencoder/GAN's discriminator, add the output layer for your task and fine-tune the final network using supervised learning
+
+Before -> restricted Boltzmann machines (RBMs) for unsupervised learning
+
+> Self-supervised learning is when you automatically generate the labels from the data itself, then you train a model on the resulting “labeled” dataset using supervised learning techniques. Since this approach requires no human labeling whatsoever, it is best classified as a form of unsupervised learning
+
+### Faster Optimizers
