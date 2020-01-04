@@ -393,3 +393,66 @@ In the context of decision tree regression, the MSE is often referred to as **wi
 - The error of the predictions should not be related to any of the information contained in the explanatory variables; rather, it should reflect the randomness of the real-world distributions or patterns. If we find patterns in the prediction errors, for example, by inspecting the residual plot, it means that the residual plots contain predictive information
 
 - Improve the model by transforming variables, tuning the hyperparameters of the learning algorithm, choosing simpler or more complex models, removing outliers, or including additional variables
+
+## Ch11. Working with Unlabeled Data - Clustering Analysis
+
+**Clustering**: find natural grouping in data -> items in the same cluster are more similar to each other than to those from different clusters
+
+### Grouping objects by similarity using k-means
+**k-means**
+- belongs to the category of *prototype-based clustering* -> each cluster is represented by a prototype (*centroid* for average or *medoid* for most representative)
+- good at identifying clustrs with a spherical shape
+- drawback -> have to specify number of clusters, `k`, *a priori* 
+- Make sure that the features are measured on the same scale -> apply z-score standardization or min-max scaling
+- clusters do not overlap and are not hierarchical
+- assume that there is at least one item in each cluster
+
+**k-means++**
+- smarter way of placing the inital cluster centroids
+
+#### Hard versus soft clustering
+**Hard clustering**: each example assigned to exactly one cluster. (e.g., k-means)
+
+**Soft clustering (fuzzy clustering)**: assign an example to one or more clusters (e.g., fuzzy C-means = FCM = soft k-means = fuzzy k-means)
+
+> Both k-means and FCM produce very similar clustering outputs
+
+#### Using the elbow method to find the optimal number of clusters
+- withing-cluster SSE (distortion) -> *inertia_* attribute after fitting KMeans using scikit-learn
+- **elbow method**: identify the value of *k* where the distortion begins to increase most rapidly
+
+#### Quantifying the quality of clustering via silhouette plots
+- **silhouette coefficient**: range -1 to 1. 0 if the cluster separation and cohesion are equal. 1 (ideal) if how dissimilar an example is from other cluster >> how similar it is to the other examples in its own cluster
+- silhouette plot with visibly different lengths and widths -> evidence of bad or at least suboptimal clustering
+
+### Organizing clusters as a hierarchical tree
+- allows us to plot **dendograms**
+- do not need to specify the number of clusters upfront
+- can be **agglomerative** (starts with every point as a cluster) or **divisive** (starts with one cluster and split iteratively)
+
+#### Grouping clusters in a bottom-up fashion
+Algorithms for agglomerative hierarchical clustering:
+- single linkage
+- complete linkage
+- average linkage
+- Ward's linkage
+
+> Dendograms are often used in combination with a **heat map** -> represent individual values in the data array or matrix containing our training examples with a color code
+
+### Locating regions of high density via DBSCAN
+**DBSCAN** -> *density-based spatial clustering of applications with noise*
+- no assumptions about spherical clusters
+- no partition of the data into hierarchies that require a manual cut-off point
+- assigns cluster labels based on dense regions of points -> density: number of points within a specified radius
+- doesn't necessarily assign each point to a cluster -> is capable of removing noise points
+- two hyperparameters to be optimized to yield good results -> MinPts and eta
+
+> Disadvantage of the 3 algorithms presented: increasing number of features assuming fixed number of training examples -> **curse of dimensionality** increases
+
+It is common practice to apply dimensionality reduction techniques prior to performing clustering -> PCA or Kernel-PCA 
+
+Also common to compress data down to two-dimensional subspaces -> visualization helps evaluating the results
+
+> **Graph-based clustering**: not covered in the book. e.g, **spectral clustering**
+
+## Ch12. Implementing a Multilayer Artificial Neural Network from Scratch
