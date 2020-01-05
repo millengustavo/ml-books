@@ -1282,3 +1282,49 @@ Before -> restricted Boltzmann machines (RBMs) for unsupervised learning
 > Self-supervised learning is when you automatically generate the labels from the data itself, then you train a model on the resulting “labeled” dataset using supervised learning techniques. Since this approach requires no human labeling whatsoever, it is best classified as a form of unsupervised learning
 
 ### Faster Optimizers
+Ways to speed up training:
+- initialization strategy for the weights
+- activation function
+- batch normalization
+- reusing parts of a pretrained network
+- faster optimizers than regular gradient descent
+
+#### Momentum Optimization
+- with momentum the system may oscillate before stabilizing -> it's good to have a bit of friction in the system
+- momentum value = 0.9 -> usually works well in practice
+
+#### Nesterov Accelerated Gradient (NAG)
+- NAG ends up being significantly faster than regular momentum optimization
+- less oscillations and converges faster
+- nesterov=True
+
+#### AdaGrad
+- *adaptive learning rate*
+- efficient for simpler tasks such as Linear Regression
+- should NOT be used to train DNNs
+
+#### RMSProp
+- better than AdaGrad on more complex problems
+
+#### Adam and Nadam Optimization
+- Adam: *adaptive moment estimation*
+- requires less tuning of the learning rate
+
+Variations:
+
+- AdaMax: can be more stable than Adam in some datasets, try if experiencing problems with Adam
+- Nadam: Adam + Nesterov -> often converge slightly faster than Adam
+
+The optimizers discussed rely on *First-order partial derivatives (Jacobians)*. Second-order partial derivatives (Hessians) exists in literature, but are just too slow to compute (when they fit in memory!)
+
+> **Training Sparse Models**: to achieve fast model at runtime with less memory. Get rid of tiny weights. Apply strong L1 regularization during training. If still insufficient -> Tensorflow Model Optimization Toolkit (TF-MOT)
+
+### Learning Rate Scheduling
+Learning schedules -> vary the lr during training
+- Power scheduling: lr drops at each step; first drops quickly, then more and more slowly
+- **Exponential scheduling**: slashs the lr by a factor of 10 every s steps
+- Piecewise constant scheduling: requires fiddling with the sequence of steps
+- **Performance scheduling**: measure validation error, reduce the lr when the error stops dropping
+- **1cycle scheduling**: increases then decreases and plays with momentum -> paper showing speed up in training and better performance in fewer epochs
+
+### Avoiding Overfitting Through Regularization
