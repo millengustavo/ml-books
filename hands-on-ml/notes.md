@@ -1328,3 +1328,84 @@ Learning schedules -> vary the lr during training
 - **1cycle scheduling**: increases then decreases and plays with momentum -> paper showing speed up in training and better performance in fewer epochs
 
 ### Avoiding Overfitting Through Regularization
+- early stopping is one of the best regularization techniques
+- batch normalization is very good too
+
+#### L1 and L2 Regularization
+- L2 -> constrain NN's weights
+- L1 -> if you want a sparse model (many weights = 0)
+
+> functools.partial() -> create a thin wrapper for any callable, with some default arguments
+
+```python
+from functools import partial
+
+RegularizedDense = partial(keras.layers.Dense,
+                           activation="elu",
+                           kernel_initializer="he_normal",
+                           kernel_regularizer=keras.regularizers.l2(0.01))
+
+model = keras.models.Sequential([
+    keras.layers.Flatten(input_shape=[28, 28]),
+    RegularizedDense(300),
+    RegularizedDense(100),
+    RegularizedDense(10, activation="softmax",
+                     kernel_initializer="glorot_uniform")
+])
+```
+
+#### Dropout
+One of the most popular regularization techniques for DNNs
+- at every training step, every neuron (only exception = output neurons) has a probability `p` (10-50%) of being temporarily ignored (dropped out) -> may be active in the next step
+
+> in practice, usually apply dropout to the neurons in the top one to three layers (excluding output layer)
+
+- dropout is only active during training -> comparing training x validation loss can be misleading -> make sure to evaluate the training loss without dropout (after training)
+
+- many state of the art only use dropout after the last hidden layer
+
+#### Monte Carlo (MC) Dropout
+
+- dropout networks have a profound connection with approximate Bayesian inference -> solid math justification
+
+- MC Dropout -> boost the performance of any trained dropout model without having to retrain it or even modify it at all
+
+```python
+y_probas = np.stack([model(X_test_scaled, training=True)
+                     for sample in range(100)])
+y_proba = y_probas.mean(axis=0)
+```
+
+Averaging over multiple predictions with dropout on gives us a Monte Carlo estimate that is generally more reliable than the result of a single prediction with dropout off
+
+#### Default DNN configuration
+**Hyperparameter** - **Default value**
+
+Kernel initializer - He initialization
+
+Activation function - ELU
+
+Normalization - None if shallow; Batch Norm if deep
+
+Regularization - Early stopping (+ℓ2 reg. if needed)
+
+Optimizer - Momentum optimization (or RMSProp or Nadam)
+
+Learning rate schedule - 1cycle
+
+#### DNN configuration for a self-normalizing net
+**Hyperparameter** - **Default value**
+
+Kernel initializer - LeCun initialization
+
+Activation function - SELU
+
+Normalization - None (self-normalization)
+
+Regularization - Alpha dropout if needed
+
+Optimizer - Momentum optimization (or RMSProp or Nadam)
+
+Learning rate schedule - 1cycle
+
+> **TIP**: Refer back to the summary at the end of Chapter 11!
