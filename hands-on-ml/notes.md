@@ -1409,3 +1409,33 @@ Optimizer - Momentum optimization (or RMSProp or Nadam)
 Learning rate schedule - 1cycle
 
 > **TIP**: Refer back to the summary at the end of Chapter 11!
+
+## CH16. Natural Language Processing with RNNs and Attention
+- *character RNN*: predict the next character in a sentence
+- *stateless RNN*: learns on random portions of text at each iteration, without any information on the rest of the text
+- *stateful RNN*: preserves the hidden state between training iterations and continues reading where it left off, allowing it to learn longer patterns
+
+> *Char-RNN*: "The Unreasonable Effectiveness of Recurrent Neural Networks", Andrej Karpathy
+
+### Character RNN
+```python
+tokenizer = keras.preprocessing.text.Tokenizer(char_level=True)
+tokenizer.fit_on_texts([shakespeare_text])
+```
+
+**How to Split a Sequential Dataset**
+
+Assuming the time series is *stationary* -> split across time
+
+- *truncated backpropagation through time*: RNN is unrolled over the length of every short substring of the whole text (*window()* method)
+
+> n_steps = 100 -> RNN will only be able to learn patterns shorter or equal to n_steps (100 in this case). Higher n_steps -> harder to train!
+
+#### Stateful RNN
+- shift = n_steps (instead of 1 like stateless RNN) when calling *window()*
+- we must obviously not call *shuffle()* method
+- harder to do batching
+
+> After the stateful model is trained, it will only be possible to use it to make predictions for batches of the same size as were used during training. To avoid this restriction, create an identical stateless model, and copy the stateful model’s weights to this model.
+
+### Sentiment Analysis
