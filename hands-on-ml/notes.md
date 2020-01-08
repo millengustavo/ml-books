@@ -5,7 +5,7 @@ Author: Aurélien Geron
 
 # Part I, The Fundamentals of Machine Learning
 
-## CH1. The Machine Learning Landscape
+# CH1. The Machine Learning Landscape
 Machine Learning is great for:
 - Problems for which existing solutions require a lot of fine-tuning or long lists of rules: one Machine Learning algorithm can often simplify code and perform better than the traditional approach.
 - Complex problems for which using a traditional approach yields no good solution: the best Machine Learning techniques can perhaps find a solution.
@@ -92,7 +92,7 @@ If this happens, hold out some training data in another set -> *train-dev* set. 
 
 > **NO FREE LUNCH THEOREM**:  If you make absolutely no assumption about the data, then there is no reason to prefer one model over any other. There is no model that is a priori guaranteed to work better A model is a simplified version of the observations.  The simplifications are meant to discard the superfluous details that are unlikely to generalize to new instances
 
-## CH2. End-to-End Machine Learning Project
+# CH2. End-to-End Machine Learning Project
 
 This chapter presents an example ml project:
 
@@ -401,7 +401,7 @@ If the data keeps evolving, you will need to update your datasets and retrain yo
 - Keep backups of every model you create and have the process and tools in place to roll back to a previous model quickly
 - Keep backups of every version of the datasets too
 
-## CH3. Classification
+# CH3. Classification
 > Some learning algorithms are sensitive to the order of the training instances, and they perform poorly if they get many similar instances in a row. **Shuffling** the dataset ensures that this won't happen
 
 #### Stochastic Gradient Descent (SGD) classifier
@@ -536,7 +536,7 @@ Outputs multiple binary tags e.g., face recognition with Alice, Bob and Charlie;
 ### Multioutput Classification (multioutput-multiclass classification)
 Generalization of multilabel classification where each label can be multiclass (i.e., it can have more than two possible values)
 
-## CH4. Training Models
+# CH4. Training Models
 
 ### Linear Regression
 A linear model makes a prediction by simply computing a weighted sum of the input features, plus a constant called the bias term (also called the intercept term)
@@ -606,11 +606,11 @@ Computes a score for each class, then estimates the probability of each class by
 
 > Cross entropy -> frequently used to measure how well a set of estimated class probabilities matches the target classes (when k=2 -> equivalent to log loss)
 
-## CH5. Support Vector Machines
+# CH5. Support Vector Machines
 
 Soon...
 
-## CH6. Decision Trees
+# CH6. Decision Trees
 
 ```python
 from sklearn.tree import export_graphviz 
@@ -658,7 +658,7 @@ The main issue with Decision Trees is that they are very sensitive to small vari
 Random Forests can limit this instability by averaging predictions over many trees
 
 
-## CH7. Ensemble Learning and Random Forests 
+# CH7. Ensemble Learning and Random Forests 
 
 *Wisdom of the crowd*: aggregated answer is better than an expert’s answer.
 
@@ -749,7 +749,7 @@ It is actually possible to train several different blenders this way (e.g., one 
 
 Scikit-Learn does not support stacking directly, but it is not too hard to roll out your own implementation (see the following exercises). Alternatively, you can use an open source implementation such as  brew .
 
-## CH8. Dimensionality Reduction
+# CH8. Dimensionality Reduction
 
 > In some cases, reducing the dimensionality of the training data may filter out some noise and unnecessary details and thus result in higher performance, but in general it won't; it will just speed up training
 
@@ -796,7 +796,7 @@ Scale poorly to very large datasets
 - t-Distributed Stochastic Neighbor Embedding (t-SNE): try to keep similar instances close and dissimilar instances apart. Mostly used for visualization -> clusters of instances in high-dimensional space
 - Linear Discriminant Analysis (LDA): classification algorithm -> learns the most discriminative axes between the classes -> can be used to define a hyperplane to project the data
 
-## CH9. Unsupervised Learning Techniques
+# CH9. Unsupervised Learning Techniques
 > "If intelligence was a cake, unsupervised learning would be the cake, supervised learning would be the icing on the cake, and reinforcement learning would be the cherry on the cake" - Yann LeCun
 
 ### Clustering
@@ -902,7 +902,7 @@ Rather than manually searching for the optimal number of clusters, you can use t
 
 # Part II, Neural Networks and Deep Learning
 
-## CH10. Introduction to Artificial Neural Networks with Keras
+# CH10. Introduction to Artificial Neural Networks with Keras
 
 ANNs are the very core of Deep Learning -> versatile, powerful and scalable
 
@@ -1195,7 +1195,7 @@ ReLU activation function is a good default
 
 > The optimal learning rate depends on the other hyperparameters—especially the batch size—so if you modify any hyperparameter, make sure to update the learning rate as well.
 
-## CH11. Training Deep Neural Networks
+# CH11. Training Deep Neural Networks
 
 ### The Vanishing/Exploding Gradients Problems
 
@@ -1410,14 +1410,22 @@ Learning rate schedule - 1cycle
 
 > **TIP**: Refer back to the summary at the end of Chapter 11!
 
-## CH16. Natural Language Processing with RNNs and Attention
+# CH12. Custom Models and Training with TensorFlow
+
+# CH13. Loading and Preprocessing Data with TensorFlow
+
+# CH14. Deep Computer Vision Using Convolutional Neural Networks
+
+# CH15. Processing Sequences Using RNNs and CNNs
+
+# CH16. Natural Language Processing with RNNs and Attention
 - *character RNN*: predict the next character in a sentence
 - *stateless RNN*: learns on random portions of text at each iteration, without any information on the rest of the text
 - *stateful RNN*: preserves the hidden state between training iterations and continues reading where it left off, allowing it to learn longer patterns
 
 > *Char-RNN*: "The Unreasonable Effectiveness of Recurrent Neural Networks", Andrej Karpathy
 
-### Character RNN
+## Character RNN
 ```python
 tokenizer = keras.preprocessing.text.Tokenizer(char_level=True)
 tokenizer.fit_on_texts([shakespeare_text])
@@ -1439,3 +1447,75 @@ Assuming the time series is *stationary* -> split across time
 > After the stateful model is trained, it will only be possible to use it to make predictions for batches of the same size as were used during training. To avoid this restriction, create an identical stateless model, and copy the stateful model’s weights to this model.
 
 ### Sentiment Analysis
+- *Google's SentencePiece*: unsupervised learning technique to tokenize/detokenize text at the subword level in a language-independent way, treating spaces like other characters
+- *Byte pair encoding*
+- *TF.Text* -> *WordPiece*
+
+### Reusing Pretrained Embeddings
+Tensorflow Hub project: model components called *modules*. Browse the TF Hub repository -> copy the code example into your project -> module will be downloaded, along with its pretrained weights, and included in your model
+
+> Warning: Not all TF Hub modules support TensorFlow 2 -> check before
+
+## An Encoder-Decoder Network for Neural Machine Translation (NMT)
+```python
+import tensorflow_addons as tfa
+
+encoder_inputs = keras.layers.Input(shape=[None], dtype=np.int32)
+decoder_inputs = keras.layers.Input(shape=[None], dtype=np.int32)
+sequence_lengths = keras.layers.Input(shape=[], dtype=np.int32)
+
+embeddings = keras.layers.Embedding(vocab_size, embed_size)
+
+encoder_embeddings = embeddings(encoder_inputs)
+decoder_embeddings = embeddings(decoder_inputs)
+
+encoder = keras.layers.LSTM(512, return_state=True)
+encoder_outputs, state_h, state_c = encoder(encoder_embeddings)
+encoder_state = [state_h, state_c]
+
+sampler = tfa.seq2seq.sampler.TrainingSampler()
+
+decoder_cell = keras.layers.LSTMCell(512)
+output_layer = keras.layers.Dense(vocab_size)
+decoder = tfa.seq2seq.basic_decoder.BasicDecoder(decoder_cell, sampler,
+                                                 output_layer=output_layer)
+final_outputs, final_state, final_sequence_lengths = decoder(
+    decoder_embeddings, initial_state=encoder_state,
+    sequence_length=sequence_lengths)
+Y_proba = tf.nn.softmax(final_outputs.rnn_output)
+
+model = keras.Model(inputs=[encoder_inputs, decoder_inputs, sequence_lengths],
+                    outputs=[Y_proba])
+```
+
+### Bidirectional RNNs
+Normally -> only looks at past and present inputs before generating its outputs -> it's "causal" (cannot look into the future) -> makes sense for forecasting time series
+
+For many NLP tasks, often is preferable to look ahead at the next words -> *bidirectional recurrent layer* (`keras.layers.Bidirectional`)
+
+### Beam Search
+Keeps track of a short list of the `k` most promising sentences, and at each decoder step it tries to extend them by one word, keeping only the `k` most likely sentences. `k` = *beam width*
+
+## Attention Mechanisms
+Allow the decoder to focus on the appropriate words (as encoded by the encoder) at each time step -> the path from an input word to its translation is now much shorter, so the short-term memory limitations of RNNs have much less impact
+
+> *Alignment model / attention layer*: small neural network trained jointly with the rest of the Encoder-Decoder model
+
+- *Bahdanau attention*: concatenative/additive attention
+- *Luong attention*: multiplicative attention
+
+### Visual Attention
+Generate image captions using visual atention: a CNN processes the image and outputs some feature maps, then a decoded RNN with an attention mechanism generates the caption, one word at a time
+
+> **Explainability**: Attention mechanisms make it easier to understand what led the model to produce its output -> especially useful when the model makes a mistake (check what the model focused on). Explainability may be a legal requirement in some applications, i.e., system deciding whether or not it should grant a loan
+
+"Attention mechanisms are so powerful that you can actually build state-of-the-art models using only attention mechanisms"
+
+### Attention is All You Need: The Transformer Architecture
+Google's research -> *Transformer*. Improved state of the art NMT without using recurrent or convolutional layers, just attention mechanisms. Also faster to train and easier to parallelize.
+
+# CH17. Representation Learning and Generative Learning Using Autoencoders and GANs
+
+# CH18. Reinforcement Learning
+
+# CH19. Training and Deploying TensorFlow Models at Scale
