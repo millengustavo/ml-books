@@ -4,7 +4,13 @@ Author: Sebastian Rashcka
 
 ![python-ml-cover](cover_1.jpg)
 
-## Ch4. Building Good Training Datasets – Data Preprocessing
+# Ch1. Giving Computers the Ability to Learn from Data
+
+# Ch2. Training Simple Machine Learning Algorithms for Classification
+
+# Ch3. A Tour of Machine Learning Classifiers Using scikit-learn
+
+# Ch4. Building Good Training Datasets – Data Preprocessing
 
 ### Missing Data
 
@@ -73,7 +79,7 @@ Using a random forest, we can measure the feature importance as the averaged imp
 
 **SelectFromModel**  object that selects features based on a user-specified threshold after model fitting, which is useful if we want to use the  RandomForestClassifier  as a feature selector and intermediate step in a scikit-learn  Pipeline  object,
 
-## Ch5. Compressing Data via Dimensionality Reduction
+# Ch5. Compressing Data via Dimensionality Reduction
 
 ### Feature Extraction
 Feature extraction can be understood as an approach to data compression with the goal of maintaining most of the relevant information.
@@ -99,7 +105,7 @@ If we are dealing with nonlinear problems, which we may encounter rather  freque
 > Using the kernel trick, we can compute the similarity between two high-dimension feature vectors in the original feature space
 
 
-## Ch6. Learning Best Practices for Model Evaluation and Hyperparameter Tuning
+# Ch6. Learning Best Practices for Model Evaluation and Hyperparameter Tuning
 
 > We have to reuse the parameters that were obtained during the fitting of the training data to scale and compress any new data, such as the examples in the separate test dataset
 
@@ -125,7 +131,7 @@ We use k-fold cross-validation for model tuning, that is, finding the optimal hy
 
 Since k-fold cross-validation is a resampling technique without replacement, the advantage of this approach is that each example will be used for training and validation (as part of a test fold) exactly once, which yields a lower-variance estimate of the model performance than the holdout method.
 
-### Choosing K
+## Choosing K
 
 A good standard value for  k  in k-fold cross-validation is 10, as empirical evidence shows. For instance, experiments by Ron Kohavi on various real-world datasets suggest that 10-fold cross-validation  offers the best tradeoff between bias and variance ( A Study of Cross-Validation and Bootstrap for Accuracy Estimation and Model Selection ,  Kohavi, Ron ,  International Joint Conference on Artificial Intelligence (IJCAI) , 14 (12): 1137-43,  1995 ).
 
@@ -191,7 +197,7 @@ Other popular strategies for dealing with class imbalance include upsampling the
 
 Synthetic Minority Over-sampling Technique  ( SMOTE ), and you can learn more about this  technique in the original research article by Nitesh Chawla and others:  SMOTE: Synthetic Minority Over-sampling Technique ,  Journal of Artificial Intelligence Research , 16: 321-357,  2002 . It is also highly recommended to check out  imbalanced-learn , a Python library that is entirely focused on imbalanced datasets, including an  implementation of SMOTE
 
-## Ch7. Combining different models for Ensemble Learning
+# Ch7. Combining different models for Ensemble Learning
 
 The  goal of  ensemble methods  is to combine different classifiers into a meta-classifier that has better  generalization performance than each individual classifier alone.
 
@@ -243,7 +249,7 @@ Scikit-learn now also includes a substantially faster version of gradient boosti
 
 > Ensemble methods combine different classification models to cancel out their individual weaknesses, which often results in stable and well-performing models that are very attractive for industrial applications as well as machine learning competitions.
 
-## Ch8. Applying Machine Learning to Sentiment Analysis
+# Ch8. Applying Machine Learning to Sentiment Analysis
 
 Sentiment analysis, sometimes  also  called  opinion mining , is a popular subdiscipline of the broader field of NLP; it is concerned with analyzing the polarity of documents. A popular task in sentiment analysis is the classification of documents based on the expressed opinions or emotions of the authors with regard to a particular topic.
 
@@ -319,7 +325,7 @@ We must define the number of topics beforehand—the number of topics is a hyper
 
 > The scikit-learn library's implementation of LDA uses the  *expectation-maximization*  ( EM ) algorithm to  update its parameter estimates iteratively
 
-## Ch9. Embedding a Machine Learning Model into a Web Application
+# Ch9. Embedding a Machine Learning Model into a Web Application
 
 ### Serializing fitted scikit-learn estimators
 - One option for model persistence: Python's in-built `pickle` module
@@ -342,7 +348,7 @@ Web templates
 ### PythonAnywhere
 Lets us run a single web application free of charge
 
-## Ch10. Predicting Continuous Target Variables with Regression Analysis
+# Ch10. Predicting Continuous Target Variables with Regression Analysis
 
 ### Linear Regression
 **Regression Line**: best-fitting line
@@ -394,7 +400,7 @@ In the context of decision tree regression, the MSE is often referred to as **wi
 
 - Improve the model by transforming variables, tuning the hyperparameters of the learning algorithm, choosing simpler or more complex models, removing outliers, or including additional variables
 
-## Ch11. Working with Unlabeled Data - Clustering Analysis
+# Ch11. Working with Unlabeled Data - Clustering Analysis
 
 **Clustering**: find natural grouping in data -> items in the same cluster are more similar to each other than to those from different clusters
 
@@ -455,4 +461,17 @@ Also common to compress data down to two-dimensional subspaces -> visualization 
 
 > **Graph-based clustering**: not covered in the book. e.g, **spectral clustering**
 
-## Ch12. Implementing a Multilayer Artificial Neural Network from Scratch
+# Ch12. Implementing a Multilayer Artificial Neural Network from Scratch
+
+# Ch13. Parallelizing Neural Network Training with TensorFlow
+
+# Ch14. Going Deeper - The Mechanics of TensorFlow
+
+# Ch15. Classifying Images with Deep Convolutional Neural Networks
+
+# Ch16. Modeling Sequential Data Using Recurrent Neural Networks
+
+# Ch17. Generative Adversarial Networks for Synthesizing New Data
+
+# Ch18. Reinforcement Learning for Decision Making in Complex Environments
+
