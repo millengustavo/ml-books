@@ -6,6 +6,43 @@ Author: Sebastian Rashcka
 
 # Ch1. Giving Computers the Ability to Learn from Data
 
+Self-learning algorithms: derive knowledge from data in order to make predictions efficiently
+
+Three types of ML:
+- Supervised Learning: Labeled data, direct feedback, predict outcome/future
+- Unsupervised Learning: No labels, no feedback, find hidden structure in data
+- Reinforcement Learning: Decision process, reward system, learn series of actions
+
+## Supervised Learning
+- Discrete class labels -> **classification**
+- Outcome signal is a continuous value -> **regression**
+
+Predictor variables = "features"
+
+Response variable = "target"
+
+## Solving interactive problems with reinforcement learning
+Goal: develop a system (*agent*) that improve its performance based on interactions with the environment
+
+> Related to supervised learning, but the feedback is not the ground truth label, but a measure of how well the action was measured by a reward function
+
+The agent tries to maximize the reward through a series of interactions with the environment
+
+## Discovering hidden structures with unsupervised learning
+
+### Clustering
+Allows us to organize data into meaningful subgroups (*clusters*) without having any prior knowledge of their group memberships. Sometimes called **unsupervised classification**
+
+### Dimensionality reduction for data compression
+Commonly used approach in feature preprocessing to remove noise from data, which can degrade the predictive performance of certain algorithms, and compress the data onto a smaller dimensional subspace while retaining most of the relevant information
+
+Useful for visualizing the data -> High-dimensional feature set to 2D or 3D
+
+## A roadmap for building ML systems
+- **Preprocessing - getting data into shape**: scaling, dimensionality reduction, randomly divide the dataset into training and test sets
+- **Training and selecting a predictive model**: decide a metric to measure performance, compare a handful of different algorithms in order to train and select the best performing model, cross-validation, hyperparameter optimization
+- **Evaluating models and predicting unseen data instances**: how well the model performs on unseen data (generalization error)
+
 # Ch2. Training Simple Machine Learning Algorithms for Classification
 
 # Ch3. A Tour of Machine Learning Classifiers Using scikit-learn
