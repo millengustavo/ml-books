@@ -45,6 +45,39 @@ Useful for visualizing the data -> High-dimensional feature set to 2D or 3D
 
 # Ch2. Training Simple Machine Learning Algorithms for Classification
 
+## Perceptron
+The convergence of the perceptron is only guaranteed if the two classes are linearly separable and the learning rate is sufficiently small
+
+> Numpy x Python for loop structures: **Vectorization** means that an elemental arithmetic operation is automatically applied to all elements in an array. By formulating our arithmetic operations as a sequence of instructions on an array, rather than performing a set of operations for each element at a time, we can make better use of our modern CPU architectures with single instruction, multiple data (SIMD) support. Furthermore, NumPy uses highly optimized linear algebra libraries, such as Basic Linear Algebra Subprograms (BLAS) and Linear Algebra Package (LAPACK), that have been written in C or Fortran
+
+## Adaptive linear neurons and the convergence of learning
+**ADAptive LInear NEuron (Adaline)**: weights are updated based on a linear activation function rather than a unit step function -> Widrow-Hoff rule
+
+## Minimizing cost functions with gradient descent
+**Objective function**: often a cost function that we want to minimize
+
+**Gradient descent**: powerful optimization algorithm to find the weights that minimize the cost function -> climbing down a hill until a local or global cost minimum is reached -> take steps in the opposite direction of the gradient. Step size defined by the learning rate and slope of the gradient
+
+> A logistic regression model is closely related to Adaline, the only difference being its activation and cost function
+
+## Improving gradient descent through feature scaling
+Gradient descent is one of the many algorithms that benefit from feature scaling
+
+**Standardization**: gives the data properties of a standard normal distribution -> zero-mean and unit variance
+
+## Large-scale machine learning and stochastic gradient descent
+- **Batch gradient descent**: gradient is calculated from the whole training dataset
+- **Stochastic gradient descent (SGD)**: iterative/online gradient descent. Each gradient is calculated on a single training example.
+
+Advantages:
+- typically reaches convergence much faster because of more frequent weight updates
+- can escape shallow local minima more readily if we are working with nonlinear cost functions
+- can be used for online learning -> model trained on the fly as new data arrives
+
+> With SGD it is important to present training data in a random order; also shuffle the training dataset for every epoch to prevent cycles
+
+**Mini-batch gradient descent**: batch gradient descent to smaller subsets of the training data. Compromise between SGD and batch -> vectorized operations can improve the computational efficiency
+
 # Ch3. A Tour of Machine Learning Classifiers Using scikit-learn
 
 # Ch4. Building Good Training Datasets – Data Preprocessing
