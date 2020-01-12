@@ -1418,6 +1418,71 @@ Learning rate schedule - 1cycle
 
 # CH15. Processing Sequences Using RNNs and CNNs
 
+## Recurrent Neurons and Layers
+RNN -> much like a feedforward NN, except it also has connections pointing backward.
+
+*Unrolling the network through time*
+
+Each neuron has two sets of weights: one for the inputs and other for the outputs of the previous time step
+
+### Memory Cells
+- *Memory*: the output of a recurrent neuron at time step `t` is a function of all the inputs from previous steps
+- *Memory cell (or just cell)*: part of a NN that preserves some state across time steps. Capable of learning short patterns (about 10 steps long depending on the task)
+
+## Input and Output Sequences
+- **Sequence-to-sequence network**: RNN that takes a sequence of inputs and produce a sequence of outputs. Useful for predicting time series
+- **Sequence-to-vector network**: feed the network a sequence of inputs and ignore all outputs except for the last one
+- **Vector-to-sequence**: feed the same input vector over and over again at each time step and let it output a sequence
+- **Encoder (sequence-to-vector)-Decoder (vector-to-sequence)**: i.e., translation: feed the network a sentence in one language, the encoder convert into a single vector representation, and then the decoder decode the vector into a sentence in another language
+
+## Training RNNs
+- *Backpropagation through time (BPTT)*: forward pass throught the unrolled network, then the output sequence is evaluated using a cost function. The gradients of that cost function are then propagated backward through the unrolled network. Finally the model parameters are updated using the gradients computed during BPTT.
+
+> The gradients flow backward through all the outputs used by the cost function, not just the final output. Since the same parameters `W` and `b` are used at each time step, backpropagation will do the right thing and sum over all time steps
+
+## Forecasting a Time Series
+Time series: the input features are generally represented as 3D arrays of shape [batch size, time steps, dimensionallity], where dimensionallity is 1 for *univariate time series* and more for *multivariate time series*
+
+### Baseline Metrics
+- *Naive forecasting*: predict the last value in each series
+- Fully connected network
+
+### Implementing a Simple RNN
+```python
+model = keras.models.Sequential([
+  keras.layers.SimpleRNN(1, input_shape=[None, 1])
+])
+```
+
+> **Trend and Seasonality**: when using RNNs, it is generally not necessary to remove trend/seasonality before fitting, but it may improve performance in some cases, since the model will not have to learn the trend and the seasonality
+
+### Deep RNNs
+```python
+model = keras.models.Sequential([
+    keras.layers.SimpleRNN(20, return_sequences=True, input_shape=[None, 1]),
+    keras.layers.SimpleRNN(20),
+    keras.layers.Dense(1)
+])
+```
+
+### Forecasting Several Time Steps Ahead
+- First option, use the model already trained, make it predict the next value, then add that value to the inputs, and use the model again to predict the following value... Errors might accumulate
+- Second option, train an RNN to predict all 10 next values at once
+
+> It may be surprising that the targets will contain values that appear in the inputs (there is a lot of overlap between X_train and Y_train). Isn’t that cheating? Fortunately, not at all: at each time step, the model only knows about past time steps, so it cannot look ahead. It is said to be a *causal model*.
+
+```python
+model = keras.models.Sequential([
+    keras.layers.SimpleRNN(20, return_sequences=True, input_shape=[None, 1]),
+    keras.layers.SimpleRNN(20, return_sequences=True),
+    keras.layers.TimeDistributed(keras.layers.Dense(10))
+])
+```
+
+> Forecasting: often useful to have some error bars along with your predictions. Add an MC Dropout layer within each memory cell, dropping part of the inputs and hidden states. After training, to forecast a new time series, use the model many times and compute the mean and stdev of the predictions at each time step
+
+## Handling Long Sequences
+
 # CH16. Natural Language Processing with RNNs and Attention
 - *character RNN*: predict the next character in a sentence
 - *stateless RNN*: learns on random portions of text at each iteration, without any information on the rest of the text
