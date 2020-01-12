@@ -1482,6 +1482,52 @@ model = keras.models.Sequential([
 > Forecasting: often useful to have some error bars along with your predictions. Add an MC Dropout layer within each memory cell, dropping part of the inputs and hidden states. After training, to forecast a new time series, use the model many times and compute the mean and stdev of the predictions at each time step
 
 ## Handling Long Sequences
+### Fighting the Unstable Gradients Problem
+- Good parameter initialization
+- Faster optimizers
+- Dropout
+- Saturating activation function: hyperbolic tangent
+
+Batch Normalization cannot be used as efficiently with RNNs -> another form of normalization often works better: **Layer Normalization** -> similar no BN, but instead of normalizing across the batch dimension, it normalizes across the features dimension
+
+### Tackling the Short-Term Memory Problem
+Due to the transformations that the data goes through when traversing an RNN, some information is lost at each time step. After a while, the RNN’s state contains virtually no trace of the first inputs
+
+#### LSTM (Long Short-Term Memory) cells 
+LSTM cell looks exactly like a regular cell, except that its state is split into two vectors: h(t) and c(t) (“c” stands for “cell”). You can think of h(t) as the short-term state and c(t) as the long-term state
+
+The key idea is that the network can learn what to store in the long-term state, what to throw away, and what to read from it
+
+> LSTM cell can learn to recognize an important input (that’s the role of the input gate), store it in the long-term state, preserve it for as long as it is needed (that’s the role of the forget gate), and extract it whenever it is needed
+
+#### GRU (Gated Recurrent Unit) cells
+Simplified version of the LSTM cell that performs just as well
+
+LSTM and GRU cells are one of the main reasons behind the success of RNNs. Yet while they can tackle much longer sequences than simple RNNs, they still have a fairly limited short-term memory, and they have a hard time learning long-term patterns in sequences of 100 time steps or more, such as audio samples, long time series, or long sentences. One way to solve this is to shorten the input sequences, for example using 1D convolutional layers
+
+### Using 1D convolutional layers to process sequences
+A 1D convolutional layer slides several kernels across a sequence, producing a 1D feature map per kernel. Each kernel will learn to detect a single very short sequential pattern (no longer than the kernel size)
+
+By shortening the sequences, the convolutional layer may help the GRU layers detect longer patterns
+
+> It is actually possible to use only 1D convolutional layers and drop the recurrent layers entirely
+
+### WaveNet
+WaveNet: Stacked 1D convolutional layers, doubling the dilation rate (how spread apart each neuron’s inputs are) at every layer
+
+Lower layers learn short-term patterns, while the higher layers learn long-term patterns. Thanks to the doubling dilation rate, the network can process extremely large sequences very efficiently
+
+```python
+model = keras.models.Sequential()
+model.add(keras.layers.InputLayer(input_shape=[None, 1]))
+for rate in (1, 2, 4, 8) * 2:
+    model.add(keras.layers.Conv1D(filters=20, kernel_size=2, padding="causal",
+                                  activation="relu", dilation_rate=rate))
+model.add(keras.layers.Conv1D(filters=10, kernel_size=1))
+model.compile(loss="mse", optimizer="adam", metrics=[last_time_step_mse])
+history = model.fit(X_train, Y_train, epochs=20,
+                    validation_data=(X_valid, Y_valid))
+```
 
 # CH16. Natural Language Processing with RNNs and Attention
 - *character RNN*: predict the next character in a sentence
