@@ -533,6 +533,40 @@ Also common to compress data down to two-dimensional subspaces -> visualization 
 
 # Ch12. Implementing a Multilayer Artificial Neural Network from Scratch
 
+> Single-layer naming convention: Adaline consists of two layers, one input, and one output. It is called single-layer network because of its single link between the input and output layers
+
+## Introducing the multilayer neural network architecture
+Adding additional hidden layers: the error gradients, become increasingly small as more layers are added to a network -> *vanishing gradient problem*
+
+## Activating a neural network via forward propagation
+1. Forward propagate the patterns of training data to generate an output
+2. Calculate the error to minimize using a cost function between outputs and targets
+3. Backpropagate the error, find its derivative wrt each weight in the network, update the model
+4. Multiple epochs of 1-3, then forward propagation to calculate the output and apply a threshold function to obtain the predicted class labels
+
+> MLP: typical example of a **feedforward** ANN -> each layer serves as the input to the next layer without loops
+
+Gradient-based optimization is much more stable under normalized inputs (ranging from -1 to 1). Also, *Batch Normalization* for improving convergence
+
+> Efficient method of save multidimensional NumPy arrays to disk -> NumPy's `savez`/`savez_compressed` function -> analogous to `pickle`, but optimized for np arrays. To load: `np.load(file.npz)`
+
+Training (deep) NN is expensive -> stop it early in certain conditions, e.g., starts overfitting, not improving
+
+Common tricks to improve performance:
+- Skip-connections
+- Learning rate schedulers
+- Attaching loss functions to earlier layers
+
+## Developing your understanding of backpropagation
+Very computationally efficient approach to compute the partial derivatives of a complex cost function in multilayer NNs -> Goal: use those derivatives to learn the weight coefficients for parametrizing such a multilayer artificial NN.
+
+Backpropagation is a special case of a reverse-mode **automatic differentiation**. Matrix-vector multiplication is computationally much cheaper than matrix-matrix multiplication
+
+## About the convergence in neural networks
+The output function has a rough surface and the optimization algorithm can easily become trapped in local minima
+
+By increasing the learning rate, we can more readily escape such local minima. But, we cal also increase the chance of over-shooting the global optimum if the learning rate is too large
+
 # Ch13. Parallelizing Neural Network Training with TensorFlow
 
 # Ch14. Going Deeper - The Mechanics of TensorFlow
