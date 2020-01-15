@@ -15,6 +15,9 @@ From van den Oord's [paper](https://arxiv.org/abs/1609.03499)
 ![wavenet_gif](images/wavenet.gif)
 
 ### Forecast Example
+
+[Open jupyter notebook [ipynb]](./examples/time-series-LSTM-GRU-WaveNet.ipynb)
+
 ![wavenet_loss](images/wavenet_loss.png)
 
 ![wavenet_forecast](images/wavenet_forecast.png)
