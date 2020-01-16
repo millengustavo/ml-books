@@ -110,7 +110,54 @@ Neural networks also benefit from two other regularization techniques:
 Also non-mathematical methods have a regularization effect: data augmentation and early stopping
 
 ## Model Performance Assessment
+Model *generalizes well*: model performs well on predicting the test set
 
+Overfitting: error on the test data is *substantially higher* then the error obtained in the training data
+
+### Confusion Matrix
+Table that summarizes how successful the classification model is at predicting examples belonging to various classes
+
+Used to calculate two other metrics: precision and recall
+
+### Precision/Recall
+- **Precision**: ratio of correct positive predictions to the overall number of positive predictions: TP/(TP+FP)
+- **Recall**: ratio of correct positive predictions to the overall number of positive examples in the dataset: TP/(TP+FN)
+
+In practice, almost always have to choose between high precision or high recall -> usually impossible to have both
+- assign a higher weighting to the examples of a specific class
+- tune hyperparameters to maximize precision or recall on the validation set
+- vary the decision threshold for algorithms that return probabilities of classes
+
+### Accuracy
+Number of correctly classified examples divided by the total number of classified examples: (TP+TN)/(TP+TN+FP+FN)
+
+Useful metric when errors in predicting all classes are equally important
+
+### Cost-Sensitive Accuracy
+When different classes have different importances
+
+Assign a cost (positive number) to both types of mistakes: FP and FN. Then compute the counts TP, TN, FP, FN as usual and multiply the counst for FP and FN by the corresponding cost before calculating the accuracy normally
+
+### Area under the ROC Curve (AUC)
+ROC curve ("receiver operating characteristic", comes from radar engineering): use a combination of the **true positive rate** (define exactly as recall) and **false positive rate** (proportion of negative examples predicted incorrectly) to build up a summary picture of the classification performance
+
+TPR = TP/(TP+FN)
+
+FPR = FP/(FP+TN)
+
+ROC curvers can only be used to assess classifiers that return some confidence score (or a probability) of prediction
+
+The higher the **area under the ROC curve (AUC)** the better the classifier. AUC > 0.5 -> better than a random classifier. AUC = 1 -> perfect classifier -> TPR closer to 1 while keeping FPR near 0
+
+### Hyperparameter Tuning
+- **Grid Search**: when you have enough data for a validation set and the number of hyperparameters and their range is not too large
+- **Random Search**: instead of providing discrete set of values to explore, you provide a statistical distribution for each hyperparameter from which values are randomly samples and set the total number of combinations you want to try
+- **Bayesian hyperparameter optimization**: use past evaluation results to choose the next values to evaluate
+- **Gradient-based techniques**
+- **Evolutionary optimization techniques**
+
+### Cross-Validation
+When you have few training examples, it could be prohibitive to have both validation and test set. You would prefer to use more data to train the model. In such case, you only split your data into training and test. Then you use **cross-validation** on the training set to simulate a validation set
 
 # 6 Neural Networks and Deep Learning
 
