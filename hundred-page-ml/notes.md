@@ -165,6 +165,66 @@ When you have few training examples, it could be prohibitive to have both valida
 
 # 8 Advanced Practice
 
+## Handling Imbalanced Datasets
+- Set the cost of misclassification of examples of the minority class higher
+- oversampling -> make multiple copies of the example of some class
+- undersampling -> randomly remove from training set some examples of the majority class
+- synthetic minority oversampling technique (SMOTE)
+- adaptive synthetic sampling method (ADASYN)
+- algorithms less sensitive to imbalanced datasets: Decision trees, Random Forest, Gradient Boosting
+
+## Combining Models
+Ensemble models, typically combine models of the same nature. Boost performance by combining hundreds of weak models. We can sometimes get an additional performance gain by combining strong models made with different learning algorithms (two or three models):
+- averaging
+- majority vote
+- stacking
+
+> **Stacking**: building a meta-model that takes the output of base models as input. Make sure your stacked model performs better on the validation set than each of the base models you stacked. When several **uncorrelated** strong models agree they are more likely to agree on the correct outcome
+
+
+## Training Neural Networks
+- Challenge to convert your data into the input the network can work with (i.e., resize images, word embeddings)
+- The choice of specific NN architecture is a difficult one
+- Decide the number of layers, their type and size
+- Regularization
+
+## Advanced Regularization
+For NNs, besides L1 and L2 regularization:
+- Dropout: for each pass, temporarily exclude at random some units frrom the computation
+- Early Stopping: stop training once observe a decreased performance on the validation set
+- Batch Normalization: standardize the outputs of each layer
+- Data augmentation: create a synthetic example from an original by applying various transformations
+
+## Handling Multiple Inputs
+Multimodal data -> e.g., input is an image and text and binary output indicates whether the text describes this image
+
+It's hard to adapt shallow learning algorithms to work with multimodal data -> train one shallow model on the image and another one in the text 
+
+## Handling Multiple Outputs
+Some problems you would like to predict multiple outputs for one input -> sometimes can convert into a multi-label classification problem -> Subnetworks
+
+## Transfer Learning
+Pick an existing model trained on some dataset, and adapt this model to predict examples from another dataset, different from the one the model was built on
+
+1. Build a deep model on the original big dataset
+2. Compile a much smaller labeled dataset for your second model
+3. Remove the last one or several layers from the first model
+4. Replace the removed layers with new layers adapted for the new problem
+5. "Freeze" the parameters of the layers remaining from the first model
+6. Use your smaller labeled dataset and gradient descent to train the parameters of only the new layers
+
+## Algorithmic Efficiency
+**Big O notation**: classify algorithms according to how their running time or space requirements grow as the input size grows. Complexity measured in the worst case
+
+- avoid using loops whenever possible
+- use appropriate data structures (e.g., if order is not important, use a set instead of a list)
+- use dict (hashmap) -> allows you to define a collection of key-value pairs with very fast lookups for keys
+- use Scientific Python packages -> many methods implemented in C
+- if you need to iterate over a vast collection of elements, use generators that create a function that return one element at a time rather than all the elements at once
+- *cProfile* package to find inefficiencies
+- *multiprocessing* package
+- *PyPy*, *Numba*
+
 # 9 Unsupervised Learning
 
 # 10 Other Forms of Learning
