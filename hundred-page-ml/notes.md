@@ -11,6 +11,17 @@ Author: Andriy Burkov
 
 # 4 Anatomy of a Learning Algorithm
 
+## Building Blocks of a Learning Algorithm
+1. a loss function
+2. an optimization criterion based on the loss function
+3. an optimization routine leveraging training data to find a solution to the optimization criterion
+
+## Gradient Descent
+
+## How Machine Learning Engineers Work
+
+## Learning Algorithms' Particularities
+
 # 5 Basic Practice
 
 ## Feature Engineering
