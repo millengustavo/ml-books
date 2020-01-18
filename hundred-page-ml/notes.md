@@ -17,10 +17,34 @@ Author: Andriy Burkov
 3. an optimization routine leveraging training data to find a solution to the optimization criterion
 
 ## Gradient Descent
+Iterative optimization algorithm for finding the minimum of a function
+
+Find a *local minimum*: Starts at some random point and takes steps proportional to the negative of the gradient of the function at the current point
+
+Gradient descent proceeds in **epochs**. Epoch: using the training set entirely to update each parameter
+
+The learning rate controls the size of an update
+
+Regular gradient descent is sensitive to the choice of the learning rate and slow for large datasets
+
+> **Minibatch stochastic gradient descent (SGD)**: speed up the computation by approximating the gradient descent using smaller batches (subsets) of the training data.
+
+Upgrades to SGD:
+- Adagrad
+- Momentum
+- RMSprop
+- Adam
 
 ## How Machine Learning Engineers Work
+You don't implement algorithms yourself, you use libraries, most of which are open source -> *scikit-learn*
 
 ## Learning Algorithms' Particularities
+- different hyperparameters
+- some can accept categorical features
+- some allow the data analyst to provide weightings for each class -> influence the decision boundary
+- some given a feature vector only output the class -> others the probability
+- some allow for online learning
+- some can be used for both classification and regression
 
 # 5 Basic Practice
 
