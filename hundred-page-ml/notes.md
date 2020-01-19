@@ -4,6 +4,33 @@ Author: Andriy Burkov
 <img src="http://themlbook.com/images/og-image3.png" title="book" width="800" />
 
 # 1 Introduction
+## What is Machine Learning
+Process of solving a practical problem:
+1. Gathering a dataset
+2. Algorithmically building a statistical model based on that dataset to be used somehow to solve the practical problem
+
+## Supervised Learning
+Dataset is a collection of **labeled examples**
+
+Goal is to use the dataset to produce a model that takes a feature vector as input and outputs information that allows deducing the label for this feature vector
+
+## Unsupervised Learning
+Dataset is a collection of **unlabeled examples**
+
+Goal is to create a model that takes a feature vector as input and either transforms it into another vector or into a value that can be used to solve a practical problem
+
+## Semi-supervised Learning
+Dataset contains both labeled and unlabeled examples. Usually unlabeled quantity >> labeled quantity
+
+Goal is the same as supervised learning. When you add unlabeled examples, you add more information about your problem, a larger sample reflects better the probability distribution the data we labeled came from
+
+## Reinforcement Learning
+Machine "lives" in an environment and is capable of perceiving the **state** as a vector of features. Machine can execute **actions** in every state. Different actions bring different **rewards** and could also move the machine to another state.
+
+The goal of RL algorithm is to learn a **policy**. A policy is a function that takes the feature vector of a state as input and outputs an optimal action to execute. The action is optimal if it maximizes the expected average reward
+
+## Why the Model Works on New Data
+*PAC ("probably approximately correct") learning*: theory that helps to analyze whether and under what conditions a learning algorithm will probably output an approximately correct classifier
 
 # 2 Notation and Definitions
 
