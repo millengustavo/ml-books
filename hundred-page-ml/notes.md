@@ -291,4 +291,44 @@ Pick an existing model trained on some dataset, and adapt this model to predict 
 
 # 10 Other Forms of Learning
 
+## Metric Learning
+You can create a metric that would work better for your dataset
+
+> One-shot learning with siamese networks and triplet loss can be seen as metric learning problem
+
+## Learning to Rank
+Supervised learning problem (e.g., optimization of search results returned by a search engine for a query)
+
+Three approaches:
+- pointwise
+- parwise
+- listwise
+
+> State of the art rank learning algorithm: **LambdaMART**. Listwise approach -> one popular metric that combines both precision and recall is called *mean average precision (MAP)*
+
+In typical supervised learning algorithm, we optimize the cost instead of the metric (usually metrics are not differentiable). In LambdaMART the metric is optmized directly
+
+## Learning to Recommend
+- **Content-based filtering**: learning what users like based on the description of the content they consume -> user can be trapped in a "filter bubble"
+- **Collaborative filtering**: recommendations to one user are computed based on what other users consume or rate -> content of the item consumed is ignored -> huge and extremely sparse matrix
+
+Real-world recommender systems -> hybrid approach
+
+### Factorization Machines (FM)
+Explicity designed for sparse datasets. Users and items are encoded as one-hot vectors
+
+### Denoising Autoencoders (DAE)
+NN that reconstructs its input from the bottleneck layer. Ideal tool to build a recommender system: input is corrupted by noise while the output shouldn't be
+
+Idea: new items a user could like are seen as if they were removed from the complete set by some corruption process -> goal of the denoising autoencoder is to reconstruct those removed items
+
+> Another effective collaborative-filtering model is an FFNN with two inputs and one output
+
+## Self-Supervised Learning: Word Embeddings
+Word embeddings: feature vectors that represent words -> similar words have similar feature vectors
+
+**word2vec**: pretrained embeddings for many languages are available to download online. **skip-gram**
+
+> Self-supervised: the labeled examples get extracted from the unlabeled data such as text
+
 # 11 Conclusion
