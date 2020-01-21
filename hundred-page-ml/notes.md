@@ -332,3 +332,34 @@ Word embeddings: feature vectors that represent words -> similar words have simi
 > Self-supervised: the labeled examples get extracted from the unlabeled data such as text
 
 # 11 Conclusion
+
+## Topic Modeling
+Prevalent unsupervised learning problem. **Latent Dirichlet Allocation (LDA)** -> You decide how many topics are in your collection, the algorithm assigns a topic to each word in this collection. To extract the topics from a document -> count how many words of each topic are present in that document
+
+## Gaussian Process (GP)
+Supervised learning method that competes with kernel regression
+
+## Generalized Linear Models (GLM)
+Generalization of the linear regression to modeling various forms of dependency between the input feature vector and the target
+
+## Probabilistic Graphical Models (PGM)
+One example: Conditional Random Fields (CRF) -> model the input sequence of words and relationships between the features and labels in this sequence as a sequential *dependency graph*
+
+**Graph**: structure consisting of a colletion of nodes and edges that join a pair of nodes
+
+> PGMs are also know under names of Bayesian networks, belief networks and probabilistic independence networks
+
+## Markov Chain Monte Carlo (MCMC)
+If you work with graphical models and want to sample examples from a very complex distribution defined by the dependency graph. MCMC is a class of algorithms for sampling from any probability distribution defined mathematically
+
+## Generative Adversarial Networks (GAN)
+Class of NN used in unsupervised learning. System of two neural networks contesting with each other in a *zero-sum game* setting
+
+## Genetic Algorithms (GA)
+Numerical optimization technique used to optimize undifferentiable optimization objective functions. Use concepts from evolutionary biology to search for a global optimum (minimum or maximum) of an optimization problem, by mimicking evolutionary biological processes
+
+> GA allow finding solutions to any measurable optimization criteria (i.e., optimize hyperparameters of a learning algorithm -> typically much slower than gradient-based optimization techniques)
+
+## Reinforcement Learning (RL)
+Solves a very specific kind of problem where the decision making is sequential. There's an agent acting in a unknown environment. Each action brings a reward and moves the agent to another state of the envinronment. The goal of the agent is to optimize its long-term reward
+
