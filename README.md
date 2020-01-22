@@ -6,6 +6,8 @@
 
 - The Hundred-Page Machine Learning Book - Andriy Burkov [[open notes]](hundred-page-ml/notes.md)
 
+- Introduction to Machine Learning with Python: A Guide for Data Scientists - Andreas C. Müller and Sarah Guido [[open notes]](intro-ml-python/notes.md)
+
 # Applications
 
 ## WaveNet
