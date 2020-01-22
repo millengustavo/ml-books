@@ -676,3 +676,4 @@ By increasing the learning rate, we can more readily escape such local minima. B
 
 # Ch18. Reinforcement Learning for Decision Making in Complex Environments
 
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>

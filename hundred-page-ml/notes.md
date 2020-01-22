@@ -428,3 +428,4 @@ Numerical optimization technique used to optimize undifferentiable optimization 
 ## Reinforcement Learning (RL)
 Solves a very specific kind of problem where the decision making is sequential. There's an agent acting in a unknown environment. Each action brings a reward and moves the agent to another state of the envinronment. The goal of the agent is to optimize its long-term reward
 
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>

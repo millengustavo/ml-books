@@ -193,9 +193,6 @@ Author: Aurélien Geron
 - [CH18. Reinforcement Learning](#ch18-reinforcement-learning)
 - [CH19. Training and Deploying TensorFlow Models at Scale](#ch19-training-and-deploying-tensorflow-models-at-scale)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
 # Part I, The Fundamentals of Machine Learning
 
 # CH1. The Machine Learning Landscape
@@ -1823,3 +1820,5 @@ Google's research -> *Transformer*. Improved state of the art NMT without using 
 # CH18. Reinforcement Learning
 
 # CH19. Training and Deploying TensorFlow Models at Scale
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
