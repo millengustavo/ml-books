@@ -3,6 +3,199 @@ Author: Aurélien Geron
 
 <img src="https://images-na.ssl-images-amazon.com/images/I/51aqYc1QyrL._SX379_BO1,204,203,200_.jpg" title="book" width="150" />
 
+# Table of Contents
+
+- [Part I, The Fundamentals of Machine Learning](#part-i--the-fundamentals-of-machine-learning)
+- [CH1. The Machine Learning Landscape](#ch1-the-machine-learning-landscape)
+    + [Supervised/Unsupervised Learning](#supervised-unsupervised-learning)
+    + [Batch and Online Learning](#batch-and-online-learning)
+    + [Instance-Based x Model-Based Learning](#instance-based-x-model-based-learning)
+    + [Nonrepresentative Training Data](#nonrepresentative-training-data)
+    + [Poor-Quality Data](#poor-quality-data)
+    + [Irrelevant Features](#irrelevant-features)
+    + [Overfitting the Training Data](#overfitting-the-training-data)
+    + [Underfitting the Training Data](#underfitting-the-training-data)
+    + [Testing and Validating](#testing-and-validating)
+    + [Hyperparameter Tuning and Model Selection](#hyperparameter-tuning-and-model-selection)
+    + [Data Mismatch](#data-mismatch)
+- [CH2. End-to-End Machine Learning Project](#ch2-end-to-end-machine-learning-project)
+    + [Pull out your ML project checklist](#pull-out-your-ml-project-checklist)
+    + [Frame the problem: what exactly the business objective is. How does the company expect to use and benefit from this model?](#frame-the-problem--what-exactly-the-business-objective-is-how-does-the-company-expect-to-use-and-benefit-from-this-model-)
+    + [Select a Performance Measure: RMSE, MAE, accuracy, etc](#select-a-performance-measure--rmse--mae--accuracy--etc)
+    + [Check the Assumptions (by you or others)](#check-the-assumptions--by-you-or-others-)
+    + [Create an isolated environment](#create-an-isolated-environment)
+    + [Data Structure](#data-structure)
+    + [Create a Test Set (20% or less if the dataset is very large)](#create-a-test-set--20--or-less-if-the-dataset-is-very-large-)
+    + [Option: Stratified sampling](#option--stratified-sampling)
+    + [Put the test set aside and only explore the training set. If the training set is large, you may want to sample an exploration set](#put-the-test-set-aside-and-only-explore-the-training-set-if-the-training-set-is-large--you-may-want-to-sample-an-exploration-set)
+    + [We are very good at spotting patterns in pictures](#we-are-very-good-at-spotting-patterns-in-pictures)
+    + [Look for Correlations](#look-for-correlations)
+    + [Experimenting with Attribute Combinations](#experimenting-with-attribute-combinations)
+    + [Data Cleaning](#data-cleaning)
+    + [Handling Text and Categorical Attributes](#handling-text-and-categorical-attributes)
+    + [Feature Scaling](#feature-scaling)
+    + [Transformation Pipelines](#transformation-pipelines)
+    + [Training and Evaluating on the Training Set](#training-and-evaluating-on-the-training-set)
+    + [Better Evaluation Using Cross-Validation](#better-evaluation-using-cross-validation)
+    + [Grid Search](#grid-search)
+    + [Randomized Search](#randomized-search)
+    + [Ensemble Methods](#ensemble-methods)
+    + [Analyze the Best Models and Their Errors](#analyze-the-best-models-and-their-errors)
+    + [Evaluate Your System on the Test Set](#evaluate-your-system-on-the-test-set)
+    + [Project prelaunch phase](#project-prelaunch-phase)
+- [CH3. Classification](#ch3-classification)
+    + [Stochastic Gradient Descent (SGD) classifier](#stochastic-gradient-descent--sgd--classifier)
+    + [Performance Measures](#performance-measures)
+    + [Measuring Accuracy using Cross-Validation](#measuring-accuracy-using-cross-validation)
+    + [Confusion Matrix](#confusion-matrix)
+    + [Precision](#precision)
+    + [Recall or Sensitivity, or True Positive Rate (TPR)](#recall-or-sensitivity--or-true-positive-rate--tpr-)
+    + [F1 Score](#f1-score)
+    + [Precision/Recall trade-off](#precision-recall-trade-off)
+    + [The ROC Curve](#the-roc-curve)
+    + [Area under the curve (AUC)](#area-under-the-curve--auc-)
+    + [Binary classifiers](#binary-classifiers)
+    + [Multiclass Classification](#multiclass-classification)
+    + [Error Analysis](#error-analysis)
+    + [Multilabel Classification](#multilabel-classification)
+    + [Multioutput Classification (multioutput-multiclass classification)](#multioutput-classification--multioutput-multiclass-classification-)
+- [CH4. Training Models](#ch4-training-models)
+    + [Linear Regression](#linear-regression)
+    + [Gradient Descent](#gradient-descent)
+    + [Batch vs Stochastic Gradient Descent](#batch-vs-stochastic-gradient-descent)
+    + [Learning Curves](#learning-curves)
+    + [Bias/Variance Trade-off](#bias-variance-trade-off)
+    + [Ridge Regression (Tikhonov regularization) - L2](#ridge-regression--tikhonov-regularization----l2)
+    + [Lasso Regression - L1](#lasso-regression---l1)
+    + [Elastic Net](#elastic-net)
+    + [Early Stopping](#early-stopping)
+    + [Logistic Regression (Logit Regression)](#logistic-regression--logit-regression-)
+    + [Softmax Regression (Multinomial Logistic Regression)](#softmax-regression--multinomial-logistic-regression-)
+- [CH5. Support Vector Machines](#ch5-support-vector-machines)
+- [CH6. Decision Trees](#ch6-decision-trees)
+    + [White/Black box models](#white-black-box-models)
+    + [Pruning](#pruning)
+    + [Problems](#problems)
+- [CH7. Ensemble Learning and Random Forests](#ch7-ensemble-learning-and-random-forests)
+    + [Hard voting](#hard-voting)
+    + [Independent classifiers](#independent-classifiers)
+    + [Soft voting](#soft-voting)
+    + [Bagging and Pasting](#bagging-and-pasting)
+    + [Bootstrapping](#bootstrapping)
+    + [Out-of-bag evaluation](#out-of-bag-evaluation)
+    + [Random Patches and Random Subspaces](#random-patches-and-random-subspaces)
+    + [Boosting](#boosting)
+    + [AdaBoost](#adaboost)
+    + [Gradient Boosting](#gradient-boosting)
+    + [XGBoost](#xgboost)
+    + [Stacking](#stacking)
+    + [Brew](#brew)
+- [CH8. Dimensionality Reduction](#ch8-dimensionality-reduction)
+    + [The Curse of Dimensionality](#the-curse-of-dimensionality)
+    + [Projection](#projection)
+    + [Manifold](#manifold)
+    + [PCA](#pca)
+    + [Principal Components](#principal-components)
+    + [Explained Variance Ratio](#explained-variance-ratio)
+  * [Kernel PCA](#kernel-pca)
+  * [Locally Linear Embedding (LLE)](#locally-linear-embedding--lle-)
+  * [Other Dimensionality Reductions Techniques](#other-dimensionality-reductions-techniques)
+- [CH9. Unsupervised Learning Techniques](#ch9-unsupervised-learning-techniques)
+    + [Clustering](#clustering)
+    + [K-Means](#k-means)
+    + [K-Means++](#k-means--)
+    + [Accelerated K-Means and mini-batch K-Means](#accelerated-k-means-and-mini-batch-k-means)
+    + [Finding the optimal number of clusters](#finding-the-optimal-number-of-clusters)
+    + [Limits of K-Means](#limits-of-k-means)
+      - [Active learning (*uncertainty sampling*)](#active-learning---uncertainty-sampling--)
+    + [DBSCAN](#dbscan)
+    + [Other Clustering Algorithms](#other-clustering-algorithms)
+    + [Gaussian Mixtures](#gaussian-mixtures)
+    + [Anomaly Detection using Gaussian Mixtures](#anomaly-detection-using-gaussian-mixtures)
+    + [Selecting the Number of Clusters](#selecting-the-number-of-clusters)
+    + [Bayesian Gaussian Mixture Models](#bayesian-gaussian-mixture-models)
+    + [Other Algorithms for Anomaly and Novelty Detection](#other-algorithms-for-anomaly-and-novelty-detection)
+- [Part II, Neural Networks and Deep Learning](#part-ii--neural-networks-and-deep-learning)
+- [CH10. Introduction to Artificial Neural Networks with Keras](#ch10-introduction-to-artificial-neural-networks-with-keras)
+    + [Perceptron](#perceptron)
+    + [The Multilayer Perceptron and Backpropagation](#the-multilayer-perceptron-and-backpropagation)
+    + [Backpropagation](#backpropagation)
+    + [Activation functions](#activation-functions)
+    + [Regression MLP architecture](#regression-mlp-architecture)
+    + [Classification MLP architecture](#classification-mlp-architecture)
+    + [Implementing MLPs with Keras](#implementing-mlps-with-keras)
+    + [Creating a Sequential model](#creating-a-sequential-model)
+    + [Compiling the model](#compiling-the-model)
+    + [Training and evaluating the model](#training-and-evaluating-the-model)
+    + [Building Complex Models Using the Functional API](#building-complex-models-using-the-functional-api)
+    + [Using the Subclassing API to Build Dynamic Models](#using-the-subclassing-api-to-build-dynamic-models)
+    + [Saving and Restoring a Model](#saving-and-restoring-a-model)
+    + [Using Callbacks](#using-callbacks)
+    + [Using TensorBoard for Visualization](#using-tensorboard-for-visualization)
+    + [Fine-Tuning Neural Network Hyperparameters](#fine-tuning-neural-network-hyperparameters)
+    + [Number of Hidden Layers](#number-of-hidden-layers)
+    + [Number of Neurons per Hidden Layer](#number-of-neurons-per-hidden-layer)
+    + [Learning Rate, Batch Size, and Other Hyperparameters](#learning-rate--batch-size--and-other-hyperparameters)
+- [CH11. Training Deep Neural Networks](#ch11-training-deep-neural-networks)
+    + [The Vanishing/Exploding Gradients Problems](#the-vanishing-exploding-gradients-problems)
+    + [Glorot and He Initialization](#glorot-and-he-initialization)
+    + [Nonsaturating Activation Functions](#nonsaturating-activation-functions)
+    + [Batch Normalization](#batch-normalization)
+    + [Gradient Clipping](#gradient-clipping)
+    + [Reusing Pretrained Layers](#reusing-pretrained-layers)
+    + [Transfer Learning with Keras](#transfer-learning-with-keras)
+    + [Unsupervised Pretraining](#unsupervised-pretraining)
+    + [Faster Optimizers](#faster-optimizers)
+    + [Momentum Optimization](#momentum-optimization)
+    + [Nesterov Accelerated Gradient (NAG)](#nesterov-accelerated-gradient--nag-)
+    + [AdaGrad](#adagrad)
+    + [RMSProp](#rmsprop)
+    + [Adam and Nadam Optimization](#adam-and-nadam-optimization)
+    + [Learning Rate Scheduling](#learning-rate-scheduling)
+    + [Avoiding Overfitting Through Regularization](#avoiding-overfitting-through-regularization)
+    + [L1 and L2 Regularization](#l1-and-l2-regularization)
+    + [Dropout](#dropout)
+    + [Monte Carlo (MC) Dropout](#monte-carlo--mc--dropout)
+    + [Default DNN configuration](#default-dnn-configuration)
+    + [DNN configuration for a self-normalizing net](#dnn-configuration-for-a-self-normalizing-net)
+- [CH12. Custom Models and Training with TensorFlow](#ch12-custom-models-and-training-with-tensorflow)
+- [CH13. Loading and Preprocessing Data with TensorFlow](#ch13-loading-and-preprocessing-data-with-tensorflow)
+- [CH14. Deep Computer Vision Using Convolutional Neural Networks](#ch14-deep-computer-vision-using-convolutional-neural-networks)
+- [CH15. Processing Sequences Using RNNs and CNNs](#ch15-processing-sequences-using-rnns-and-cnns)
+  * [Recurrent Neurons and Layers](#recurrent-neurons-and-layers)
+    + [Memory Cells](#memory-cells)
+  * [Input and Output Sequences](#input-and-output-sequences)
+  * [Training RNNs](#training-rnns)
+  * [Forecasting a Time Series](#forecasting-a-time-series)
+    + [Baseline Metrics](#baseline-metrics)
+    + [Implementing a Simple RNN](#implementing-a-simple-rnn)
+    + [Deep RNNs](#deep-rnns)
+    + [Forecasting Several Time Steps Ahead](#forecasting-several-time-steps-ahead)
+  * [Handling Long Sequences](#handling-long-sequences)
+    + [Fighting the Unstable Gradients Problem](#fighting-the-unstable-gradients-problem)
+    + [Tackling the Short-Term Memory Problem](#tackling-the-short-term-memory-problem)
+    + [LSTM (Long Short-Term Memory) cells](#lstm--long-short-term-memory--cells)
+    + [GRU (Gated Recurrent Unit) cells](#gru--gated-recurrent-unit--cells)
+    + [Using 1D convolutional layers to process sequences](#using-1d-convolutional-layers-to-process-sequences)
+    + [WaveNet](#wavenet)
+- [CH16. Natural Language Processing with RNNs and Attention](#ch16-natural-language-processing-with-rnns-and-attention)
+  * [Character RNN](#character-rnn)
+    + [Stateful RNN](#stateful-rnn)
+    + [Sentiment Analysis](#sentiment-analysis)
+    + [Reusing Pretrained Embeddings](#reusing-pretrained-embeddings)
+  * [An Encoder-Decoder Network for Neural Machine Translation (NMT)](#an-encoder-decoder-network-for-neural-machine-translation--nmt-)
+    + [Bidirectional RNNs](#bidirectional-rnns)
+    + [Beam Search](#beam-search)
+  * [Attention Mechanisms](#attention-mechanisms)
+    + [Visual Attention](#visual-attention)
+    + [Attention is All You Need: The Transformer Architecture](#attention-is-all-you-need--the-transformer-architecture)
+- [CH17. Representation Learning and Generative Learning Using Autoencoders and GANs](#ch17-representation-learning-and-generative-learning-using-autoencoders-and-gans)
+- [CH18. Reinforcement Learning](#ch18-reinforcement-learning)
+- [CH19. Training and Deploying TensorFlow Models at Scale](#ch19-training-and-deploying-tensorflow-models-at-scale)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
 # Part I, The Fundamentals of Machine Learning
 
 # CH1. The Machine Learning Landscape
@@ -98,26 +291,26 @@ This chapter presents an example ml project:
 
 1. **Look at the big picture**
 
-#### Pull out your ML project checklist
-#### Frame the problem: what exactly the business objective is. How does the company expect to use and benefit from this model?
+### Pull out your ML project checklist
+### Frame the problem: what exactly the business objective is. How does the company expect to use and benefit from this model?
 
 > **PIPELINES**: Sequence of data processing components = data pipeline. Each component is fairly self-contained
 
 - What the current solution looks like?
 - Frame the problem: supervised? classification/regression? batch/online? etc
-#### Select a Performance Measure: RMSE, MAE, accuracy, etc
-#### Check the Assumptions (by you or others)
+### Select a Performance Measure: RMSE, MAE, accuracy, etc
+### Check the Assumptions (by you or others)
 
 2. **Get the data**
 
-#### Create an isolated environment
+### Create an isolated environment
 ```bash
 python3 -m pip install --user -U virtualenv
 virtualenv my_env
 source my_env/bin/activate
 # deactivate
 ```
-#### Data Structure
+### Data Structure
 ```python
 # Pandas DataFrame methods
 .head()
@@ -127,14 +320,14 @@ source my_env/bin/activate
 %matplotlib inline
 .hist()
 ```
-#### Create a Test Set (20% or less if the dataset is very large)
+### Create a Test Set (20% or less if the dataset is very large)
 > **WARNING**: before you look at the data any further, you need to create a test set, put it aside, and never look at it -> avoid the *data snooping* bias
 ```python
 from sklearn.model_selection import train_test_split
 
 train_set, test_set = train_test_split(housing, test_size=0.2, random_state=42)
 ```
-#### Option: Stratified sampling
+### Option: Stratified sampling
 ```python
 from sklearn.model_selection import StratifiedShuffleSplit
 
@@ -149,13 +342,13 @@ for set_ in (strat_train_set, strat_test_set):
 
 3. Discover and visualize the data to gain insights
 
-#### Put the test set aside and only explore the training set. If the training set is large, you may want to sample an exploration set
+### Put the test set aside and only explore the training set. If the training set is large, you may want to sample an exploration set
 ```python
 # make a copy to avoid harming the training set
 housing = strat_train_set.copy()
 ```
-####  We are very good at spotting patterns in pictures
-#### Look for Correlations
+###  We are very good at spotting patterns in pictures
+### Look for Correlations
 ```python
 corr_matrix = housing.corr()
 # how each attribute correlates with one specific
@@ -165,7 +358,7 @@ from pandas.plotting import scatter_matrix
 scatter_matrix(housing[attributes], figsize=(12, 8))
 ```
 > **WARNING**: Correlation coefficient only measures linear correlation, it may completely miss out on non-linear relationships!
-#### Experimenting with Attribute Combinations
+### Experimenting with Attribute Combinations
 > Attributes with tail-heavy distribution? You may want to transform then (e.g. logarithm)
 
 After engineering features, you may want to look at the correlations again to check if the features created are more correlated with the target.
@@ -176,7 +369,7 @@ This is an iterative process: get a prototype up and running, analyze its output
 
 Instead of doing this manually, you should **write functions** for this purpose: reproductibility, reuse in your live system, quickly try various transformations to see which combination works best
 
-#### Data Cleaning
+### Data Cleaning
 Missing values
 ```python
 # pandas methods
@@ -198,7 +391,7 @@ housing_num_tr = pd.DataFrame(X,
                     index=housing_num.index) 
 ```
 
-#### Handling Text and Categorical Attributes
+### Handling Text and Categorical Attributes
 - Ordinal Encoder
 ```python
 from sklearn.preprocessing import OrdinalEncoder
@@ -215,13 +408,13 @@ housing_cat_1hot = cat_encoder.fit_transform(housing_cat)
 ```
 > **TIP**: attributes with large number of possible categories = large number of input features. You may want to replace the categorical input with useful numerical features related to it
 
-#### Feature Scaling
+### Feature Scaling
 With few exceptions, ML algorithms don't perform well when the input numerical attributes have very different scales
 
 - Min-max scaling (*normalization*) -> values are shifted and rescaled so that they end up ranging from 0 to 1. (x_i - min_x) / (max_x - min_x). *MinMaxScaler* on Scikit-Learn
 - Standardization (zero mean) -> (x_i - mean_x) / std_x. Doesn't bound values to a specific range, but is much less affected by outliers. **StandardScaler** on Scikit-Learn.
 
-#### Transformation Pipelines
+### Transformation Pipelines
 Scikit-Learn provides the *Pipeline* class to help with sequences of transformations
 ```python
 from sklearn.pipeline import Pipeline
@@ -255,7 +448,7 @@ housing_prepared = full_pipeline.fit_transform(housing)
 
 5. **Select a model and train it**
 
-#### Training and Evaluating on the Training Set
+### Training and Evaluating on the Training Set
 ```python
 from sklearn.linear_model import LinearRegression
 
@@ -268,7 +461,7 @@ lin_mse = mean_squared_error(housing_labels, housing_predictions)
 lin_rmse = np.sqrt(lin_mse)
 ```
 
-#### Better Evaluation Using Cross-Validation
+### Better Evaluation Using Cross-Validation
 ```python
 from sklearn.model_selection import cross_val_score
 scores = cross_val_score(tree_reg, housing_prepared, housing_labels, scoring="neg_mean_squared_error", cv=10)
@@ -289,7 +482,7 @@ my_model_loaded = joblib.load("my_model.pkl")
 ```
 
 6. **Fine-tune your model**
-#### Grid Search
+### Grid Search
 ```python
 from sklearn.model_selection import GridSearchCV
 
@@ -311,13 +504,13 @@ grid_search.best_params_
 grid_search.best_estimator_
 ```
 
-#### Randomized Search
+### Randomized Search
 When the hyperparameter search space is large, it is often preferable to use *RandomizedSearchCV*
 
-#### Ensemble Methods
+### Ensemble Methods
 Another way to fine-tune your system is to try to combine the models that perform best. The group (*ensemble*) will often perform better than the best individual model
 
-#### Analyze the Best Models and Their Errors
+### Analyze the Best Models and Their Errors
 
 ```python
 feature_importances = grid_search.best_estimator_.feature_importances_
@@ -345,7 +538,7 @@ feature_importances = grid_search.best_estimator_.feature_importances_
 ```
 You may want to try dropping less useful features or understand errors your system makes
 
-#### Evaluate Your System on the Test Set
+### Evaluate Your System on the Test Set
 Get the predictors and the labels from your test set, run your *full_pipeline* to transform the data (call transform(), not fit_transform()), and evaluate the final model on the test set:
 
 ```python
@@ -378,7 +571,7 @@ If you did a lot of hyperparameter tuning, the performance may be worse than you
 
 7. **Present your solution**
 
-#### Project prelaunch phase
+### Project prelaunch phase
 - What you have learned, what worked/did not, what assumptions were made, what your system's limitations are
 - Document everything
 - Create nice presentations with clear visualizations and easy-to-remember statements
@@ -404,11 +597,11 @@ If the data keeps evolving, you will need to update your datasets and retrain yo
 # CH3. Classification
 > Some learning algorithms are sensitive to the order of the training instances, and they perform poorly if they get many similar instances in a row. **Shuffling** the dataset ensures that this won't happen
 
-#### Stochastic Gradient Descent (SGD) classifier
+### Stochastic Gradient Descent (SGD) classifier
 *SGDClassifier* on sklearn. Has the advantage of being capable of handling very large datasets efficiently. Deals with training instances independently, one at a time (suited for online learning)
 
 ### Performance Measures
-#### Measuring Accuracy using Cross-Validation
+### Measuring Accuracy using Cross-Validation
 The snippet below does roughly the same thing as *cross_val_score()* from sklearn, but with stratified sampling
 ```python
 from sklearn.model_selection import StratifiedKFold
@@ -430,7 +623,7 @@ for train_index, test_index in skfolds.split(X_train, y_train_5):
 ```
 > High accuracy can be deceiving if you are dealing with *skewed datasets* (i.e., when some classes are much more frequent than others)
 
-#### Confusion Matrix
+### Confusion Matrix
 Count the number of times instances of class A are classified as class B
 
 ```python
@@ -440,14 +633,14 @@ confusion_matrix(y_train_5, y_train_pred)
 
 Each row represents an *actual class*, while each column represents a *predicted class*
 
-#### Precision
+### Precision
 Accuracy of the positive predictions
 
 > precision = TP/(TP + FP)
 
 TP is the number of true positives, and FP is the number of false positives
 
-#### Recall or Sensitivity, or True Positive Rate (TPR)
+### Recall or Sensitivity, or True Positive Rate (TPR)
 Ratio of positive instances that are correctly detected by the classifier
 
 > recall = TP/(TP + FN)
@@ -460,7 +653,7 @@ precision_score(y_train_5, y_train_pred)
 recall_score(y_train_5, y_train_pred)
 ```
 
-#### F1 Score
+### F1 Score
 Harmonic mean of the precision and recall. The harmonic mean gives much more weight to low values, so the classifier will only get a high F1 score if both recall and precision are high
 
 > F1 = 2*(precision*recall)/(precision+recall)
@@ -472,7 +665,7 @@ f1_score(y_train_5, y_train_pred)
 
 The F1 score favors classifiers that have similar precision and recall
 
-#### Precision/Recall trade-off
+### Precision/Recall trade-off
 > *Precision/recall trade-off*: increasing precision reduces recall, and vice versa. e.g., videos safe for kids: prefer reject many good videos (low recall), but keeps only safe ones (high precision)
 
 Scikit-Learn gives you access to the decision scores that it uses to make predicitions, *.decision_function()* method, which returns a score for each instance and then use any threshold you want to make predictions based on those scores
@@ -500,19 +693,19 @@ y_train_pred_90 = (y_scores >= threshold_90_precision)
 0.4368197749492714
 ```
 
-#### The ROC Curve
+### The ROC Curve
 *Receiver operating characteristic* (ROC) curve. Plots the *true positive rate* (recall) against the *false positive rate* (FPR). The FPR is the ratio of negative instances that are incorrectly classified as positive. It is equal to 1 - *true negative rate* (TNR, or *specificity*) which is the ratio of negative instances that are correctly classified as negative
 
 ROC curve plots sensitivity (recall) versus 1 - specificity (*.roc_curve()*)
 
 > The higher the recall (TPR), the more false positives (FPR) the classifier produces. The purely random classifier is the diagonal line in the plot, a good classifier stays as far away from that line as possible (toward the top-left corner)
 
-#### Area under the curve (AUC)
+### Area under the curve (AUC)
 A perfect classifier will have a ROC AUC equal to 1, whereas a purely random classifier will have a ROC AUC equal to 0.5 (*.roc_auc_score()*)
 
 > You should prefer the PR curve whenever the positive class is rare or when you care more about the false positives than the false negatives. Otherwise, use the ROC curve. 
 
-#### Binary classifiers
+### Binary classifiers
 1. Choose the appropriate metrics
 2. Evaluate your classifiers using cross-validation
 3. Select the precision/recall trade-off that fits your needs
@@ -525,7 +718,7 @@ Some algorithms are not capable of handling multiple classes natively (e.g., Log
 
 > Scikit-Learn detects when you try to use a binary classification algorithm for a multiclass classification task, and it automatically runs OvR or OvO, depending on the algorithm
 
-#### Error Analysis
+### Error Analysis
 Analyzing the confusion matrix often gives you insights into ways to improve your classifier.
 
 ### Multilabel Classification
@@ -554,7 +747,7 @@ The size of the steps, is determined by the **learning rate** hyperparameter. If
 
 > When using Gradient Descent, you should ensure that all features have a similar scale, or else it will take much longer to converge.
 
-#### Batch vs Stochastic Gradient Descent
+### Batch vs Stochastic Gradient Descent
 The main problem with Batch Gradient Descent is that it uses the whole training set to compute the gradients at every step -> very slow when training set is large 
 
 Stochastic Gradient Descent picks a random instance in the training set at every step and computes the gradients based only on that single instance -> algorithm much faster because it has very little data to manipulate at every iteration. Possible to train on huge training sets, since only one instance in memory at each iteration
@@ -831,24 +1024,24 @@ Sometimes referred to as *LLoyd-Forgy*
 
 > The algorithm is guaranteed to converge in a finite a number of steps (usually quite small). K-Means is generally one of the fastest clustering algorithms
 
-#### K-Means++
+### K-Means++
 Introduced a **smarter initialization step** that tends to select centroids that are distant from one another -> makes the algorithm much less likely to converge to a suboptimal solution
 
-#### Accelerated K-Means and mini-batch K-Means
+### Accelerated K-Means and mini-batch K-Means
 Accelerated -> exploits the triangle inequality
 
 Mini-batches -> speeds up the algorithm by a factor of 3 or 4 -> makes it possible to cluster huge datasets that do not fit in memory (*MiniBatchKMeans* in Scikit-Learn)
 
 > If the dataset does not fit in memory, the simplest option is to use the *memmap* class. Alternatively, you can pass one mini-batch at a time to the *partial_fit()* method, but this will require much more work, since you will need to perform multiple initializations and select the best one yourself.
 
-#### Finding the optimal number of clusters
+### Finding the optimal number of clusters
 Plotting the inertia as a function of the number of clusters k, the curve often contains an inflexion point called the **“elbow”**
 
 A more precise approach (but also more computationally expensive) is to use the silhouette score, which is the mean **silhouette coefficient** over all the instances. An instance’s silhouette coefficient is equal to (b – a) / max(a, b), where a is the mean distance to the other instances in the same cluster (i.e., the mean intra-cluster distance) and b is the mean nearest-cluster distance (i.e., the mean distance to the instances of the next closest cluster, defined as the one that minimizes b, excluding the instance’s own cluster). The silhouette coefficient can vary between –1 and +1. A coefficient close to +1 means that the instance is well inside its own cluster and far from other clusters, while a coefficient close to 0 means that it is close to a cluster boundary, and finally a coefficient close to –1 means that the instance may have been assigned to the wrong cluster.
 
 > **Silhouette diagram**: more informative visualization -> plot every instance's silhouette coefficient, sorted by the cluster they are assigned to and by the value of the coefficient
 
-#### Limits of K-Means
+### Limits of K-Means
 - Necessary to run several times to avoid suboptimal solutions
 - You need to specify the number of clusters
 - Does not behave well when the clusters have varying sizes, different densities or nonspherical shapes
@@ -857,7 +1050,7 @@ A more precise approach (but also more computationally expensive) is to use the 
 
 > **NOTE**: remember to check the book again, there are some useful practical examples on clustering for preprocessing, semi-supervised learning (*label propagation*)
 
-##### Active learning (*uncertainty sampling*)
+#### Active learning (*uncertainty sampling*)
 1. The model is trained on the labeled instances gathered so far, and this model is used to make predictions on all the unlabeled instances.
 2. The instances for which the model is most uncertain (i.e., when its estimated probability is lowest) are given to the expert to be labeled.
 3. You iterate this process until the performance improvement stops being worth the labeling effort.
@@ -880,15 +1073,15 @@ A *Gaussian mixture model* (GMM) is a probabilistic model that assumes that the 
 
 GMM is a *generative model* -> you can sample new instances from it
 
-#### Anomaly Detection using Gaussian Mixtures
+### Anomaly Detection using Gaussian Mixtures
 Using a GMM for anomaly detection is quite simple: any instance located in a low-density region can be considered an anomaly. You must define what density threshold you want to use.
 
 A closely related task is *novelty detection*: it differs from anomaly detection in that the algorithm is assumed to be trained on a "clean" dataset, uncontaminated by outliers, whereas anomaly detection oes not make this assumption. Outlier detection is often used to clean up a dataset.
 
-#### Selecting the Number of Clusters
+### Selecting the Number of Clusters
 Find the model that minimizes a theoretical information criterion -> *Bayesian information criterion* (BIC) or the *Akaike information criterion* (AIC)
 
-#### Bayesian Gaussian Mixture Models
+### Bayesian Gaussian Mixture Models
 Rather than manually searching for the optimal number of clusters, you can use the BayesianGaussianMixture class, which is capable of giving weights equal (or close) to zero to unnecessary clusters. Set the number of clusters n_components to a value that you have good reason to believe is greater than the optimal number of clusters (this assumes some minimal knowledge about the problem at hand), and the algorithm will eliminate the unnecessary clusters automatically.
 
 > GMM work great on clusters with ellipsoidal shapes, but if you try to fit a dataset with different shapes, you may have bad surprises
@@ -932,7 +1125,7 @@ An MLP is composed of one (passthrough) *input layer*, one or more layers of TLU
 
 When an ANN contains a deep stack of hidden layers -> *Deep neural network* (DNN)
 
-#### Backpropagation
+### Backpropagation
 
 Training algorithm. It is Gradient Descent using and efficient technique for computing the gradients automatically: in just two passes through the network (one forward, one backward), the backpropagation algorithm is able to compute the gradient of the network's error with regard to every single model parameter. It can find out how each connection weight and each bias term should be tweaked in order to reduce the error. Once it has these gradients, it just performs a regular Gradient Descent step, and the whole process is repeated until the network converges to the solution.
 
@@ -942,7 +1135,7 @@ For each training instance, the backpropagation algorithm first makes a predicti
 
 > It is important to initialize all the hidden layers’ connection weights randomly, or else training will fail. For example, if you initialize all weights and biases to zero, then all neurons in a given layer will be perfectly identical, and thus backpropagation will affect them in exactly the same way, so they will remain identical
 
-#### Activation functions
+### Activation functions
 You need to have some nonlinearity between layers to solve very complex problems
 
 Examples:
@@ -951,7 +1144,7 @@ Examples:
 - Hyperbolic tangent (tanh)
 - Rectified Linear Unit (ReLU) -> fast to compute, has become the default
 
-#### Regression MLP architecture
+### Regression MLP architecture
 **Hyperparameter - Typical value**
 
 input neurons - One per input feature (e.g., 28 x 28 = 784 for MNIST)
@@ -968,7 +1161,7 @@ Output activation - None, or ReLU/softplus (if positive outputs) or logistic/tan
 
 Loss function - MSE or MAE/Huber (if outliers)
 
-#### Classification MLP architecture
+### Classification MLP architecture
 
 **Hyperparameter - Binary classification - Multilabel binary classification - Multiclass classification**
 
@@ -986,7 +1179,7 @@ Tensorflow 2 is arguably just as simple as PyTorch, as it has adopted Keras as i
 
 > Since we are going to train the neural network using Gradient Descent, we must scale the input features
 
-#### Creating a Sequential model
+### Creating a Sequential model
 
 You can pass a list of layers when creating the Sequential model:
 
@@ -1003,7 +1196,7 @@ The model’s summary() method displays all the model’s layers, including each
 
 > Dense layers often have a lot of parameters. This gives the model quite a lot of flexibility to fit the training data, but it also means that the model runs the risk of overfitting, especially when you do not have a lot of training data
 
-#### Compiling the model
+### Compiling the model
 
 After a model is created, you must call its compile() method to specify the loss function and the optimizer to use. Optionally, you can specify a list of extra metrics to compute during training and evaluation:
 
@@ -1013,7 +1206,7 @@ model.compile(loss="sparse_categorical_crossentropy",
               metrics=["accuracy"])
 ```
 
-#### Training and evaluating the model
+### Training and evaluating the model
 
 Now the model is ready to be trained. For this we simply need to call its fit() method:
 
@@ -1168,12 +1361,12 @@ There are many techniques to explore a search space much more efficiently than r
 
 > Hyperparameter tuning is still an active area of research, and evolutionary algorithms are making a comeback
 
-#### Number of Hidden Layers
+### Number of Hidden Layers
 For complex problems, deep networks have a much higher *parameter efficiency* than shallow ones -> they can model complex functions using exponentially fewer neurons than shallow nets, allowing them to reach much better performance with the same amount of training data. Ramp up the number of hidden layers until you start overfitting the training set
 
 > **Transfer Learning**: Instead of randomly initializing the weights and biases of the first few layers of the new neural network, you can initialize them to the values of the weights and biases of the lower layers of the first network. This way the network will not have to learn from scratch all the low-level structures that occur in most pictures; it will only have to learn the higher-level structures
 
-#### Number of Neurons per Hidden Layer
+### Number of Neurons per Hidden Layer
 The number of neurons in the input and output layers is determined by the type of input and output your task requires
 
 Hidden layers: it used to be common to size them to form a pyramid, with fewer neurons at each layer -> many low-level features can coalesce into far fewer high-level features -> this practice has been largely abandoned -> Using the same number of neurons in all hidden layers performs just as well in most cases or even better; plus, there is only one hyperparameter to tune, insted of one per layer
@@ -1184,7 +1377,7 @@ Depending on the dataset, first hidden layer bigger can be good
 
 Increasing the number of layers >> increase the number of neurons per layer
 
-#### Learning Rate, Batch Size, and Other Hyperparameters
+### Learning Rate, Batch Size, and Other Hyperparameters
 Plot the loss as a function of the learning rate (using a log scale for the learning rate), you should see it dropping at first. But after a while, the learning rate will be too large, so the loss will shoot back up: the optimal learning rate will be a bit lower than the point at which the loss starts to climb (typically about 10 times lower than the turning point)
 
 Benefit of using large batch sizes -> GPUs can process them efficiently -> use the largest batch size that can fit in GPU RAM
@@ -1205,14 +1398,14 @@ ReLU activation function is a good default
 
 More generally, DNNs suffer from unstable gradients, different layers may learn at widely different speeds
 
-#### Glorot and He Initialization
+### Glorot and He Initialization
 Using Glorot initialization can speed up training considerably
 
 ReLU actv fn and its variants, sometimes called *He initialization*
 
 SELU actv fn should be used with LeCun initialization (with normal distribution)
 
-#### Nonsaturating Activation Functions
+### Nonsaturating Activation Functions
 - **Dying ReLUs**: during training some neurons stops outputting anything other than 0.
 - **leaky ReLU**: small slope ensures that leaky ReLUs never die -> always outperformed the strict ReLU actv fn
 - **randomized leaky ReLU (RReLU)**: perform well, seemed to act as regularizer
@@ -1222,7 +1415,7 @@ SELU actv fn should be used with LeCun initialization (with normal distribution)
 
 > **In general**: SELU > ELU > leaky ReLU > ReLU > tanh > logistic
 
-#### Batch Normalization
+### Batch Normalization
 Also help solve vanishing/exploding gradients problems.
 
 Add an operation just before or after the actv fn of each hidden layer: zero-centers and normalizes each input, then scales and shifts the result using two new parameter vectors per layer: one for scaling, other for shifting -> many cases if the BN layer as the very first of the NN, you do not need to standardize your training set 
@@ -1243,7 +1436,7 @@ model = keras.models.Sequential([
 
 > BatchNormalization -> one of the most-used layers in DNNs, often omitted in the diagrams, it is assumed BN is added after every layer
 
-#### Gradient Clipping
+### Gradient Clipping
 Mitigate the exploding gradients problem. Clip the gradients during backpropagation, never exceed some threshold.
 
 Most often used in RNNs (BN is trickier to use here)
@@ -1255,7 +1448,7 @@ Most often used in RNNs (BN is trickier to use here)
 
 More similar tasks = more layers you want to reuse (starting with the lower layers)
 
-#### Transfer Learning with Keras
+### Transfer Learning with Keras
 
 Cloning a model with their weights
 ```python
@@ -1274,7 +1467,7 @@ model_B_on_A.compile(loss="binary_crossentropy", optimizer="sgd",
 
 > Transfer Learning does not work very well with small dense networks. Works best with deep CNN -> tend to learn feature detectors that are much more general
 
-#### Unsupervised Pretraining
+### Unsupervised Pretraining
 Often cheap to gather unlabeled training examples, but expensive to label them. You can try to use the unlabeled data to train an unsupervised model, such as an autoencoder or a generative adversarial network (GAN). Then reuse the lower layers of the autoencoder/GAN's discriminator, add the output layer for your task and fine-tune the final network using supervised learning
 
 Before -> restricted Boltzmann machines (RBMs) for unsupervised learning
@@ -1289,24 +1482,24 @@ Ways to speed up training:
 - reusing parts of a pretrained network
 - faster optimizers than regular gradient descent
 
-#### Momentum Optimization
+### Momentum Optimization
 - with momentum the system may oscillate before stabilizing -> it's good to have a bit of friction in the system
 - momentum value = 0.9 -> usually works well in practice
 
-#### Nesterov Accelerated Gradient (NAG)
+### Nesterov Accelerated Gradient (NAG)
 - NAG ends up being significantly faster than regular momentum optimization
 - less oscillations and converges faster
 - nesterov=True
 
-#### AdaGrad
+### AdaGrad
 - *adaptive learning rate*
 - efficient for simpler tasks such as Linear Regression
 - should NOT be used to train DNNs
 
-#### RMSProp
+### RMSProp
 - better than AdaGrad on more complex problems
 
-#### Adam and Nadam Optimization
+### Adam and Nadam Optimization
 - Adam: *adaptive moment estimation*
 - requires less tuning of the learning rate
 
@@ -1331,7 +1524,7 @@ Learning schedules -> vary the lr during training
 - early stopping is one of the best regularization techniques
 - batch normalization is very good too
 
-#### L1 and L2 Regularization
+### L1 and L2 Regularization
 - L2 -> constrain NN's weights
 - L1 -> if you want a sparse model (many weights = 0)
 
@@ -1354,7 +1547,7 @@ model = keras.models.Sequential([
 ])
 ```
 
-#### Dropout
+### Dropout
 One of the most popular regularization techniques for DNNs
 - at every training step, every neuron (only exception = output neurons) has a probability `p` (10-50%) of being temporarily ignored (dropped out) -> may be active in the next step
 
@@ -1364,7 +1557,7 @@ One of the most popular regularization techniques for DNNs
 
 - many state of the art only use dropout after the last hidden layer
 
-#### Monte Carlo (MC) Dropout
+### Monte Carlo (MC) Dropout
 
 - dropout networks have a profound connection with approximate Bayesian inference -> solid math justification
 
@@ -1378,7 +1571,7 @@ y_proba = y_probas.mean(axis=0)
 
 Averaging over multiple predictions with dropout on gives us a Monte Carlo estimate that is generally more reliable than the result of a single prediction with dropout off
 
-#### Default DNN configuration
+### Default DNN configuration
 **Hyperparameter** - **Default value**
 
 Kernel initializer - He initialization
@@ -1393,7 +1586,7 @@ Optimizer - Momentum optimization (or RMSProp or Nadam)
 
 Learning rate schedule - 1cycle
 
-#### DNN configuration for a self-normalizing net
+### DNN configuration for a self-normalizing net
 **Hyperparameter** - **Default value**
 
 Kernel initializer - LeCun initialization
@@ -1493,14 +1686,14 @@ Batch Normalization cannot be used as efficiently with RNNs -> another form of n
 ### Tackling the Short-Term Memory Problem
 Due to the transformations that the data goes through when traversing an RNN, some information is lost at each time step. After a while, the RNN’s state contains virtually no trace of the first inputs
 
-#### LSTM (Long Short-Term Memory) cells 
+### LSTM (Long Short-Term Memory) cells 
 LSTM cell looks exactly like a regular cell, except that its state is split into two vectors: h(t) and c(t) (“c” stands for “cell”). You can think of h(t) as the short-term state and c(t) as the long-term state
 
 The key idea is that the network can learn what to store in the long-term state, what to throw away, and what to read from it
 
 > LSTM cell can learn to recognize an important input (that’s the role of the input gate), store it in the long-term state, preserve it for as long as it is needed (that’s the role of the forget gate), and extract it whenever it is needed
 
-#### GRU (Gated Recurrent Unit) cells
+### GRU (Gated Recurrent Unit) cells
 Simplified version of the LSTM cell that performs just as well
 
 LSTM and GRU cells are one of the main reasons behind the success of RNNs. Yet while they can tackle much longer sequences than simple RNNs, they still have a fairly limited short-term memory, and they have a hard time learning long-term patterns in sequences of 100 time steps or more, such as audio samples, long time series, or long sentences. One way to solve this is to shorten the input sequences, for example using 1D convolutional layers
@@ -1550,7 +1743,7 @@ Assuming the time series is *stationary* -> split across time
 
 > n_steps = 100 -> RNN will only be able to learn patterns shorter or equal to n_steps (100 in this case). Higher n_steps -> harder to train!
 
-#### Stateful RNN
+### Stateful RNN
 - shift = n_steps (instead of 1 like stateless RNN) when calling *window()*
 - we must obviously not call *shuffle()* method
 - harder to do batching
