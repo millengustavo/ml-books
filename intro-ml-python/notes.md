@@ -52,6 +52,47 @@ Most models work best when each feature (and in regression also the target) is l
 > These kind of transformations are irrelevant for tree-based models, but might be essential for linear models. Sometimes it's also a good idea to transform the target variable in regression
 
 ## Automatic Feature Selection
+Adding more features makes all models more complex, and so increases the chance of overfitting
+
+It can be good idea to reduce the number of features to only the most useful ones, and discard the rest
+
+### Univariate Statistics
+Compute whether there is a statistically significant relationship between each feature and the target -> the features with highest confidence are selected. Also know as *analysis of variance* (ANOVA) for classification
+
+Only consider each feature individually. *f_classify* or *f_regression* tests in scikit-learn and then *SelectKBest* or *SelectPercentile*
+
+### Model-Based Feature Selection
+Uses a supervised ML model to judge the importance of each feature, and keeps only the most important ones
+- Decision tree-based models: *feature_importances_* attribute
+- Linear models: coefficients can capture feature importances
+
+> Model-based considers all features at once, so can capture interactions. *SelectFromModel*
+
+```python
+from sklearn.feature_selection import SelectFromModel
+from sklearn.ensemble import RandomForestClassifier
+select = SelectFromModel(
+    RandomForestClassifier(n_estimators=100, random_state=42),
+    threshold="median")
+```
+
+### Iterative Feature Selection
+A series of models are built, with varying numbers of features. Two methods:
+- starting with no features and adding one by one
+- starting with all features and removing one by one
+
+More computationally expensive
+
+*recursive feature elimination* (RFE): starts with all features, builds a model, and discards the least important feature according to the model -> repeat
+
+> **Feature Selection**: Can speed up prediction, allow for more interpretable model. In most real-world cases, is unlikely to provide large gains in performance
+
+## Utilizing Expert Knowledge
+Prior knowledge about the nature of the task can be encoded in the features to aid a ML algorithm
+
+> Adding a feature does not force a machine learning algorithm to use it, and even if the holiday information turns out to be noninformative for flight prices, augmenting the data with this information doesn’t hurt.
+
+- COOL example with bike rental on the book -> check to see the coefficients learned by the linear model
 
 # 5. Model Evaluation and Improvement
 
