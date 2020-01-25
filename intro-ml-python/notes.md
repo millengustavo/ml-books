@@ -17,6 +17,51 @@ Authors: Andreas C. Müller and Sarah Guido
 
 
 # 1. Introduction
+## Why ML?
+Using handcoded rules to make decisions has two disadvantages:
+- logic is specific to a domain and task. Change the task slightly -> rewrite the whole system
+- designing rules requires a deep understanding of how a decision should be made by a human expert
+
+## Knowing your task and knowing your data
+When building a ML solution:
+- What question(s) am I trying to answer? Do I think the data collected can answer that question?
+- What is the best way to phrase my question(s) as a machine learning problem?
+- Have I collected enough data to represent the problem I want to solve?
+- What features of the data did I extract, and will these enable the right predictions?
+- How will I measure success in my application?
+- How will the machine learning solution interact with other parts of my research or business product?
+
+> Many spend a lot of time building complex ML solutions, only to find out they don't solve the right problem. When going deep into the technical aspects of ML, it is easy to lose sight of the ultimate goals
+
+### Jupyter notebook
+Interactive environment for running code in the browser
+
+### NumPy
+- `ndarray`: multidimensional (*n*) array with elements of the same type
+- high-level mathematical functions, such as linear algebra, Fourier transform, pseudorandom number generators
+
+### SciPy
+- `scipy.sparse`: provides sparse matrices
+- advanced linear algebra routines, mathematical function optimization, signal processing, statistical distributions
+
+### Matplotlib
+- On jupyter: `%matplotlib inline`
+- Primary scientific plotting library in Python
+
+### Pandas
+Library for data wrangling and analysis
+- `DataFrame`: allows each column to have a separate type
+
+### mglearn
+Library of utility functions wrote for this specific book. Avoid boilerplate with plotting and loading data
+
+## First things first: look at your data
+Before building a ML model, inspect the data:
+- task easily solvable without ML
+- desired information may not be contained in the data
+- find abnormalities and peculiarities
+- real world: inconsistencies in the data and unexpected measurements are very common
+- *scatter plot*: `pd.scatter_matrix`
 
 # 2. Supervised Learning
 
