@@ -140,6 +140,94 @@ Prior knowledge about the nature of the task can be encoded in the features to a
 - COOL example with bike rental on the book -> check to see the coefficients learned by the linear model
 
 # 5. Model Evaluation and Improvement
+## Cross-Validation
+Data is split repeatedly and multiple models are trained. Most common: *k-fold cross-validation*
+
+> Scikit-learn: `cross_val_score` from the *model_seleciton* module
+
+High variance in the metric (e.g., accuracy) between folds -> model is very dependent on the particular folds for train, or it could also be consequence of the small size of the dataset
+
+### Benefits of Cross-Validation
+- avoid "lucky"/"unlucky" random train_test_split
+- in cross-validation each example will be in the training set exactly once: each example is in one of the folds, and each fold is the test set once -> the model needs to generalize well to all of the samples in the dataset for all of the cross-validation scores to be high
+- multiple splits provides information about how sensitive the model is to the selection of the training set -> idea of the best/worst case scenarios
+- use data more effectively: more data usually leads to more accurate models 
+
+Disadvantage: increased computational cost -> train *k* models instead of one
+
+> Cross-validation does not return a model, its purpose is only to evaluate how well a given algorithm will generalize when trained on a specific dataset
+
+### Stratified k-Fold Cross-Validation
+*Stratified k-fold cross-validation*: split the data such that the proportions between classes are the same in each fold as they are in the whole dataset
+
+Results in more reliable estimates of generalization performance
+
+For regression scikit-learn uses the standard *k-fold cross-validation* by default
+
+### Leave-one-out cross-validation
+*k-fold cross-validation* where each fold is a single sample. `LeaveOneOut` on sklearn.model_selection
+
+Can be very time consuming for large datasets, but sometimes provides better estimates on small datasets
+
+### Shuffle-split cross-validation
+Each split samples train_size many points for the training set and test_size many (disjoint) points for the test set. This splitting is repeated n_iter times
+
+- allows for control over the number of iterations independently of the training and test sizes
+- allows for using only part of the data in each iteration by providing train_size and test_size that don't add up to one -> subsampling like that can be useful for experimenting with large datasets
+
+> `ShuffleSplit` and `StratifiedShuffleSplit` on sklearn
+
+### Cross-validation with groups
+When there are groups in the data that are highly related
+
+`GroupKFold`: takes an array of groups as arguments -> indicates groups in the data that should not be split when creating the training and test sets, and should not be confused with the class label
+
+> GroupKFold: important for medical applications (multiple samples for same patient), also speech recognition
+
+## Grid Search
+Trying all possible combinations of the parameters of interest
+
+### The danger of overfitting the parameters and the validation set
+To avoid this split the data in three sets: the training set to build the model, the validation (or development) set to select the parameters of the model, and the test set to evaluate the performance of the selected parameters
+
+> After selecting the best parameters using the validation set, rebuild the model using the parameter settings found, but now training on both the training data and the validation data
+
+**Important to keep the distinction of training, validation and test sets clear!** Evaluating more than one model on the test set and choosing the better of the two will result in an overly optimistic estimate of how accurate the model is -> "Leak" information from the test set into the model
+
+### Grid Search with Cross-Validation
+Beautiful plot from `mglearn`:
+
+```python
+mglearn.plots.plot_cross_val_selection()
+```
+
+`GridSearchCV` on sklearn: implemented in the form of an estimator -> not only searchs for the best parameters, but also automatically fits a new model on the whole training dataset with the parameters that yielded the best CV performance
+
+> `best_score_` != `score`: first stores the mean CV accuracy performed in the training set, second evaluate the output of the predict method of the model trained on the whole training set!
+
+## Analyzing the result of cross-validation
+```python
+# cool example of a heatmap using SVM
+mglearn.tools.heatmap(scores, xlabel='gamma', xticklabels=param_grid['gamma'],
+                      ylabel='C', yticklabels=param_grid['C'], cmap="viridis")
+```
+
+Optimum values for each parameter on the edges of the plot: parameters not large enough!
+
+## Nested cross-validation
+An outer loop over splits of the data into training and test sets. For each of them, a grid search is run (which might result in different best parameters for each split in the outer loop). Then, for each outer split, the test set score using the best settings is reported
+
+- Rarely used in practice
+- Useful for evaluating how well a given model works on a particular dataset
+- Computationally expensive procedure
+
+```python
+# example of nested CV
+scores = cross_val_score(GridSearchCV(SVC(), param_grid, cv=5),
+                         iris.data, iris.target, cv=5)
+```
+
+## Evaluation Metrics and Scoring
 
 # 6. Algorithm Chains and Pipelines
 
