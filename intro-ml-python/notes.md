@@ -228,6 +228,78 @@ scores = cross_val_score(GridSearchCV(SVC(), param_grid, cv=5),
 ```
 
 ## Evaluation Metrics and Scoring
+### Keep the end goal in mind
+- *Business metric*: We are interested in using the predictions as part of a larger decision-making process, you should think about the high-level goal of the application
+- *Business impact*: consequences of choosing a particular algorithm for a ML application
+
+When choosing a model or adjusting parameters, you should pick the model or parameter values that have the most positive influence on the business metric
+
+> Sometimes infeasible to put models in production just for testing purposes (high business risk): find some surrogate evaluation procedure (as close as possible to the business goal), using an evaluation metric that is easier to compute
+
+## Metrics for binary classification
+### Kinds of errors
+- **false positive**: incorrect positive prediction, **type I error**
+- **false negative**: incorrect negative prediction, **type II error**
+
+### Imbalanced datasets
+Accuracy is an inadequate measure for quantifying predictive performance in most imbalanced settings
+- `pred_most_frequent`: model that make predictions to the most frequent class
+- `pred_dummy`: random predictions
+
+### Confusion matrices
+`confusion_matrix`
+- rows: true classes
+- columns: predicted classes
+
+| -              | -                  | -                  |
+| -------------- | ------------------ | ------------------ |
+| negative class | TN                 | FP                 |
+| positive class | FN                 | TP                 |
+| -              | predicted negative | predicted positive |
+
+- Accuracy = (TP+TN)/(TP+TN+FP+FN)
+
+- Precision = (TP)/(TP+FP) 
+
+Precision is used when the goal is to limit the number of false positives. AKA *positive predictive value (PPV)*
+
+- Recall = (TP)/(TP+FN)
+
+Recall is used when we need to identify all positive samples; that is, when it is important to avoid false negatives. AKA *sensitivity*, *hit rate*, or *true positive rate (TPR)*
+
+- F-score or f-measure or f1-score -> F = 2*(precision*recall)/(precision+recall)
+
+Harmonic mean of precision and recall
+
+```python
+from sklearn.metrics import classification_report
+```
+
+### Taking uncertainty into account
+- You can change the decision threshold depending on the problem
+- *calibration*: a calibrated model is a model that provides an accurate measure of its uncertainty
+
+### Precision-recall curves and ROC curves
+Setting a requirement on a classifier like 90% recall is often called setting the *operation point*
+
+Precision-recall curve: look at all possible thresholds, or all possible trade-offs of precision and recalls at once. `precision_recall_curve`
+
+> *Average precision*: Area under the precision-recall curve. `average_precision_score`
+
+Receiver operating characteristics (ROC) curve: consider all possible thresholds for a given classifier, shows the *false positive rate (FPR)* against the *true positive rate (TPR)*. `roc_curve`
+
+- TPR = recall = (TP)/(TP+FN)
+- FPR = (FP)/(FP+TN)
+
+Average precision always returns a value between 0 (worst) and 1 (best). Predicting randomly always produces an AUC of 0.5 -> AUC is much better than accuracy as a metric for imbalanced datasets
+
+AUC: evaluating the ranking of positive samples. Probability that a randomly picked point of the positive class will have a higher score according to the classifier than a randomly picked point from the negative class
+
+> AUC does not make use of the default threshold, so adjusting the decision threshold might be necessary to obtain useful classification results from a model with a high AUC
+
+## Metrics for Multiclass Classification
+
+
 
 # 6. Algorithm Chains and Pipelines
 
