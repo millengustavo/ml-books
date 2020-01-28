@@ -322,6 +322,16 @@ for regression:
 for more, see: `sklearn.metrics.scores`
 
 # 6. Algorithm Chains and Pipelines
+ML algorithms requires chaining together many different processing steps and ML models. `Pipeline` class simplify the process of building chains of transformations and models
+
+## Parameter selection with preprocessing
+```python
+mglearn.plots.plot_improper_processing()
+```
+
+> Splitting the dataset during cross-validation should be done *before doing any preprocessing*. Any process that extracts knowledge from the dataset should only ever be applied to the training portion of the dataset, so any CV should be the "outermost loop" in your processing
+
+## Building Pipelines
 
 # 7. Working with Text Data
 
