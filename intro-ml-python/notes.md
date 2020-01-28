@@ -298,8 +298,28 @@ AUC: evaluating the ranking of positive samples. Probability that a randomly pic
 > AUC does not make use of the default threshold, so adjusting the decision threshold might be necessary to obtain useful classification results from a model with a high AUC
 
 ## Metrics for Multiclass Classification
+Metrics for multiclass classification are derived from binary, but averaged over all classes
 
+For imbalanced datasets: multiclass f-score -> one binary f-score per class (that being the positive) and others being the negative -> then average these per-class f-scores
 
+## Regression metrics
+- Rˆ2 is enough for most applications
+- Mean squared error (MSE)
+- Mean absolute error (MAE)
+
+## Using evaluation metrics in model selection
+`scoring` parameters for classification:
+- `accuracy`
+- `roc_auc`
+- `average_precision`
+- `f1`, `f1_macro`, `f1_micro`, `f1_weighted`
+
+for regression:
+- `r2`
+- `mean_squared_error`
+- `mean_absolute_error`
+
+for more, see: `sklearn.metrics.scores`
 
 # 6. Algorithm Chains and Pipelines
 
