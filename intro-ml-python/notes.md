@@ -332,6 +332,73 @@ mglearn.plots.plot_improper_processing()
 > Splitting the dataset during cross-validation should be done *before doing any preprocessing*. Any process that extracts knowledge from the dataset should only ever be applied to the training portion of the dataset, so any CV should be the "outermost loop" in your processing
 
 ## Building Pipelines
+```python
+from sklearn.pipeline import Pipeline
+pipe = Pipeline([("scaler", StandardScaler()), ("lr", LogisticRegression())])
+
+pipe.fit(X_train, y_train)
+pipe.score(X_test, y_test)
+```
+
+- reduce the code needed for "preprocessing + classification"
+- main benefit: now you can use this single estimator in `cross_val_score` or `GridSearchCV`
+
+```python
+grid = GridSearchCV(pipe, param_grid=param_grid, cv=5)
+grid.fit(X_train, y_train)
+print(grid.best_score_)
+print(grid.best_params_)
+```
+
+> For each split in the CV, the Scaler is refit with only the training splits and no information is leaked from the test split in to the parameter search
+
+## Information Leakage
+The impact varies depending on the preprocessing step:
+- estimating the scale of the data using the test fold usually doesn't have a terrible impact
+- using the test fold in feature extraction and feature selection can lead to **substantial differences** in outcomes
+
+## The General Pipeline Interface
+- not restricted to preprocessing and classification
+- only requirement: all estimators but the last step need to have a transform method
+- during `Pipeline.fit`, the pipeline calls fit and then transform on each step; for the last step, just fit is called
+- when predicting, we similarly transform the data using all but the last step, and then call predict on the last step
+- there is no requirement to have predict in the last step; the last step is only required to have a fit method
+
+### Convenient pipeline creation with make_pipeline
+```python
+from sklearn.pipeline import make_pipeline
+pipe_short = make_pipeline(StandardScaler(), LogisticRegression())
+```
+
+### Accessing step attributes
+`named_steps` attribute -> dictionary from the step names to estimators
+```python
+components = pipe.named_steps["pca"].components_
+```
+
+```python
+grid.best_estimator_.named_steps["logisticregression"].coef_
+```
+
+### Grid-Searching Which Model to Use
+```python
+pipe = Pipeline([("preprocessing", StandardScaler()), ("classifier", SVC())])
+
+from sklearn.ensemble import RandomForestClassifier
+
+param_grid = [
+    {'classifier': [SVC()], 'preprocessing': [StandardScaler(), None],
+     'classifier__gamma': [0.001, 0.01, 0.1, 1, 10, 100],
+     'classifier__C': [0.001, 0.01, 0.1, 1, 10, 100]},
+    {'classifier': [RandomForestClassifier(n_estimators=100)],
+     'preprocessing': [None], 'classifier__max_features': [1, 2, 3]}]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    cancer.data, cancer.target, random_state=0)
+
+grid = GridSearchCV(pipe, param_grid, cv=5)
+grid.fit(X_train, y_train)
+```
 
 # 7. Working with Text Data
 
