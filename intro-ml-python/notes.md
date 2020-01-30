@@ -403,5 +403,29 @@ grid.fit(X_train, y_train)
 # 7. Working with Text Data
 
 # 8. Wrapping Up
+## Approaching a ML problem
+It may be tempting to jump in and starting solving you data-related problem by running your favorite algorithm
+
+To make effective use of ML, we need to take a step back and consider the problem at large. First, you should think what kind of question you want to answer
+
+It is best if you can measure the performance of your algorithm directly using a business metric
+
+Collecting more or different data or changing the task formulation slightly might provide a much higher payoff than running endless grid searches to tune parameters
+
+### Humans in the loop
+Many applications are dominated by "simple cases", for which an algorithm can make a decision, with relatively few "complicated cases", which can be rerouted to a human
+
+## From prototype to production
+- Production systems have differente requirements from one-off analysis scripts
+- reliability, predictability, runtime, and memory requirements gain relevance
+- simplicity is key
+
+## Testing production systems
+- offline evaluation: test set collected beforehand
+- online/live testing: consequences of employing the algorithm in the overall system are evaluated
+
+**A/B testing**: enables us to evaluate the algorithms "in the wild", which might help us to discover unexpected consequences when users are interacting with our model
+
+**Bandit algorithms**: more elaborate mechanisms for online testing that go beyond A/B testing
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
