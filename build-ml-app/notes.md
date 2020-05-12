@@ -36,3 +36,53 @@ Imagine that the impact bottleneck is solved: it was worth the effort you estima
 ## Which modeling techniques to use
 Spend the manual effort to look at inputs and outputs of your model: see if anything looks weird. Looking at your data helps you think of good heuristics, models and ways to reframe the product
 
+# Ch2. Create a Plan
+
+## Measuring Success
+First model: simplest model that could address a product's needs -> generating and analyzing results is the fastest way to make progress in ML
+
+- Baseline: heuristics based on domain knowledge
+- Simple model
+- Complex model
+
+> You don't always need ML: even features that could benefit from ML can often simply use a heuristic for their first version (you may realize that you don't need ML at all)
+
+## Business Performance
+Product metrics: goals of your product or feature. Ultimately the only ones that matter, all other metrics should be used as tools to improve product metrics
+
+### Updating an app to make a modeling task easier
+- Change an interface so that a model's results can be omitted if they are below a confidence threshold
+- Present a few other predictions or heuristics in addition to model's top prediction
+- Communicate to users that model is still in an experimental phase and giving them opportunities to provide feedback
+
+> "A product should be designed with reasonable assumptions of model performance in mind. If a product relies on a model being perfect to be useful, it is very likely to produce innacurate or even dangerous results"
+
+## Freshness and Distribution Shift
+Distribution of the data shifts -> model often needs to change in order to maintain the same level of performance
+
+## Leverage Domain Expertise
+Best way to devise heuristics -> see what experts are currently doing. Most practical applications are not entirely novel. How do people currently solve the problem you are trying to solve?
+
+Second best way -> look at your data. Based on your dataset, how would you solve this task if you were doing it manually?
+
+### Examining the data
+EDA: process of visualizing and exploring a dataset -> to get an intuition to a given business problem. Crucial part of building any data product
+
+## Stand on the Shoulders of giants
+1. Reproduce existing results
+2. Build on top of them
+
+## To make regular progress: start simple
+1. Start with the simplest model that could address your requirements
+2. Build an end-to-end prototype including this model
+3. Judge its performance: optimization metrics and product goal
+
+Looking at the performance of a simple model on an initial dataset is the best way to decide what task should be tackled next
+
+## Diagnose Problems
+Write analysis and exploration functions:
+- Visualize examples the model performs the best and worst on
+- Explore data
+- Explore model results
+
+# Part II. Build a Working Pipeline
