@@ -86,3 +86,22 @@ Write analysis and exploration functions:
 - Explore model results
 
 # Part II. Build a Working Pipeline
+
+# Ch3. Build your first end-to-end pipeline
+First iteration: lackluster by design. Goal: allow us to have all the pieces of a pipeline in place:
+- prioritize which ones to improve next
+- identify the impact bottleneck
+
+> "Frequently, your product is dead even if your model is successful" - Monica Rogati
+
+## Test your workflow
+Evaluate:
+- usefulness of the current user experience
+- results of your handcrafted model
+
+## Finding the impact bottleneck
+Next challenge to tackle next:
+- iterating on the way we present results to the users or;
+- improving model performance by identifying key failure points
+
+# Ch4. Acquire an initial dataset
