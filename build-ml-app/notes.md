@@ -166,3 +166,25 @@ To find the best examples to label next. Identify data points that are most diff
 While you should use strategies to gather data, you should always randomly sample from your test set to validate your model
 
 # Part III. Iterate on Models
+
+# Ch5. Train and evaluate your model
+
+## The simplest appropriate model
+Not the best approach: try every possible model, benchmark and pick the one with the best results on a test set
+
+### Simple model
+- Quick to implement: won't be your last
+- Understandable: debug easily
+- Deployable: fundamental requirement for a ML-powered application
+
+> Model explainability and interpretability: ability for a model to expose reasons that caused it to make predictions
+
+## Test set
+"While using a test set is a best practice, practitioners sometimes use the validation set as a test set. This increases the risk of biasing a model toward the validation set but can be appropriate when running only a few experiments"
+
+## Data leakage
+- Temporal data leakage
+- Sample contamination
+
+Always investigate the results of a model, especially if it shows surprisingly strong performance
+
