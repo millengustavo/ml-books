@@ -188,3 +188,28 @@ Not the best approach: try every possible model, benchmark and pick the one with
 
 Always investigate the results of a model, especially if it shows surprisingly strong performance
 
+## Bias variance trade-off
+- Underfitting: weak performance on the training set = high bias
+- Overfitting: strong performance on the training set, but weak performance on the validation set = high variance
+
+## Evaluate your model: look beyond accuracy
+- **Contrast data and predictions**
+- **Confusion matrix**: see whether our model is particularly successful on certain classes and struggles on some others
+- **ROC Curve**: plot a threshold on it to have a more concrete goal than simply getting the largest AUC score
+- **Calibration Curve**: whether our model's outputed probability represents its confidence well. Shows the fraction of true positive examples as a function of the confidence of our classifier
+- **Dimensionality reduction for errors**: identify a region in which a model performs poorly and visualize a few data points in it
+- **The top-k method**
+  - **k best performing examples**: identify features that are successfully leveraged by a model
+  - **k worst performing examples**: on train: identify trends in data the model fails on, identify additional features that would make them easier for a model. On validation: identify examples that significantly differ from the train data
+  - **k most uncertain examples**: on train: often a symptom of conflicting labels. On validation: can help find gaps in your training data
+
+> Top-k implementation: [book's Github repository](https://github.com/hundredblocks/ml-powered-applications/blob/master/ml_editor/model_evaluation.py#L250-L295)
+
+## Evaluate Feature Importance
+- Eliminate or iterate on features that are currently not helping the model
+- Identify features that are suspiciously predictive, which is often a sign of data leakage
+
+## Black-box explainers
+Attempt to explain a model's predictions independently of its inner workings, i.e. LIME and SHAP
+
+# Ch6. Debug your ML problems
