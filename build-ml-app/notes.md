@@ -213,3 +213,51 @@ Always investigate the results of a model, especially if it shows surprisingly s
 Attempt to explain a model's predictions independently of its inner workings, i.e. LIME and SHAP
 
 # Ch6. Debug your ML problems
+
+## Software Best Practices
+**KISS principle**: building only what you need
+
+> Most software applications: strong test coverage = high confidence app is functioning well. ML pipelines can pass many tests, but still give entirely incorrect results. Doesn't have just to run, it should produce accurate predictive outputs
+
+Progressive approach, validate:
+1. Data flow
+2. Learning capacity
+3. Generalization and inference
+
+Make sure your pipeline works for a few examples, then write tests to make sure it keeps functioning as you make changes
+
+## Visualization steps
+Inspect changes at regular intervals
+
+- **Data loading**: Verify data is formatted correctly
+- **Cleaning and feature selection**: remove any unnecessary information
+- **Feature generation**: check that the feature values are populated and that the values seem reasonable
+- **Data formatting**: shapes, vectors
+- **Model output**: first look if the predictions are the right type or shape, then check if the model is actually leveraging the input data
+
+## Separate your concerns
+Modular organization: separate each function so that you can check that it individually works before looking at the broader pipeline. Once broken down, you'll be able to write tests
+
+## Test your ML code
+[Source code on book's Github repository](https://github.com/hundredblocks/ml-powered-applications/tree/master/tests)
+
+- Test data ingestion
+- Test data processing
+- Test model outputs
+
+## Debug training: make your model learn
+Contextualize model performance: generate an estimate of what an acceptable error for the taks is by labeling a few examples yourself
+
+### Task difficulty
+- **The quantity and diversity of data you have**: more diverse/complex the problem = more data for the model to learn from it
+- **How predictive the features are**: make the data more expressive to help the model learn better
+- **The complexity of your model**: simplest model is good to quickly iterate, but some tasks are entirely out of reach of some models
+
+## Debug generalization: make your model useful
+- **Data Leakage**: if you are surprised by validation performance, inspect the features; fixing a leakage issue will lead to lower validation performance, but a better model
+- **Overfitting**: model performs drastically better on the training set than on the test set. Add regularization or data augmentation
+- **Dataset redesign**: use k-fold cross validation to alleviate concerns that data splits may be of unequal quality
+
+> “If your models aren’t generalizing, your task may be too hard. There may not be enough information in your training examples to learn meaningful features that will be informative for future data points. If that is the case, then the problem you have is not well suited for ML”
+
+# Ch7. Using classifiers for writing recommendations
