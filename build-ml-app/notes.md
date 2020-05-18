@@ -261,3 +261,54 @@ Contextualize model performance: generate an estimate of what an acceptable erro
 > “If your models aren’t generalizing, your task may be too hard. There may not be enough information in your training examples to learn meaningful features that will be informative for future data points. If that is the case, then the problem you have is not well suited for ML”
 
 # Ch7. Using classifiers for writing recommendations
+
+# Part IV. Deploy and Monitor
+Production ML pipelines need to be able to detect data and model failures and handle them with grace -> **proactively**
+
+# Ch8. Considerations when deploying models
+- How was the data you are using collected?
+- What assumptions is your model making by learning from this dataset?
+- Is this dataset representative enough to produce a useful model?
+- How could the results of your work be misused?
+- What is the intended use and scope of your model?
+
+## Data Concerns
+
+### Data ownership
+- Collection
+- Usage and permission
+- Storage
+
+### Data bias
+Datasets: results of specific data collection decisions -> lead to datasets presenting a biased view of the world. ML models learn from datasets -> will reproduce these biases
+
+- Measurement errors or corrupted data
+- Representation
+- Access
+
+#### Test sets
+Build a test set that is inclusive, representative, and realistic -> proxy for performance in production -> improve the chances that every user has an equally positive experience
+
+> Models are trained on historical data -> state of the world in the past. Bias most often affects populations that are already disenfranchised. Working to eliminate bias -> help make systems fairer for the people who need it most
+
+## Modeling Concerns
+
+### Feedback loops
+User follow a model's recommendation -> future models make the same recommendation -> models enter a self-reinforcing feedback loop
+
+To limit negative effects of feedback loops -> choose a label that is less prone to creating such a loop
+
+### Inclusive model performance
+Look for performance on a segment of the data, instead of only comparing aggregate performance
+
+### Adversaries
+Regularly update models
+
+Some types of attacks:
+- Fool models into a wrong prediction (most common)
+- Use a trained model to learn about the data it was trained on
+
+## Chris Harland: Shipping Experiments
+> When giving advice, the cost of being wrong is very high, so precision is the most useful
+
+# Ch9. Choose Your Deployment Option
