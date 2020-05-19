@@ -312,3 +312,47 @@ Some types of attacks:
 > When giving advice, the cost of being wrong is very high, so precision is the most useful
 
 # Ch9. Choose Your Deployment Option
+
+## Server-side deployment
+Setting up a web server that can accept requests from clients, run them through an inference pipeline, and return the results. The servers represents a central failure point for the application and can be costly if the product becomes popular
+
+### Streaming API workflow
+**Endpoint approach**
+
+- Quick to implement
+- Requires infrastructure to scale linearly with the current number of users (1 user = 1 separate inference call)
+- Required when strong latency constraints exist (info the model needs is available only at prediction time and model's prediction is required immediately)
+
+### Batch Predictions
+Inference pipeline as a job that can be run on multiple examples at once. Store predictions so they can be used when needed
+
+- Appropriate when you have access to the features need for a model before the model's prediction is required
+- Easier to allocate and parallelize resources
+- Faster at inference time since results have been precomputed and only need to be retrieved (similar gains to caching)
+
+### Hybrid Approach
+- Precompute as many cases as possible
+- At inference either retrieve precomputed results or compute them on the spot if they are not available or are outdated
+- Have to maintain both a batch and streaming pipeline (more complexity of the system)
+
+## Client-side deployment
+Run all computations on the client, eliminating the need for a server to run models. Models are still trained in the same manner and are sent to the device for inference
+
+- Reduces the need to build infra
+- Reduces the quantity of data that needs to be transferred between the device and the server
+  - Reduces network latency (app may even run without internet)
+  - Removes the need for sensitive information to be transferred to a remote server
+
+> If the time it would take to run inference on device is larger than the time it would take to transmit data to the server to be processed, consider running your model in the cloud
+
+On-device deployment is only worthwhile if the latency, infrastructure, and privacy benefits are valuable enough to invest the engineering effort (simplifying a model)
+
+## Browser side
+Some libraries use browsers to have the client perform ML tasks
+
+`Tensorflow.js`: train and run inference in JavaScript in the browser for most differentiable models, even trained in different languages such as Python
+
+## Federated Learning: a hybrid apporach
+Each client has their own model. Each model learns from their user's data and send aggregated (and potentially anonymized) updates to the server. The server leverages all updates to improve its model and distills this new model back to individual clients. Each user receives a model personalized to their needs, while still benefiting from aggregate information about other users
+
+# Ch10. Build Safeguards for Models
