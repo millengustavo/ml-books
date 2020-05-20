@@ -356,3 +356,98 @@ Some libraries use browsers to have the client perform ML tasks
 Each client has their own model. Each model learns from their user's data and send aggregated (and potentially anonymized) updates to the server. The server leverages all updates to improve its model and distills this new model back to individual clients. Each user receives a model personalized to their needs, while still benefiting from aggregate information about other users
 
 # Ch10. Build Safeguards for Models
+No matter how good a model is, it will fail on some examples -> engineer a system that can gracefully handle such features
+
+## Check inputs
+- Very different data from train
+- Some features missing
+- Unexpected types
+
+Input checks are part of the pipeline -> change the control flow of a program based on the quality of inputs
+
+## Model outputs
+Prediction falls outside an acceptable range -> consider not displaying it
+
+> Acceptable outcome: not only if the outcome is plausible -> also depends if the outcome would be **useful for the user**
+
+## Model failure fallbacks
+Flag cases that are too hard and encourage user to provide an easier input (e.g. well-lit photo)
+
+Detecting errors:
+- Track the confidence of a model
+- Build an additional model tasked with detecting examples a main model is likely to fail on
+
+### Filtering model
+- ML version of input tests
+- Binary classifier
+- Estimate how well a model will perform on an example without running the model on it
+- Decrease the likelihood of poor results and improve resource usage
+- Catch:
+  - qualitatively different inputs
+  - inputs the model struggled
+  - adversarial inputs meant to fool the model
+- Minimum criteria:
+  - should be fast (reduce the computational burden)
+  - should be good at eliminating hard cases
+
+> The faster your filtering model is, the less effective it needs to be
+
+## Engineer for Performance
+### Scale to multiple users
+ML is horizontally scalable = more servers = keep response time reasonable when the number of requests increases
+
+### Caching fo ML
+Storing results to function calls -> future calls with same parameters simply retrieve the stored results
+
+#### Caching inference results
+**Least recently used (LRU) cache**: keep track the most recent inputs to a model and their corresponding outputs
+
+- not appropriate if each input is unique
+- `functools` Python module proposes a default implementation of an LRU cache that you can use with a simple decorator
+
+```python
+from functools import lru_cache
+
+@lru_cache(maxsize=128)
+def run_model(data):
+  # Insert slow model inference below
+  pass
+```
+
+#### Caching by indexing
+Cache other aspects of the pipeline that can be precomputed. Easy if a model does not only rely on user inputs
+
+> “Caching can improve performance, but it adds a layer of complexity. The size of the cache becomes an additional hyperparameter to tune depending on your application’s workload. In addition, any time a model or the underlying data is updated, the cache needs to be cleared in order to prevent it from serving outdated results"
+
+## Model and data life cycle management
+ML application:
+
+- produces reproducible results
+- is resilient to model updates
+- is flexible enough to handle significant modelling and data processing changes
+
+### Reproducibility
+Each model/dataset pair should be assigned an unique identifier -> should be logged each time a model is used in production
+
+### Resilience
+- production pipeline should aim to update models without significant downtime
+- if a new model performs poorly, we'd like to be able to roll back to the previous one
+
+## Data Processing and DAGs
+Directed acyclic graph (DAG): can be used to represent our process of going from raw data to trained model -> each node represent a processing step and each step represent a dependency between two nodes
+
+DAGs helps systematize, debug, and version a pipeline -> can become a crucial time saver
+
+## Ask for feedback
+- Explicity asking for feedback (display model's prediction accompanying it with a way for users to judge and correct a prediction)
+- Measuring implicit signals
+
+User feedback is a good source of training data and can be the first way to notice a degradation in performance
+
+## Chris Moody: Empowering Data Scientist to Deploy Models
+- Make humans and algorithms work together: spend time thinking about the right way to present information
+- Canary development -> start deploying the new version to one instance and progressively update instances while monitoring performance
+
+> "Ownership of the entire pipeline leads individuals to optimize for impact and reliability, rather than model complexity"
+
+# Ch11. Monitor and update models
