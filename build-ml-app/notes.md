@@ -451,3 +451,41 @@ User feedback is a good source of training data and can be the first way to noti
 > "Ownership of the entire pipeline leads individuals to optimize for impact and reliability, rather than model complexity"
 
 # Ch11. Monitor and update models
+## Monitoring saves lives
+Monitoring: track the health of a system. For models: performance and quality of their predictions
+
+### Monitor to inform refresh rate
+Detect when a model is not fresh anymore and needs to be retrained. Retraining events happen when accuracy dips below a threshold.
+
+### Monitor to detect abuse
+Anomaly detection to detect attacks
+
+## Choose what to monitor
+Commonly monitor metrics such as the average time it takes to process a request, the proportion of requests that fail to be processed, and the amount of available resources
+
+### Performance Metrics
+- Track changes in the input distribution (*feature drift*)
+- Monitor the input distribution (summary statistics)
+- Monitor distribution shifts
+
+> **Conterfactual evaluation**: aims to evaluate what would have happened if we hadn't actioned a model -> Not acting on a random subset of examples allow us to observe an unbiased distribution of the positive class. Comparing model predictions to true outcomes for the random data, we can begin to estimate a model's precision and recall
+
+### Business metrics
+Product metrics should be closely monitored
+
+## CI/CD for ML
+- **CI**: letting multiple developers regularly merge their code back into a central codebase
+- **CD**: improving the speed at which new versions of software can be released
+
+CI/CD for ML: make it easier to deploy new models or update existing ones
+
+> "Releasing updates quickly is easy; the challenge comes in guaranteeing their quality (...) There is no substitute for live performance to judge the quality of a model"
+
+**Shadow mode**: deploying a new model in parallel to an existing one. When running inference, both models' predictions are computed and stored, but the application only uses the prediction of the existing model
+
+- estimate a new models' performance in a production environment without changing the user experience
+- test the infrastructure required to run inference for a new model (may be more complex)
+- but can't observe the user's response to the new model
+
+## A/B Testing and Experimentation
+
