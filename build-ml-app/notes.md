@@ -4,6 +4,113 @@ Author: Emmanuel Ameisen
 
 ![build-ml-app-cover](cover.jpg)
 
+- [Building Machine Learning Powered Applications: Going from Idea to Product](#building-machine-learning-powered-applications-going-from-idea-to-product)
+- [Part I. Find the Correct ML Approach](#part-i-find-the-correct-ml-approach)
+- [Ch1. From Product Goal to ML Framing](#ch1-from-product-goal-to-ml-framing)
+  - [Data availability scenarios](#data-availability-scenarios)
+  - [The Simplest Approach: being the algorithm](#the-simplest-approach-being-the-algorithm)
+  - [What to focus on in an ML project](#what-to-focus-on-in-an-ml-project)
+  - [Which modeling techniques to use](#which-modeling-techniques-to-use)
+- [Ch2. Create a Plan](#ch2-create-a-plan)
+  - [Measuring Success](#measuring-success)
+  - [Business Performance](#business-performance)
+    - [Updating an app to make a modeling task easier](#updating-an-app-to-make-a-modeling-task-easier)
+  - [Freshness and Distribution Shift](#freshness-and-distribution-shift)
+  - [Leverage Domain Expertise](#leverage-domain-expertise)
+    - [Examining the data](#examining-the-data)
+  - [Stand on the Shoulders of giants](#stand-on-the-shoulders-of-giants)
+  - [To make regular progress: start simple](#to-make-regular-progress-start-simple)
+  - [Diagnose Problems](#diagnose-problems)
+- [Part II. Build a Working Pipeline](#part-ii-build-a-working-pipeline)
+- [Ch3. Build your first end-to-end pipeline](#ch3-build-your-first-end-to-end-pipeline)
+  - [Test your workflow](#test-your-workflow)
+  - [Finding the impact bottleneck](#finding-the-impact-bottleneck)
+- [Ch4. Acquire an initial dataset](#ch4-acquire-an-initial-dataset)
+  - [Iterate on datasets](#iterate-on-datasets)
+  - [Data quality rubric](#data-quality-rubric)
+    - [Format](#format)
+    - [Quality](#quality)
+    - [Quantity and distribution](#quantity-and-distribution)
+    - [Summary statistics](#summary-statistics)
+    - [Data leakage](#data-leakage)
+  - [Clustering](#clustering)
+  - [Let data inform features and models](#let-data-inform-features-and-models)
+    - [Feature crosses](#feature-crosses)
+    - [Giving your model the answer](#giving-your-model-the-answer)
+  - [Robert Munro: how do you find, label and leverage data](#robert-munro-how-do-you-find-label-and-leverage-data)
+    - [Uncertainty sampling](#uncertainty-sampling)
+    - ["Error model"](#%22error-model%22)
+    - ["Labeling model"](#%22labeling-model%22)
+    - [Validation](#validation)
+- [Part III. Iterate on Models](#part-iii-iterate-on-models)
+- [Ch5. Train and evaluate your model](#ch5-train-and-evaluate-your-model)
+  - [The simplest appropriate model](#the-simplest-appropriate-model)
+    - [Simple model](#simple-model)
+  - [Test set](#test-set)
+  - [Data leakage](#data-leakage-1)
+  - [Bias variance trade-off](#bias-variance-trade-off)
+  - [Evaluate your model: look beyond accuracy](#evaluate-your-model-look-beyond-accuracy)
+  - [Evaluate Feature Importance](#evaluate-feature-importance)
+  - [Black-box explainers](#black-box-explainers)
+- [Ch6. Debug your ML problems](#ch6-debug-your-ml-problems)
+  - [Software Best Practices](#software-best-practices)
+  - [Visualization steps](#visualization-steps)
+  - [Separate your concerns](#separate-your-concerns)
+  - [Test your ML code](#test-your-ml-code)
+  - [Debug training: make your model learn](#debug-training-make-your-model-learn)
+    - [Task difficulty](#task-difficulty)
+  - [Debug generalization: make your model useful](#debug-generalization-make-your-model-useful)
+- [Ch7. Using classifiers for writing recommendations](#ch7-using-classifiers-for-writing-recommendations)
+- [Part IV. Deploy and Monitor](#part-iv-deploy-and-monitor)
+- [Ch8. Considerations when deploying models](#ch8-considerations-when-deploying-models)
+  - [Data Concerns](#data-concerns)
+    - [Data ownership](#data-ownership)
+    - [Data bias](#data-bias)
+      - [Test sets](#test-sets)
+  - [Modeling Concerns](#modeling-concerns)
+    - [Feedback loops](#feedback-loops)
+    - [Inclusive model performance](#inclusive-model-performance)
+    - [Adversaries](#adversaries)
+  - [Chris Harland: Shipping Experiments](#chris-harland-shipping-experiments)
+- [Ch9. Choose Your Deployment Option](#ch9-choose-your-deployment-option)
+  - [Server-side deployment](#server-side-deployment)
+    - [Streaming API workflow](#streaming-api-workflow)
+    - [Batch Predictions](#batch-predictions)
+    - [Hybrid Approach](#hybrid-approach)
+  - [Client-side deployment](#client-side-deployment)
+  - [Browser side](#browser-side)
+  - [Federated Learning: a hybrid apporach](#federated-learning-a-hybrid-apporach)
+- [Ch10. Build Safeguards for Models](#ch10-build-safeguards-for-models)
+  - [Check inputs](#check-inputs)
+  - [Model outputs](#model-outputs)
+  - [Model failure fallbacks](#model-failure-fallbacks)
+    - [Filtering model](#filtering-model)
+  - [Engineer for Performance](#engineer-for-performance)
+    - [Scale to multiple users](#scale-to-multiple-users)
+    - [Caching fo ML](#caching-fo-ml)
+      - [Caching inference results](#caching-inference-results)
+      - [Caching by indexing](#caching-by-indexing)
+  - [Model and data life cycle management](#model-and-data-life-cycle-management)
+    - [Reproducibility](#reproducibility)
+    - [Resilience](#resilience)
+  - [Data Processing and DAGs](#data-processing-and-dags)
+  - [Ask for feedback](#ask-for-feedback)
+  - [Chris Moody: Empowering Data Scientist to Deploy Models](#chris-moody-empowering-data-scientist-to-deploy-models)
+- [Ch11. Monitor and update models](#ch11-monitor-and-update-models)
+  - [Monitoring saves lives](#monitoring-saves-lives)
+    - [Monitor to inform refresh rate](#monitor-to-inform-refresh-rate)
+    - [Monitor to detect abuse](#monitor-to-detect-abuse)
+  - [Choose what to monitor](#choose-what-to-monitor)
+    - [Performance Metrics](#performance-metrics)
+    - [Business metrics](#business-metrics)
+  - [CI/CD for ML](#cicd-for-ml)
+  - [A/B Testing and Experimentation](#ab-testing-and-experimentation)
+    - [Choosing groups and duration](#choosing-groups-and-duration)
+    - [Estimating the better variant](#estimating-the-better-variant)
+    - [Building the infrastructure](#building-the-infrastructure)
+  - [Other approaches](#other-approaches)
+
+
 # Part I. Find the Correct ML Approach
 
 # Ch1. From Product Goal to ML Framing
@@ -488,4 +595,31 @@ CI/CD for ML: make it easier to deploy new models or update existing ones
 - but can't observe the user's response to the new model
 
 ## A/B Testing and Experimentation
+Goal: maximize chances of using the best model, while minimizing the cost of trying out suboptimal models
 
+Expose a sample of users to a new model, and the rest to another. Larger control group (current model) and a smaller treatment group (new version we want to test). Run for a sufficient amount of time -> compare the results for both groups and choose the better model
+
+### Choosing groups and duration
+- Users in both groups should be as similar as possible -> any difference in outcome = our model and not difference in cohorts
+- Treatment group should be:
+  - large enough: statistically meaningful conclusion
+  - small as possible: limit exposure to a potentially worse model
+- Duration of the test:
+  - too short: not enough information
+  - too long: risk losing users
+
+### Estimating the better variant
+Decide on the size of each group and the length of the experiment before running it
+
+### Building the infrastructure
+Branching logic: decides which model to run depending on a given field's value (harder if a model is accessible to logged-out users)
+
+## Other approaches
+**Multiarmed bandits**: more flexible approach, can test variants continually and on more than two alternatives. Dynamically update which model to serve based on how well each option in performing
+
+**Contextual multiarmed bandits**: go even further, by learning which model is a better option for each particular user
+
+> "The majority of work involved with building ML products consists of data and engineering work"
+
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
