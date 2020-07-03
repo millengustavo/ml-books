@@ -10,6 +10,8 @@
 
 - Building Machine Learning Powered Applications: Going from Idea to Product - Emmanuel Ameisen [[open notes]](build-ml-app/notes.md)
 
+- Learning Spark: Lightning-Fast Data Analytics - Jules S. Damji, Brooke Wenig, Tathagata Das, Denny Lee [[open notes]](learning-spark/notes.md)
+
 # Applications
 
 ## WaveNet
