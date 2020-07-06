@@ -69,4 +69,62 @@ savedPipelineModel = PipelineModel.load(pipelinePath)
 
 # Ch11. Managing, Deploying, and Scaling Machine Learning Pipelines with Apache Spark
 
+## Model management
+Ensure that you can reproduce and track the model's performance
+
+Important aspects:
+- **Library versioning**
+- **Data evolution**
+- **Order of execution**
+- **Parallel operations** (nondeterministic outputs)
+
+> Having industry-wide standards for managing models is important so they can be easily shared with partners
+
+### MLflow
+Open source platform that helps developers reproduce and share experiments, manage models, and more
+
+#### Tracking
+- Logging API agnostic to libraries and envs that actually do the training
+- Organized around the concept of *runs* (executions of DS code)
+- Runs are aggregated into *experiments*
+- Can log:
+  - *parameters*
+  - *metrics*
+  - *artifacts*
+  - *metadata*
+  - *models*
+
+```python
+import mflow
+import mlflow.spark
+
+with mlflow.start_run(run_name="your-run-name") as run:
+    mlflow.log_param(...)
+    (...)
+    mlflow.spark.log_model(...)
+    (...)
+    mlflow.log_metrics(...)
+    (...)
+    mlflow.log_artifact(...)
+```
+
+## Model deployment options with MLlib
+- Batch: more efficient per data point -> accumulate less overhead when amortized across all predictions made
+- Streaming: nice trade-off between throughput and latency
+- Real-time: prioritizes latency over throughput and generates predictions in a few milliseconds
+
+> MLlib is not intended for real-time model inference (computing predictions in under 50 ms)
+
+### Batch
+Majority of use cases for deploying ml models. Run a regular job to generate predictions, and save the results to a table, database, data lake, etc, for downstream consumption
+
+MLlib's `model.transform()`: apply the model in parallel to all partitions of your DataFrame
+
+Questions to keep in mind:
+- **How frequently will you generate predictions?** latency and throughput trade-off
+- **How often will you retrain the model?** MLlib doesn't support online updates or warm restarts
+- **How will you version the model?** Use the MLflow model registry to keep track of the models and control how they are transitioning to/from staging, productions, and archived
+
+### Streaming
+
 # Ch12. Epilogue: Apache Spark 3.0
