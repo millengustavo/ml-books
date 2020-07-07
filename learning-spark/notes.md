@@ -126,5 +126,49 @@ Questions to keep in mind:
 - **How will you version the model?** Use the MLflow model registry to keep track of the models and control how they are transitioning to/from staging, productions, and archived
 
 ### Streaming
+Structured Streaming can continuously perform inference on incoming data
+- more costly than batch
+- benefit of generating predictions more frequently
+- more complicated to maintain and monitor
+- offer lower latency (but if you need really low-latency predictions, you'll need to export your model out of Spark)
+
+> Use `spark.readStream()` rather than `spark.read()` and change the source of the data. We need to define the schema a priori when working with streaming data
+
+### Model export patterns for real-time inference
+- ONNX (Open Neural Network Exchange): open standard for machine learning interoperability
+- Other 3rd party libs integrate with Spark and are convenient to deploy in real-time scenarios: **XGBoost** and **H20.ai's Sparkling Water**
+- **XGBoost** is not technically part of MLlib,
+  - **XGBoost4J-Spark** library allows you to integrate distributed XGBoost into your MLlib pipelines. 
+  - ease of deployment: train your MLlib pipeline, extract the XGBoost model and save it as a non-Spark model for serving in Python
+
+## Leveraging Spark for Non-MLlib models
+
+### Pandas UDFs
+- UDF = user-defined functions
+- Build a scikit-learn/TensorFlow model on a single machine (on a subset of your data)
+- Perform distributed inference on the entire data set using Spark
+- Spark 3.0: `mapInPandas()`: apply a scikit-learn model
+
+### Spark for distributed hyperparameter tuning
+#### Joblib
+- Set of tools to provide lightweight pipelining in Python
+- It has a Spark backend to distribute tasks on a Spark cluster
+- `pip install joblibspark`
+
+```python
+from joblibspark import register_spark
+
+
+register_spark() # Register Spark backend
+```
+
+#### Hyperopt
+- Python lib for serial and parallel optimization over awkward search spaces, which may include real-valued, discrete, and conditional dimensions
+- Main ways to scale Hyperopt with Apache Spark:
+  - Using single-machine Hyperopt with a distributed training algorithm (e.g. MLlib)
+  - Using distributed Hyperopt with single-machine training algorithms with the `SparkTrials` class
+
+> **Koalas**: open source library that implements the Pandas DataFrame API on top of Apache Spark. Replace any `pd` logic in your code with `ks` (Koalas) -> scale up your analyses with Pandas without needing to entirely rewrite your codebase in PySpark. `kdf.to_spark()` = switch to using Spark APIs. `kdf.to_pandas()`= switch to using Pandas API
+
 
 # Ch12. Epilogue: Apache Spark 3.0
