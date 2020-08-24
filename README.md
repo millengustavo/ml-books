@@ -12,6 +12,8 @@
 
 - Learning Spark: Lightning-Fast Data Analytics - Jules S. Damji, Brooke Wenig, Tathagata Das, Denny Lee [[open notes]](learning-spark/notes.md)
 
+- An Introduction to Statistical Learning - Gareth M. James, Daniela Witten, Trevor Hastie, Robert Tibshirani [[open notes]](intro-statistical-learning/notes.md)
+
 # Applications
 
 ## WaveNet
