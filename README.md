@@ -14,6 +14,8 @@
 
 - An Introduction to Statistical Learning - Gareth M. James, Daniela Witten, Trevor Hastie, Robert Tibshirani [[open notes]](intro-statistical-learning/notes.md)
 
+- Machine Learning Engineering - Andriy Burkov [[open notes]](ml-engineering/notes.md)
+
 # Applications
 
 ## WaveNet
