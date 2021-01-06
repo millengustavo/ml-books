@@ -37,3 +37,31 @@ Your problem:
 
 
 # Ch2. Before the Project Starts
+
+## Impact of ML
+High when:
+- ML can replace a complex part of your engineering project
+- there's great benefit in getting inexpensive (but probably imperfect) predictions
+
+## Cost of ML
+Factors:
+- difficulty of the problem
+- cost of data
+- need for accuracy
+
+## Nonlinear progress
+> Progress in ML is nonlinear. Prediction error decreases fast in the beginning, but then gradually slows down
+
+- Make sure the PO (or client) understands the constraints and risks
+- Log every activity and track the time it took (helps with reporting and estimations of complexity in the future)
+
+## Why ML projects fail
+- lack of experienced talent
+- lack of support by the leadership
+- missing data infrastructure
+- data labeling challenge
+- siloed organizations and lack of collaboration
+- technically infeasible projects
+- lack of alignment between technical and business teams
+
+# Ch3. Data Collections and Preparation
