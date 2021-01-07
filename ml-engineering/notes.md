@@ -65,3 +65,31 @@ Factors:
 - lack of alignment between technical and business teams
 
 # Ch3. Data Collections and Preparation
+
+## Train, Validation and Test sets partition
+- Data was randomized before the split
+- Split was applied to raw data
+- Validation and test sets follow the same distribution
+- Leakage was avoided
+
+## Data Sampling strategies
+- random sampling
+- systematic sampling
+- stratified sampling
+- cluster sampling
+
+> Data versioning is a critical element in supervised learning when the labeling is done by multiple labelers
+
+## Dataset Documentation
+- what the data means
+- how it was collected
+- methods used to creat it 
+- details of train-validation-test splits
+- details of all pre-processing steps
+- explanation of any data that were excluded
+- format used to store it
+- types of attributes/features
+- number of examples
+- possible values for labels / allowable range for a numerical target
+
+# Ch4. Feature Engineering
