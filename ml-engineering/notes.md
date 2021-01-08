@@ -93,3 +93,25 @@ Factors:
 - possible values for labels / allowable range for a numerical target
 
 # Ch4. Feature Engineering
+
+## Good features
+- high predictive power
+- can be computed fast
+- reliable
+- uncorrelated
+
+> The distribution of feature values in the training set should be similar to the distribution of values the production model will receive
+
+## Feature selection techniques
+- Cutting the long tail
+- Boruta
+- L1 regularization
+
+## Best practices
+- scale features
+- store and document in schema files or feature stores
+- keep code, model and training data in sync
+
+> "Feature extraction code is one of the most important parts of a machine learning system. It must be extensively and systematically tested"
+
+# Ch5. Supervised Model Training (Part 1)
