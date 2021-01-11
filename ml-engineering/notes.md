@@ -115,3 +115,31 @@ Factors:
 > "Feature extraction code is one of the most important parts of a machine learning system. It must be extensively and systematically tested"
 
 # Ch5. Supervised Model Training (Part 1)
+
+## Baseline
+> **Baseline**: a model or algorithm that provides a reference point for comparison. Establish a baseline performance on your problem before start working on a predictive model. 
+
+- simple learning algorithm or
+- rule-based or heuristic algorithm (simple statistic)
+  - random prediction
+  - zero rule algorithm (e.g., always predict the most common class in the training set / average if regression)
+- human baseline: Amazon Mechanical Turk (MT) service -> web-platform where people solve simple tasks for a reward
+
+## In-memory vs. out-of-memory
+
+If the dataset can't be fully loaded in RAM -> **incremental learning algorithms**: can improve the model by reading data gradually (Naive Bayes, neural networks)
+
+## Precision and Recall
+- **Precision**: ratio of true positive predictions to the overall number of positive PREDICTIONS
+- **Recall**: ratio of true positive predictions to the overall number of positive EXAMPLES
+
+## F-measure
+- positive real *beta*
+- **beta = 2** -> weighs recall twice as high as precision
+- **beta = 0.5** -> weighs recall twice as low as precision
+
+## Precision-recall and bias-variance tradeoffs
+
+> By varying the complexity of the model, we can reach the so-called "zone of solutions", a situation in which both bias and variance of the model are relatively low. The solution that optimizes the performance metric is usually found inside that zone
+
+# Ch6. Supervised Model Training (Part 2)
