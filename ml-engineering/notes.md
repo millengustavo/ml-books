@@ -143,3 +143,30 @@ If the dataset can't be fully loaded in RAM -> **incremental learning algorithms
 > By varying the complexity of the model, we can reach the so-called "zone of solutions", a situation in which both bias and variance of the model are relatively low. The solution that optimizes the performance metric is usually found inside that zone
 
 # Ch6. Supervised Model Training (Part 2)
+
+-
+
+# Ch7. Model Evaluation
+
+## Tasks
+- estimate legal **risks** of putting the model in production
+- understand the **distribution of the data** used to train the model
+- **evaluate** the performance of the model prior to deployment
+- **monitor** the performance of the deployed model
+
+## A/B Testing
+- A: served the old model
+- B: served the new model
+- apply a statistical significance test to decide whether the new model is statistically different from the old model
+
+## Multi-armed bandit
+- start by randomly exposing all models to the users
+- gradually reduce the exposure of the least-performing models until only one (the best performing) gets served most of the time
+
+## Bootstrapping
+- technique (statistical procedure) to compute a statistical interval for any metric
+- consists of building N samples of a dataset
+- then training a model
+- and computing some statistic using each of those N samples
+
+# Ch8. Model Deployment
