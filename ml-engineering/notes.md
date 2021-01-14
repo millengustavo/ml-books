@@ -170,3 +170,31 @@ If the dataset can't be fully loaded in RAM -> **incremental learning algorithms
 - and computing some statistic using each of those N samples
 
 # Ch8. Model Deployment
+
+## Deployment patterns
+- statically
+  - installable binary of the entire software
+  - positive: fast execution time for the user; don't have to upload user data to server (user privacy); can be called when the user is offline; keeping the model operation is user's responsibility
+  - negative: hard to upgrade model without upgrading whole app; may have messy computational requirements; difficult to monitor the model performance
+- dynamically on the user's device
+  - similar to static (user runs part of the system on their device), but the model is not a part of the binary code of the app
+  - positive: better separation of concerns (easier to update); fast for the user (cheaper for the org's servers)
+  - negative: varies depending on strategy; difficult to monitor the model performance
+- dynamically on a server:
+  - place the model on servers and make it available as REST API or gRPC service
+- model streaming
+
+## Deployment strategies
+- single: simplest -> serialize new model to file, replace the old one
+- silent: new and old version runs in parallel during the switch
+- canary: pushes new version to a small fraction of users, while keep the old one running for most
+- multi-armed bandit (MAB): way to compare one or more versions of the model in the production env, and select the best performing one
+
+> "The model must be applied to the end-to-end and confidence test data by simulating a regular call from the outside"
+
+## Algorithmic efficiency
+- important consideration in model deployment
+- you should only write your own code when it's absolutely necessary
+- caching speeds up the application when it contains resource-consuming functions frequently called with the same parameter values
+
+# Ch9. Model Serving, Monitoring, and Maintenance
