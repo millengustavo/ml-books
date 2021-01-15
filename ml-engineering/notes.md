@@ -198,3 +198,43 @@ If the dataset can't be fully loaded in RAM -> **incremental learning algorithms
 - caching speeds up the application when it contains resource-consuming functions frequently called with the same parameter values
 
 # Ch9. Model Serving, Monitoring, and Maintenance
+
+## Effective runtime
+- secure
+- correct
+- ensures ease of deployment and recovery
+- provides guarantees of model validity
+- avoids training/serving skew and hidden feedback loops
+
+## Serving modes
+- batch: when applied to big data and some latency is tolerable
+- on-demand: wrapped into a REST API
+
+## What can go wrong with the model in production
+- more training data made the model worse
+- properties of the production data changed
+- updated feature extraction code
+- resource needed for feature changed/unavailable
+- model is abused or under an adversarial attack
+
+## Monitoring
+- automated value calculation for the performance metrics -> send alert if change significantly
+- distribution shift
+- numerical instability
+- decreasing computational performance
+- logs
+
+## Maintenance
+> "Most ML models must be regularly or occasionally updated"
+
+how often?
+- error rate / how critical
+- only useful if fresh
+- new training data available fast
+- time it takes to retrain
+- cost to train / deploy the model
+- importance of update for improving the metrics
+
+# Ch10. Conclusion
+
+-
