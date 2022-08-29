@@ -16,6 +16,8 @@
 
 - Machine Learning Engineering - Andriy Burkov [[open notes]](ml-engineering/notes.md)
 
+- Designing Machine Learning Systems - Chip Huyen [[open notes]](designing-ml-systems/notes.md)
+
 # Applications
 
 ## WaveNet
